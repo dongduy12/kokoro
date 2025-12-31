@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= pageTitle %></title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        bgBase: 'rgba(248, 244, 230, 1)',
+                        main: '#544A47',
+                        accent: '#BA2636',
+                        sub1: '#8D837F',
+                        bgAccentMain: '#FDF2F3'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* CSS cho Accordion */
+        details > summary { list-style: none; }
+        details > summary::-webkit-details-marker { display: none; }
+        details[open] summary ~ * { animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Checkbox style */
+        .option-checkbox:checked + div { border-color: #BA2636; background-color: #FDF2F3; }
+    </style>
+</head>
+<body class="bg-bgBase text-main font-sans pb-40">
+
+    <header class="py-5 px-8 flex justify-center bg-white shadow-sm sticky top-0 z-50">
+        <a href="/"><img src="https://static.kyotokimonorental.com/app/img/common/logo-symbol.svg" alt="logo" class="h-10"></a>
+    </header>
+
+    <main class="max-w-[1260px] mx-auto px-5 md:px-8 mt-8">
+        
+        <div class="hidden lg:grid grid-cols-4 gap-4 mb-10 text-sm font-bold text-gray-400">
+            <div class="flex items-center gap-2">1. Chọn Gói</div>
+            <div class="flex items-center gap-2">2. Ngày & Giờ</div>
+            <div class="flex items-center gap-2 text-accent">
+                <span class="w-2 h-2 rounded-full bg-accent"></span> 3. Thông tin & Tùy chọn
+            </div>
+            <div>4. Hoàn tất</div>
+        </div>
+
+        <form action="/booking-finish" method="POST" id="bookingForm">
+            <input type="hidden" name="shopId" value="<%= shop.id %>">
+            <input type="hidden" name="date" value="<%= bookingInfo.date %>">
+            <input type="hidden" name="time" value="<%= bookingInfo.time %>">
+            <input type="hidden" name="plansDataString" value='<%= JSON.stringify(plansData) %>'>
+
+            <div class="grid lg:grid-cols-[1fr_350px] gap-10">
+                <div>
+                    <div class="mb-12">
+                        <h3 class="border-b border-sub1 border-dashed pb-2 mb-5 font-bold text-lg">
+                            1. Vui lòng nhập thông tin của bạn.
+                        </h3>
+                        <div class="bg-white p-6 rounded-xl shadow-sm space-y-5">
+                            <div>
+                                <div class="flex gap-2 mb-2">
+                                    <span class="font-bold">Họ và tên</span>
+                                    <span class="bg-red-600 text-white text-[10px] px-2 py-[2px] rounded">Bắt buộc</span>
+                                </div>
+                                <input type="text" name="fullname" required placeholder="Nguyễn Văn A" class="w-full border p-3 rounded bg-gray-50 focus:bg-white focus:border-accent outline-none transition">
+                            </div>
+                            <div>
+                                <div class="flex gap-2 mb-2">
+                                    <span class="font-bold">Email</span>
+                                    <span class="bg-red-600 text-white text-[10px] px-2 py-[2px] rounded">Bắt buộc</span>
+                                </div>
+                                <input type="email" name="email" required placeholder="email@example.com" class="w-full border p-3 rounded bg-gray-50 focus:bg-white focus:border-accent outline-none transition">
+                            </div>
+                            <div>
+                                <div class="flex gap-2 mb-2">
+                                    <span class="font-bold">Số điện thoại</span>
+                                    <span class="bg-red-600 text-white text-[10px] px-2 py-[2px] rounded">Bắt buộc</span>
+                                </div>
+                                <input type="tel" name="phone" required placeholder="0901234567" class="w-full border p-3 rounded bg-gray-50 focus:bg-white focus:border-accent outline-none transition">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="border-b border-sub1 border-dashed pb-2 mb-5 font-bold text-lg">
+                            2. Vui lòng chọn các tùy chọn bạn muốn.
+                        </h3>
+                        
+                        <% let globalGuestCount = 0; %>
+                        <% plansData.forEach(plan => { %>
+                            <% for(let i = 1; i <= plan.qty; i++) { %>
+                                <% globalGuestCount++; %>
+                                
+                                <div class="mb-8">
+                                    <div class="font-bold text-lg mb-2">Khách <%= globalGuestCount %> (<%= plan.title %>)</div>
+                                    
+                                    <div class="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100">
+                                        <div class="p-4 bg-bgAccentMain flex justify-between items-center border-b border-red-100">
+                                            <div>
+                                                <div class="font-bold text-accent"><%= plan.title %></div>
+                                                <div class="text-sm">Giá gốc: ¥<%= plan.price.toLocaleString() %></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="divide-y divide-gray-100">
+                                            
+                                            <details class="group open:bg-gray-50 transition">
+                                                <summary class="flex justify-between items-center p-4 cursor-pointer hover:bg-gray-50">
+                                                    <span class="font-medium flex items-center gap-2">
+                                                        <span class="text-accent text-xl">＋</span> Thêm dịch vụ (Làm tóc, Bảo hiểm...)
+                                                    </span>
+                                                    <div class="text-gray-400 group-open:rotate-180 transition">▼</div>
+                                                </summary>
+                                                
+                                                <div class="p-4 pt-0 space-y-2">
+                                                    <% options.forEach(opt => { %>
+                                                        <label class="block relative cursor-pointer">
+                                                            <input type="checkbox" 
+                                                                   name="options_<%= plan.id %>_<%= i %>" 
+                                                                   value="<%= opt.id %>" 
+                                                                   class="option-checkbox hidden"
+                                                                   onchange="updateTotal()">
+                                                            
+                                                            <div class="border border-gray-200 rounded-lg p-3 flex justify-between items-center hover:border-red-300 transition">
+                                                                <div class="flex items-center gap-3">
+                                                                    <div class="w-10 h-10 bg-gray-100 rounded flex items-center justify-center text-xs text-gray-400">IMG</div>
+                                                                    <div>
+                                                                        <div class="font-bold text-main text-sm"><%= opt.name %></div>
+                                                                        <div class="text-xs text-sub1"><%= opt.desc %></div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="font-bold text-main text-sm">
+                                                                    +¥<%= opt.price.toLocaleString() %>
+                                                                </div>
+                                                            </div>
+                                                        </label>
+                                                    <% }) %>
+                                                </div>
+                                            </details>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            <% } %>
+                        <% }) %>
+                    </div>
+                </div>
+
+                <div class="hidden lg:block">
+                    <div class="bg-white rounded-xl p-6 shadow-lg sticky top-24 border border-gray-100">
+                        <h3 class="font-bold text-lg mb-4">Chi tiết thanh toán</h3>
+                        
+                        <div class="space-y-3 text-sm border-b pb-4 mb-4">
+                            <div class="flex justify-between">
+                                <span class="text-sub1">Cửa hàng</span>
+                                <span class="font-bold"><%= shop.name %></span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-sub1">Ngày giờ</span>
+                                <span class="font-bold"><%= bookingInfo.date %> <%= bookingInfo.time %></span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-sub1">Số khách</span>
+                                <span class="font-bold"><%= bookingInfo.totalQuantity %> người</span>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-between items-end">
+                            <span class="font-bold text-lg">Tổng cộng</span>
+                            <span class="text-3xl font-bold text-accent">¥<span id="finalTotalDisplay"><%= baseTotal.toLocaleString() %></span></span>
+                        </div>
+                        <p class="text-xs text-right text-gray-400">(Đã bao gồm thuế)</p>
+
+                        <button type="submit" class="w-full bg-gradient-to-r from-pink-500 to-[#BA2636] text-white font-bold py-4 rounded-full mt-6 shadow-lg hover:shadow-xl hover:-translate-y-1 transition">
+                            Xác nhận đặt chỗ
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="fixed bottom-0 left-0 w-full bg-white border-t p-4 shadow-[0_-4px_10px_rgba(0,0,0,0.1)] z-50 lg:hidden">
+                <div class="flex justify-between items-center gap-2">
+                    <div class="flex flex-col">
+                        <span class="text-xs text-gray-500">Tổng cộng (gồm tùy chọn)</span>
+                        <span class="text-xl font-bold text-accent">¥<span id="mobileTotalDisplay"><%= baseTotal.toLocaleString() %></span></span>
+                    </div>
+                    <button type="submit" class="bg-accent text-white font-bold py-3 px-6 rounded-full shadow-md text-sm">
+                        Xác nhận đặt chỗ
+                    </button>
+                </div>
+            </div>
+
+        </form>
+    </main>
+
+    <script>
+    // 👇 SỬA LẠI: Thêm dấu nháy '' bọc quanh biến EJS để VS Code không báo lỗi
+    
+    // Server sẽ điền số vào giữa dấu nháy, ví dụ: Number('5000')
+    const baseTotal = Number('<%= baseTotal || 0 %>'); 
+
+    // Server sẽ điền chuỗi JSON vào, sau đó ta parse lại thành Object
+    const optionsList = JSON.parse('<%- JSON.stringify(options || []) %>');
+    
+    function updateTotal() {
+        let addedPrice = 0;
+        
+        // Tìm tất cả checkbox đã tick
+        const checkedBoxes = document.querySelectorAll('.option-checkbox:checked');
+        
+        checkedBoxes.forEach(cb => {
+            const optId = cb.value;
+            // Tìm giá tiền của option đó
+            const opt = optionsList.find(o => o.id === optId);
+            if(opt) {
+                addedPrice += Number(opt.price);
+            }
+        });
+
+        const final = baseTotal + addedPrice;
+        
+        // Kiểm tra phần tử tồn tại trước khi gán text (Tránh lỗi null)
+        const elDesktop = document.getElementById('finalTotalDisplay');
+        const elMobile = document.getElementById('mobileTotalDisplay');
+
+        if (elDesktop) elDesktop.innerText = final.toLocaleString();
+        if (elMobile) elMobile.innerText = final.toLocaleString();
+    }
+</script>
+
+</body>
+</html>

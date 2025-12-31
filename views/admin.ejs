@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= pageTitle %></title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <header class="bg-[#2c3e50] text-white p-4 shadow-md flex justify-between items-center">
+        <div class="flex items-center gap-3">
+            <span class="text-2xl">⚙️</span>
+            <h1 class="text-xl font-bold">Trang Quản Trị</h1>
+        </div>
+        <a href="/" class="bg-white text-[#2c3e50] px-4 py-1 rounded hover:bg-gray-200 text-sm font-bold">
+            Về trang chủ
+        </a>
+        <a href="/logout" class="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600 text-sm font-bold">
+        Đăng xuất
+    </a>
+    </header>
+
+    <main class="max-w-[1200px] mx-auto p-6">
+        
+        <div class="flex justify-between items-end mb-6">
+            <h2 class="text-2xl font-bold border-l-4 border-[#BA2636] pl-3">Danh sách đặt chỗ</h2>
+            <div class="text-gray-500">
+                Tổng cộng: <span class="font-bold text-black"><%= bookings.length %></span> đơn
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead class="bg-gray-200 text-gray-700 uppercase text-sm">
+                        <tr>
+                            <th class="p-4 border-b">Thời gian đặt</th>
+                            <th class="p-4 border-b">Họ và tên</th>
+                            <th class="p-4 border-b">SĐT</th>
+                            <th class="p-4 border-b">Gói dịch vụ</th>
+                            <th class="p-4 border-b text-center">Ngày đến</th>
+                            <th class="p-4 border-b text-center">SL</th>
+                            <th class="p-4 border-b text-center">Trạng thái</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm">
+                        <% if (bookings.length === 0) { %>
+                            <tr>
+                                <td colspan="7" class="p-8 text-center text-gray-400 italic">
+                                    Chưa có đơn đặt hàng nào...
+                                </td>
+                            </tr>
+                        <% } else { %>
+                            <% bookings.reverse().forEach(item => { %> 
+                                <tr class="hover:bg-gray-50 border-b last:border-b-0 transition">
+                                    <td class="p-4 text-gray-500 text-xs">
+                                        <%= item.createdAt %>
+                                    </td>
+                                    <td class="p-4 font-bold text-blue-900">
+                                        <%= item.fullname %>
+                                    </td>
+                                    <td class="p-4 font-mono text-gray-600">
+                                        <%= item.phone %>
+                                    </td>
+                                    <td class="p-4">
+                                        <span class="bg-pink-100 text-pink-800 px-2 py-1 rounded text-xs">
+                                            <%= item.planName %>
+                                        </span>
+                                    </td>
+                                    <td class="p-4 text-center font-bold">
+                                        <%= item.date %>
+                                    </td>
+                                    <td class="p-4 text-center">
+                                        <span class="inline-block w-6 h-6 bg-gray-200 rounded-full text-center leading-6">
+                                            <%= item.quantity %>
+                                        </span>
+                                    </td>
+                                    <td class="p-4 text-center">
+                                        <span class="text-green-600 font-bold border border-green-200 bg-green-50 px-2 py-1 rounded text-xs">
+                                            <%= item.status %>
+                                        </span>
+                                    </td>
+                                </tr>
+                            <% }) %>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= pageTitle %></title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        bgBase: '#fdfbf7', // Màu kem nền nã hơn
+                        main: '#544A47', 
+                        accent: '#BA2636',
+                        gold: '#C5A059' // Thêm màu vàng sang trọng
+                    },
+                    fontFamily: {
+                        serif: ['Georgia', 'serif'] // Font chữ có chân cho tiêu đề
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-bgBase text-main font-sans antialiased selection:bg-accent selection:text-white">
+
+    <header class="fixed top-0 w-full bg-white/80 backdrop-blur-md z-50 transition-all duration-300 border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-5 h-[80px] flex items-center justify-between">
+            <a href="/" class="w-[140px] hover:opacity-80 transition">
+                <img src="https://static.kyotokimonorental.com/app/img/common/logo.svg" alt="Logo">
+            </a>
+            <div class="hidden md:flex gap-8 font-medium text-sm tracking-wide">
+                <a href="#plans" class="hover:text-accent transition">GÓI KIMONO</a>
+                <a href="#shops" class="hover:text-accent transition">CỬA HÀNG</a>
+                <a href="/admin" class="text-gray-400 hover:text-main transition">ADMIN</a>
+            </div>
+            <a href="/booking-step1" class="bg-accent text-white px-6 py-3 rounded-full font-bold shadow-lg ...">
+    ĐẶT LỊCH NGAY
+</a>
+        </div>
+    </header>
+
+    <main>
+        <div class="relative w-full h-[600px] flex items-center justify-center overflow-hidden">
+            <div class="absolute inset-0">
+                <img src="https://static.kyotokimonorental.com/app/img/top/hero/autumn/vi/sp/hero01.webp" class="w-full h-full object-cover scale-105 animate-[spin_60s_linear_infinite_reverse]" style="animation: none;"> 
+                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20"></div>
+            </div>
+            
+            <div class="relative z-10 text-center text-white p-5 animate-fade-in-up">
+                <span class="block text-gold font-serif text-xl mb-4 italic tracking-wider">Trải nghiệm văn hóa Nhật Bản</span>
+                <h1 class="text-4xl md:text-6xl font-bold font-serif leading-tight mb-6 shadow-black drop-shadow-lg">
+                    Vẻ Đẹp Truyền Thống <br> Trong Tầm Tay Bạn
+                </h1>
+                <p class="text-lg md:text-xl text-gray-200 mb-8 font-light">Hơn 20,000 bộ Kimono cao cấp đang chờ đón.</p>
+                <a href="#plans" class="inline-block border border-white text-white px-10 py-3 rounded-full hover:bg-white hover:text-main transition duration-300 font-bold tracking-widest">
+                    KHÁM PHÁ NGAY
+                </a>
+            </div>
+        </div>
+
+        <section id="plans" class="py-20 px-5">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-16">
+                    <span class="text-accent font-bold text-sm tracking-widest uppercase mb-2 block">Lựa chọn phổ biến</span>
+                    <h2 class="text-3xl md:text-4xl font-serif font-bold text-main">Các Gói Kimono</h2>
+                    <div class="w-20 h-1 bg-gold mx-auto mt-6"></div>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-10">
+                    <% plans.forEach(plan => { %>
+                        <div class="group bg-white rounded-[20px] overflow-hidden shadow-[0_10px_40px_-15px_rgba(0,0,0,0.1)] hover:shadow-[0_20px_50px_-10px_rgba(0,0,0,0.2)] transition duration-500 border border-gray-100 flex flex-col">
+                            <div class="relative h-[320px] overflow-hidden">
+                                <img src="<%= plan.image %>" class="w-full h-full object-cover object-top group-hover:scale-110 transition duration-700 ease-out" alt="<%= plan.title %>">
+                                <% if(plan.tag) { %>
+                                    <div class="absolute top-4 right-4 bg-white/90 backdrop-blur text-accent px-4 py-1 rounded-full text-xs font-bold shadow-sm uppercase tracking-wider">
+                                        <%= plan.tag %>
+                                    </div>
+                                <% } %>
+                            </div>
+                            
+                            <div class="p-8 flex-1 flex flex-col">
+                                <h3 class="text-xl font-bold mb-2 font-serif text-gray-800"><%= plan.title %></h3>
+                                <div class="flex items-baseline gap-3 mb-4">
+                                    <span class="text-accent text-2xl font-bold font-serif">¥<%= plan.price.toLocaleString() %></span>
+                                    <span class="text-sm line-through text-gray-400">¥<%= plan.originalPrice.toLocaleString() %></span>
+                                </div>
+                                <p class="text-sm text-gray-500 leading-relaxed mb-6 flex-1"><%= plan.desc %></p>
+                                
+                                <a href="/plan/<%= plan.id %>" class="block w-full text-center py-3 border border-main text-main rounded-full font-bold hover:bg-main hover:text-white transition duration-300">
+                                    Xem chi tiết
+                                </a>
+                            </div>
+                        </div>
+                    <% }); %>
+                </div>
+            </div>
+        </section>
+
+        <section id="shops" class="bg-white py-20 px-5 border-t border-gray-100">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-serif font-bold text-main">Hệ Thống Cửa Hàng</h2>
+                    <p class="text-gray-500 mt-4">Nằm tại các vị trí đắc địa nhất Nhật Bản</p>
+                </div>
+                
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <% shops.forEach(shop => { %>
+                        <div class="bg-bgBase rounded-xl p-4 hover:bg-white hover:shadow-lg transition cursor-pointer group">
+                            <div class="h-[180px] rounded-lg overflow-hidden mb-4 relative">
+                                <img src="<%= shop.image %>" class="w-full h-full object-cover group-hover:scale-105 transition">
+                                <span class="absolute bottom-2 left-2 bg-black/70 text-white text-[10px] px-2 py-1 rounded"><%= shop.area %></span>
+                            </div>
+                            <h3 class="font-bold text-lg text-main group-hover:text-accent transition"><%= shop.name %></h3>
+                            <p class="text-xs text-gray-500 mt-2 line-clamp-2"><%= shop.address %></p>
+                        </div>
+                    <% }) %>
+                </div>
+            </div>
+        </section>
+        <section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-10">
+            <h2 class="text-3xl font-bold text-main">Vị trí cửa hàng</h2>
+            <p class="text-sub1 mt-2">Hãy ghé thăm chúng tôi để trải nghiệm dịch vụ tốt nhất</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8 items-start">
+            
+            <div class="bg-bgBase p-8 rounded-2xl shadow-sm h-full">
+                <h3 class="text-2xl font-bold text-accent mb-4"><%= shops[0].name %></h3>
+                
+                <div class="space-y-4 text-main">
+                    <div class="flex items-start gap-3">
+                        <span class="text-2xl">📍</span>
+                        <div>
+                            <p class="font-bold">Địa chỉ:</p>
+                            <p class="text-sub1"><%= shops[0].address %></p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-3">
+                        <span class="text-2xl">⏰</span>
+                        <div>
+                            <p class="font-bold">Giờ mở cửa:</p>
+                            <p class="text-sub1">09:00 - 18:00 (Hàng ngày)</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-3">
+                        <span class="text-2xl">📞</span>
+                        <div>
+                            <p class="font-bold">Hotline:</p>
+                            <p class="text-sub1"><a href="tel:0901234567" class="hover:text-accent">090-1234-5678</a></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8">
+                    <a href="/booking-step1" class="block w-full text-center bg-gradient-to-r from-pink-500 to-[#BA2636] text-white font-bold py-3 rounded-full shadow-md hover:shadow-xl hover:-translate-y-1 transition">
+                        ĐẶT LỊCH NGAY TẠI ĐÂY
+                    </a>
+                </div>
+            </div>
+
+            <div class="rounded-2xl overflow-hidden shadow-lg h-[400px] border border-gray-200 relative group">
+                <iframe 
+                    src="<%= shops[0].mapEmbed %>" 
+                    width="100%" 
+                    height="100%" 
+                    style="border:0;" 
+                    allowfullscreen="" 
+                    loading="lazy" 
+                    referrerpolicy="no-referrer-when-downgrade"
+                    class="w-full h-full grayscale hover:grayscale-0 transition duration-500">
+                </iframe>
+                
+                <div class="absolute inset-0 bg-black/10 group-hover:bg-transparent pointer-events-none transition"></div>
+            </div>
+
+        </div>
+    </div>
+</section>
+    </main>
+
+    <footer class="bg-[#2c2725] text-white/80 py-16 text-center border-t-4 border-accent">
+        <div class="max-w-4xl mx-auto px-5">
+            <img src="https://static.kyotokimonorental.com/app/img/common/logo.svg" alt="Logo" class="h-10 mx-auto mb-8 brightness-0 invert opacity-50">
+            <div class="flex justify-center gap-6 mb-8 text-sm">
+                <a href="#" class="hover:text-white">Về chúng tôi</a>
+                <a href="#" class="hover:text-white">Chính sách bảo mật</a>
+                <a href="#" class="hover:text-white">Liên hệ</a>
+            </div>
+            <p class="text-xs text-white/40">© 2025 Wargo Kimono Rental. All rights reserved.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
