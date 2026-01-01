@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= pageTitle %></title>
@@ -32,7 +33,10 @@
             </a>
             <div class="hidden md:flex gap-8 font-medium text-sm tracking-wide">
                 <a href="#plans" class="hover:text-accent transition">GÓI KIMONO</a>
-                <a href="#shops" class="hover:text-accent transition">CỬA HÀNG</a>
+                <a href="#gallery" class="group flex items-center ...">
+                    <span class="text-xl">📸</span>
+                    <span class="font-bold text-gray-600 group-hover:text-accent text-sm md:text-base">Thư viện ảnh</span>
+                </a>
                 <a href="/admin" class="text-gray-400 hover:text-main transition">ADMIN</a>
             </div>
             <a href="/booking-step1" class="bg-accent text-white px-6 py-3 rounded-full font-bold shadow-lg ...">
@@ -42,25 +46,79 @@
     </header>
 
     <main>
-        <div class="relative w-full h-[600px] flex items-center justify-center overflow-hidden">
-            <div class="absolute inset-0">
-                <img src="<%= heroImage || 'https://static.kyotokimonorental.com/app/img/top/hero/autumn/vi/sp/hero01.webp' %>" class="w-full h-full object-cover scale-105 animate-[spin_60s_linear_infinite_reverse]" style="animation: none;"> 
+        <div class="relative w-full h-[600px] md:h-[700px]">
+        
+        <div class="swiper mySwiper w-full h-full">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide relative">
+                    <img src="<%= heroImage || 'https://static.kyotokimonorental.com/app/img/top/hero/autumn/vi/sp/hero01.webp' %>" 
+                         class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-black/40"></div>
+                </div>
                 
-                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20"></div>
+                <div class="swiper-slide relative">
+                    <img src="https://static.kyotokimonorental.com/app/img/top/hero/autumn/vi/sp/hero05.webp" 
+                         class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-black/40"></div>
+                </div>
+
+                <div class="swiper-slide relative">
+                    <img src="https://static.kyotokimonorental.com/app/img/top/hero/autumn/vi/sp/hero08.webp" 
+                         class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-black/40"></div>
+                </div>
             </div>
             
-            <div class="relative z-10 text-center text-white p-5 animate-fade-in-up">
-                <span class="block text-gold font-serif text-xl mb-4 italic tracking-wider">Trải nghiệm văn hóa Nhật Bản</span>
-                <h1 class="text-4xl md:text-6xl font-bold font-serif leading-tight mb-6 shadow-black drop-shadow-lg">
+            <div class="swiper-pagination"></div>
+        </div>
+
+        <div class="absolute inset-0 z-20 flex items-center justify-center pointer-events-none">
+            <div class="text-center text-white p-5 animate-fade-in-up pointer-events-auto">
+                <span class="block text-gold font-serif text-xl mb-4 italic tracking-wider drop-shadow-md">Trải nghiệm văn hóa Nhật Bản</span>
+                <h1 class="text-4xl md:text-7xl font-bold font-serif leading-tight mb-6 drop-shadow-lg">
                     Vẻ Đẹp Truyền Thống <br> Trong Tầm Tay Bạn
                 </h1>
-                <p class="text-lg md:text-xl text-gray-200 mb-8 font-light">Hơn 20,000 bộ Kimono cao cấp đang chờ đón.</p>
-                <a href="#plans" class="inline-block border border-white text-white px-10 py-3 rounded-full hover:bg-white hover:text-main transition duration-300 font-bold tracking-widest">
-                    KHÁM PHÁ NGAY
+                
+                <div class="flex justify-center gap-4 mb-8 text-sm md:text-base font-medium">
+                    <span class="bg-white/20 backdrop-blur px-4 py-1 rounded-full border border-white/30">✨ 20,000+ Bộ Kimono</span>
+                    <span class="bg-white/20 backdrop-blur px-4 py-1 rounded-full border border-white/30">🏯 8 Cửa hàng toàn quốc</span>
+                </div>
+
+                <a href="#plans" class="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-accent px-10 py-4 font-bold text-white transition-all hover:bg-red-700 hover:ring-4 hover:ring-red-200">
+                    <span>KHÁM PHÁ NGAY</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="h-5 w-5 transition-transform group-hover:translate-x-1">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                    </svg>
                 </a>
             </div>
         </div>
+    </div>
 
+    <div class="py-6 md:py-10 bg-white border-b border-gray-100 shadow-sm sticky top-[80px] z-40">
+        <div class="max-w-7xl mx-auto px-5">
+            <div class="grid grid-cols-2 md:flex md:flex-wrap md:justify-center gap-3 md:gap-4">
+                <a href="#plans" class="group flex items-center justify-center gap-2 px-4 py-2 md:py-3 rounded-full border border-gray-200 hover:border-accent hover:bg-red-50 transition-all cursor-pointer">
+                    <span class="text-xl">👘</span>
+                    <span class="font-bold text-gray-600 group-hover:text-accent text-sm md:text-base">Gói Kimono</span>
+                </a>
+                
+                <a href="#gallery" class="group flex items-center justify-center gap-2 px-4 py-2 md:py-3 rounded-full border border-gray-200 hover:border-accent hover:bg-red-50 transition-all cursor-pointer">
+                    <span class="text-xl">📍</span>
+                    <span class="font-bold text-gray-600 group-hover:text-accent text-sm md:text-base">Bộ sưu tập</span>
+                </a>
+
+                <a href="#flow" class="group flex items-center justify-center gap-2 px-4 py-2 md:py-3 rounded-full border border-gray-200 hover:border-accent hover:bg-red-50 transition-all cursor-pointer">
+                    <span class="text-xl">🔄</span>
+                    <span class="font-bold text-gray-600 group-hover:text-accent text-sm md:text-base">Quy trình</span>
+                </a>
+
+                <a href="#faq" class="group flex items-center justify-center gap-2 px-4 py-2 md:py-3 rounded-full border border-gray-200 hover:border-accent hover:bg-red-50 transition-all cursor-pointer">
+                    <span class="text-xl">❓</span>
+                    <span class="font-bold text-gray-600 group-hover:text-accent text-sm md:text-base">Hỏi đáp</span>
+                </a>
+            </div>
+        </div>
+    </div>
         <section id="plans" class="py-20 px-5">
             <div class="max-w-6xl mx-auto">
                 <div class="text-center mb-16">
@@ -72,15 +130,38 @@
                 <div class="grid md:grid-cols-3 gap-10">
                     <% plans.forEach(plan => { %>
                         <div class="group bg-white rounded-[20px] overflow-hidden shadow-[0_10px_40px_-15px_rgba(0,0,0,0.1)] hover:shadow-[0_20px_50px_-10px_rgba(0,0,0,0.2)] transition duration-500 border border-gray-100 flex flex-col">
-                            <div class="relative h-[320px] overflow-hidden">
-                                <img src="<%= plan.image %>" class="w-full h-full object-cover object-top group-hover:scale-110 transition duration-700 ease-out" alt="<%= plan.title %>">
+                            
+                            <div class="relative h-[320px] overflow-hidden group/slider">
+                                <div class="swiper planSwiper w-full h-full">
+                                    <div class="swiper-wrapper">
+                                        
+                                        <% if (plan.images && plan.images.length > 0) { %>
+                                            <% plan.images.forEach(imgLink => { %>
+                                                <div class="swiper-slide">
+                                                    <img src="<%= imgLink %>" class="w-full h-full object-cover object-top transition duration-700 ease-out group-hover:scale-110" alt="<%= plan.title %>">
+                                                </div>
+                                            <% }) %>
+                                        <% } else { %>
+                                            <div class="swiper-slide">
+                                                <img src="<%= plan.image %>" class="w-full h-full object-cover object-top transition duration-700 ease-out group-hover:scale-110" alt="<%= plan.title %>">
+                                            </div>
+                                        <% } %>
+
+                                    </div>
+                                    
+                                    <div class="swiper-button-next !w-8 !h-8 !bg-white/80 !rounded-full !text-main !text-xs after:!text-xs opacity-0 group-hover/slider:opacity-100 transition shadow-md"></div>
+                                    <div class="swiper-button-prev !w-8 !h-8 !bg-white/80 !rounded-full !text-main !text-xs after:!text-xs opacity-0 group-hover/slider:opacity-100 transition shadow-md"></div>
+                                    
+                                    <div class="swiper-pagination !bottom-2"></div>
+                                </div>
+
                                 <% if(plan.tag) { %>
-                                    <div class="absolute top-4 right-4 bg-white/90 backdrop-blur text-accent px-4 py-1 rounded-full text-xs font-bold shadow-sm uppercase tracking-wider">
+                                    <div class="absolute top-4 right-4 z-10 bg-white/90 backdrop-blur text-accent px-4 py-1 rounded-full text-xs font-bold shadow-sm uppercase tracking-wider">
                                         <%= plan.tag %>
                                     </div>
                                 <% } %>
                             </div>
-                            
+                                                        
                             <div class="p-8 flex-1 flex flex-col">
                                 <h3 class="text-xl font-bold mb-2 font-serif text-gray-800"><%= plan.title %></h3>
                                 <div class="flex items-baseline gap-3 mb-4">
@@ -99,27 +180,100 @@
             </div>
         </section>
 
-        <section id="shops" class="bg-white py-20 px-5 border-t border-gray-100">
+        <section id="flow" class="py-16 md:py-24 bg-[#fdfbf7]">
+        <div class="max-w-7xl mx-auto px-5">
+            <div class="text-center mb-16">
+                <span class="text-accent font-bold text-sm tracking-widest uppercase mb-2 block">Dễ dàng & Tiện lợi</span>
+                <h2 class="text-3xl md:text-4xl font-serif font-bold text-main">Quy Trình Thuê Kimono</h2>
+                <div class="w-20 h-1 bg-gold mx-auto mt-6"></div>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 relative hover:-translate-y-2 transition duration-300">
+                    <div class="absolute -top-5 -left-5 w-12 h-12 bg-accent text-white rounded-full flex items-center justify-center font-bold text-xl shadow-lg">1</div>
+                    <div class="h-16 w-16 bg-red-50 rounded-full flex items-center justify-center mb-4 mx-auto text-3xl">📅</div>
+                    <h3 class="text-xl font-bold text-center mb-3">Đặt Chỗ & Đến Tiệm</h3>
+                    <p class="text-gray-500 text-sm text-center leading-relaxed">Đặt lịch trước qua web để giữ chỗ. Đến tiệm tay không, không cần mang theo gì cả!</p>
+                </div>
+
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 relative hover:-translate-y-2 transition duration-300">
+                    <div class="absolute -top-5 -left-5 w-12 h-12 bg-accent text-white rounded-full flex items-center justify-center font-bold text-xl shadow-lg">2</div>
+                    <div class="h-16 w-16 bg-red-50 rounded-full flex items-center justify-center mb-4 mx-auto text-3xl">👘</div>
+                    <h3 class="text-xl font-bold text-center mb-3">Chọn & Mặc Kimono</h3>
+                    <p class="text-gray-500 text-sm text-center leading-relaxed">Chọn bộ Kimono ưng ý từ 20,000 mẫu. Chuyên gia sẽ giúp bạn mặc đẹp chuẩn Nhật Bản (khoảng 20p).</p>
+                </div>
+
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 relative hover:-translate-y-2 transition duration-300">
+                    <div class="absolute -top-5 -left-5 w-12 h-12 bg-accent text-white rounded-full flex items-center justify-center font-bold text-xl shadow-lg">3</div>
+                    <div class="h-16 w-16 bg-red-50 rounded-full flex items-center justify-center mb-4 mx-auto text-3xl">💄</div>
+                    <h3 class="text-xl font-bold text-center mb-3">Làm Tóc & Phụ Kiện</h3>
+                    <p class="text-gray-500 text-sm text-center leading-relaxed">Tạo kiểu tóc chuyên nghiệp miễn phí/trả phí. Chọn túi xách, guốc gỗ (Geta) phù hợp.</p>
+                </div>
+
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 relative hover:-translate-y-2 transition duration-300">
+                    <div class="absolute -top-5 -left-5 w-12 h-12 bg-accent text-white rounded-full flex items-center justify-center font-bold text-xl shadow-lg">4</div>
+                    <div class="h-16 w-16 bg-red-50 rounded-full flex items-center justify-center mb-4 mx-auto text-3xl">📸</div>
+                    <h3 class="text-xl font-bold text-center mb-3">Dạo Phố & Chụp Ảnh</h3>
+                    <p class="text-gray-500 text-sm text-center leading-relaxed">Tự do khám phá phố cổ, chụp những bức ảnh để đời. Gửi hành lý lại tiệm an toàn.</p>
+                </div>
+
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 relative hover:-translate-y-2 transition duration-300">
+                    <div class="absolute -top-5 -left-5 w-12 h-12 bg-accent text-white rounded-full flex items-center justify-center font-bold text-xl shadow-lg">5</div>
+                    <div class="h-16 w-16 bg-red-50 rounded-full flex items-center justify-center mb-4 mx-auto text-3xl">↩️</div>
+                    <h3 class="text-xl font-bold text-center mb-3">Trả Đồ</h3>
+                    <p class="text-gray-500 text-sm text-center leading-relaxed">Quay lại tiệm trả đồ trước giờ đóng cửa (hoặc chọn gói trả vào ngày hôm sau/trả tại khách sạn).</p>
+                </div>
+
+                <div class="bg-gradient-to-br from-accent to-red-800 p-8 rounded-2xl shadow-lg flex flex-col justify-center items-center text-white text-center transform scale-105">
+                    <h3 class="text-2xl font-bold mb-2">Sẵn sàng chưa?</h3>
+                    <p class="text-white/80 mb-6 text-sm">Đặt lịch ngay để nhận ưu đãi giảm giá online!</p>
+                    <a href="/booking-step1" class="bg-white text-accent px-8 py-3 rounded-full font-bold shadow-md hover:bg-gray-100 transition w-full">ĐẶT LỊCH NGAY</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="gallery" class="py-20 px-5 bg-white border-t border-gray-100">
             <div class="max-w-6xl mx-auto">
                 <div class="text-center mb-16">
-                    <h2 class="text-3xl md:text-4xl font-serif font-bold text-main">Hệ Thống Cửa Hàng</h2>
-                    <p class="text-gray-500 mt-4">Nằm tại các vị trí đắc địa nhất Nhật Bản</p>
+                    <span class="text-accent font-bold text-sm tracking-widest uppercase mb-2 block">Thư viện ảnh</span>
+                    <h2 class="text-3xl md:text-4xl font-serif font-bold text-main">Khách Hàng Của Chúng Tôi</h2>
+                    
+                    <a href="https://instagram.com/wargo_kimono" target="_blank" class="inline-flex items-center gap-2 mt-3 text-gray-500 hover:text-accent transition group">
+                        <img src="https://static.kyotokimonorental.com/app/img/icon/icon-instagram.webp" class="w-6 h-6 grayscale group-hover:grayscale-0 transition">
+                        <span class="font-medium">@wargo_kimono</span>
+                    </a>
+                    
+                    <div class="w-20 h-1 bg-gold mx-auto mt-6"></div>
                 </div>
-                
-                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <% shops.forEach(shop => { %>
-                        <div class="bg-bgBase rounded-xl p-4 hover:bg-white hover:shadow-lg transition cursor-pointer group">
-                            <div class="h-[180px] rounded-lg overflow-hidden mb-4 relative">
-                                <img src="<%= shop.image %>" class="w-full h-full object-cover group-hover:scale-105 transition">
-                                <span class="absolute bottom-2 left-2 bg-black/70 text-white text-[10px] px-2 py-1 rounded"><%= shop.area %></span>
+
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
+                    <% galleryImages.forEach(img => { %>
+                        <div class="group relative aspect-[3/4] overflow-hidden rounded-2xl cursor-pointer shadow-sm hover:shadow-xl transition duration-500">
+                            <img src="<%= img %>" 
+                                 class="w-full h-full object-cover transition duration-700 group-hover:scale-110" 
+                                 loading="lazy" 
+                                 alt="Khách hàng mặc Kimono">
+                            
+                            <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
+                                <span class="bg-white/20 backdrop-blur-md text-white px-4 py-2 rounded-full border border-white/50 text-sm font-bold flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition duration-300 delay-75">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 text-red-500">
+                                        <path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.5 3c1.76 0 3.31.81 4.505 2.224A6.002 6.002 0 0116.5 3c2.786 0 5.25 2.322 5.25 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z" />
+                                    </svg>
+                                    Xem ảnh
+                                </span>
                             </div>
-                            <h3 class="font-bold text-lg text-main group-hover:text-accent transition"><%= shop.name %></h3>
-                            <p class="text-xs text-gray-500 mt-2 line-clamp-2"><%= shop.address %></p>
                         </div>
                     <% }) %>
                 </div>
+
+                <div class="text-center mt-12">
+                    <a href="https://instagram.com" target="_blank" class="inline-block border border-main text-main px-10 py-3 rounded-full font-bold hover:bg-main hover:text-white transition duration-300">
+                        Xem thêm bộ sưu tập →
+                    </a>
+                </div>
             </div>
         </section>
+
         <section class="py-16 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-10">
@@ -184,7 +338,85 @@
     </div>
 </section>
     </main>
+<section id="faq" class="py-16 md:py-24 bg-white border-t border-gray-100">
+        <div class="max-w-4xl mx-auto px-5">
+            <div class="text-center mb-12">
+                <span class="text-accent font-bold text-sm tracking-widest uppercase mb-2 block">Trợ giúp</span>
+                <h2 class="text-3xl md:text-4xl font-serif font-bold text-main">Câu Hỏi Thường Gặp</h2>
+                <div class="w-20 h-1 bg-gold mx-auto mt-6"></div>
+            </div>
 
+            <div class="space-y-4">
+                <details class="group bg-bgBase rounded-2xl p-4 md:p-6 cursor-pointer open:bg-white open:shadow-lg open:ring-1 open:ring-black/5 transition-all duration-300">
+                    <summary class="flex justify-between items-center font-bold text-lg text-main list-none">
+                        <span class="flex items-center gap-3">
+                            <span class="text-accent text-xl">Q.</span>
+                            Hủy lịch có mất phí không?
+                        </span>
+                        <span class="transition group-open:rotate-180">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-gray-400">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                            </svg>
+                        </span>
+                    </summary>
+                    <div class="mt-4 text-gray-600 leading-relaxed text-sm md:text-base pl-8 border-l-2 border-accent/20">
+                        <p>Hủy trước 2 ngày: <strong>Miễn phí</strong>.<br>Hủy trước 1 ngày hoặc trong ngày: <strong>100% phí</strong>.<br>Vui lòng liên hệ sớm nhất có thể nếu bạn thay đổi kế hoạch.</p>
+                    </div>
+                </details>
+
+                <details class="group bg-bgBase rounded-2xl p-4 md:p-6 cursor-pointer open:bg-white open:shadow-lg open:ring-1 open:ring-black/5 transition-all duration-300">
+                    <summary class="flex justify-between items-center font-bold text-lg text-main list-none">
+                        <span class="flex items-center gap-3">
+                            <span class="text-accent text-xl">Q.</span>
+                            Tôi cần mang theo gì khi đến cửa hàng?
+                        </span>
+                        <span class="transition group-open:rotate-180">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-gray-400">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                            </svg>
+                        </span>
+                    </summary>
+                    <div class="mt-4 text-gray-600 leading-relaxed text-sm md:text-base pl-8 border-l-2 border-accent/20">
+                        <p>Bạn không cần mang theo bất cứ thứ gì! Gói thuê của chúng tôi đã bao gồm đầy đủ: Kimono, đai lưng (Obi), túi xách, guốc gỗ (Geta) và làm tóc cơ bản.</p>
+                    </div>
+                </details>
+
+                <details class="group bg-bgBase rounded-2xl p-4 md:p-6 cursor-pointer open:bg-white open:shadow-lg open:ring-1 open:ring-black/5 transition-all duration-300">
+                    <summary class="flex justify-between items-center font-bold text-lg text-main list-none">
+                        <span class="flex items-center gap-3">
+                            <span class="text-accent text-xl">Q.</span>
+                            Mặc Kimono mất bao lâu?
+                        </span>
+                        <span class="transition group-open:rotate-180">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-gray-400">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                            </svg>
+                        </span>
+                    </summary>
+                    <div class="mt-4 text-gray-600 leading-relaxed text-sm md:text-base pl-8 border-l-2 border-accent/20">
+                        <p>Quá trình chọn đồ và mặc đồ thường mất khoảng <strong>30 - 45 phút</strong>. Vào mùa cao điểm có thể lâu hơn một chút, bạn nên đến sớm 10 phút nhé.</p>
+                    </div>
+                </details>
+
+                <details class="group bg-bgBase rounded-2xl p-4 md:p-6 cursor-pointer open:bg-white open:shadow-lg open:ring-1 open:ring-black/5 transition-all duration-300">
+                    <summary class="flex justify-between items-center font-bold text-lg text-main list-none">
+                        <span class="flex items-center gap-3">
+                            <span class="text-accent text-xl">Q.</span>
+                            Có size cho người nước ngoài hoặc người to con không?
+                        </span>
+                        <span class="transition group-open:rotate-180">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-gray-400">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                            </svg>
+                        </span>
+                    </summary>
+                    <div class="mt-4 text-gray-600 leading-relaxed text-sm md:text-base pl-8 border-l-2 border-accent/20">
+                        <p>Có ạ! Chúng tôi có đủ các size từ S đến 3XL, phù hợp với chiều cao lên đến 190cm. Hãy yên tâm nhé!</p>
+                    </div>
+                </details>
+            </div>
+        </div>
+    </section>
     <footer class="bg-[#2c2725] text-white/80 py-16 text-center border-t-4 border-accent">
         <div class="max-w-4xl mx-auto px-5">
             <img src="https://static.kyotokimonorental.com/app/img/common/logo.svg" alt="Logo" class="h-10 mx-auto mb-8 brightness-0 invert opacity-50">
@@ -196,6 +428,59 @@
             <p class="text-xs text-white/40">© 2025 Wargo Kimono Rental. All rights reserved.</p>
         </div>
     </footer>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script>
+        var swiper = new Swiper(".mySwiper", {
+            effect: "fade", // Hiệu ứng mờ dần sang trọng (Senior choice)
+            fadeEffect: { crossFade: true },
+            speed: 1500, // Tốc độ chuyển cảnh chậm rãi
+            autoplay: {
+                delay: 4000, // Tự chạy sau 4 giây
+                disableOnInteraction: false,
+            },
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+            },
+        });
 
+        // 👇 MỚI: Swiper cho Thẻ Sản Phẩm
+        var swiperPlan = new Swiper(".planSwiper", {
+            loop: true, // Cho phép lướt vòng tròn
+            effect: "slide",
+            speed: 500,
+            
+            // Nút điều hướng
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            },
+            
+            // Dấu chấm phân trang
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+                dynamicBullets: true, // Chỉ hiện vài chấm nếu nhiều ảnh quá
+            },
+
+            // Tắt chức năng vuốt của Slide cha khi vuốt Slide con (Tránh lỗi trên điện thoại)
+            nested: true, 
+        });
+    </script>
+    <div class="fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 p-3 shadow-[0_-4px_20px_rgba(0,0,0,0.1)] z-50 md:hidden flex justify-between items-center gap-3">
+        
+        <a href="tel:0901234567" class="flex flex-col items-center justify-center min-w-[60px] text-gray-500 hover:text-main">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
+            </svg>
+            <span class="text-[10px] font-bold mt-1">Gọi ngay</span>
+        </a>
+
+        <a href="/booking-step1" class="flex-1 bg-gradient-to-r from-accent to-red-700 text-white font-bold py-3 rounded-full text-center shadow-md flex items-center justify-center gap-2 animate-pulse-slow">
+            <span>📅</span> ĐẶT LỊCH NGAY
+        </a>
+    </div>
+
+    <div class="h-[80px] md:hidden"></div>
 </body>
 </html>

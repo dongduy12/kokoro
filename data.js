@@ -66,4 +66,14 @@ const options = [
     { id: 'luggage', name: 'Gửi hành lý/vali lớn', price: 550, desc: 'An tâm dạo phố nhẹ nhàng.' }
 ];
 
-module.exports = { plans, shops, options }; //export thêm options
+const galleryImages = [
+    "https://static.kyotokimonorental.com/app/img/gallery/kimono/1.webp",
+    "https://static.kyotokimonorental.com/app/img/gallery/kimono/2.webp",
+    "https://static.kyotokimonorental.com/app/img/gallery/kimono/3.webp",
+    "https://static.kyotokimonorental.com/app/img/gallery/kimono/4.webp",
+    "https://static.kyotokimonorental.com/app/img/gallery/kimono/5.webp",
+    "https://static.kyotokimonorental.com/app/img/gallery/kimono/6.webp",
+    "https://static.kyotokimonorental.com/app/img/gallery/kimono/7.webp",
+    "https://static.kyotokimonorental.com/app/img/gallery/kimono/8.webp"
+];
+module.exports = { plans, shops, options, galleryImages }; //export thêm options

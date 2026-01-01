@@ -4,7 +4,8 @@ const planSchema = new mongoose.Schema({
     title: { type: String, required: true },
     price: { type: Number, required: true },
     originalPrice: Number,
-    image: String, // Link ảnh
+    image: String, // Link ảnh avatar
+    images: [String], // 👇 MỚI: Mảng chứa danh sách nhiều link ảnh
     desc: String,
     fullDesc: String,
     tag: String,

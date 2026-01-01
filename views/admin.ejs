@@ -24,7 +24,8 @@
         }
 
         // JS để mở Modal sửa sản phẩm
-        function openEditModal(id, title, price, original, image, desc, tag) {
+        // Thay thế hàm openEditModal cũ bằng hàm này
+        function openEditModal(id, title, price, original, image, desc, tag, imagesArray) {
             document.getElementById('planId').value = id || '';
             document.getElementById('planTitle').value = title || '';
             document.getElementById('planPrice').value = price || '';
@@ -32,10 +33,18 @@
             document.getElementById('planImage').value = image || '';
             document.getElementById('planDesc').value = desc || '';
             document.getElementById('planTag').value = tag || '';
+            
+            // Xử lý hiển thị mảng ảnh ra textarea
+            if (imagesArray) {
+                // Vì EJS truyền vào là chuỗi, ta cần format lại xíu nếu cần, hoặc đơn giản là gán giá trị
+                document.getElementById('planImagesString').value = imagesArray; 
+            } else {
+                document.getElementById('planImagesString').value = '';
+            }
+
             document.getElementById('modalTitle').innerText = id ? 'Sửa Gói Dịch Vụ' : 'Thêm Gói Mới';
             document.getElementById('productModal').classList.remove('hidden');
         }
-
         function closeModal() {
             document.getElementById('productModal').classList.add('hidden');
         }
@@ -139,7 +148,7 @@
                             <p class="text-gray-500 text-xs line-clamp-2"><%= plan.desc %></p>
                         </div>
                         <div class="p-4 bg-gray-50 border-t flex justify-between">
-                            <button onclick="openEditModal('<%= plan._id %>', '<%= plan.title %>', '<%= plan.price %>', '<%= plan.originalPrice %>', '<%= plan.image %>', `<%= plan.desc %>`, '<%= plan.tag %>')" 
+                            <button onclick="openEditModal('<%= plan._id %>', '<%= plan.title %>', '<%= plan.price %>', '<%= plan.originalPrice %>', `<%= plan.images ? plan.images.join(', ') : '' %>`, `<%= plan.desc %>`, '<%= plan.tag %>')" 
                                 class="text-blue-600 font-bold text-sm hover:underline">Chỉnh sửa</button>
                             
                             <form action="/admin/plan/delete/<%= plan._id %>" method="POST" onsubmit="return confirm('Xóa gói này?')">
@@ -204,10 +213,17 @@
                 </div>
 
                 <div>
-                    <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Link Ảnh</label>
-                    <input type="text" name="image" id="planImage" required class="w-full border p-2 rounded" placeholder="https://...">
+                    <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Ảnh đại diện (Thumbnail)</label>
+                    <input type="text" name="image" id="planImage" required class="w-full border p-2 rounded">
                 </div>
 
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 uppercase mb-1">
+                        Album ảnh chi tiết (Phân cách bằng dấu phẩy)
+                    </label>
+                    <textarea name="imagesString" id="planImagesString" rows="3" class="w-full border p-2 rounded bg-blue-50" placeholder="https://anh1.jpg, https://anh2.jpg..."></textarea>
+                    <p class="text-xs text-gray-400 mt-1">Dán nhiều link ảnh vào đây để tạo Slide cho sản phẩm.</p>
+                </div>
                 <div>
                     <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Tag (Nhãn)</label>
                     <input type="text" name="tag" id="planTag" class="w-full border p-2 rounded" placeholder="VD: Bán chạy nhất">

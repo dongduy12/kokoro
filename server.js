@@ -10,7 +10,7 @@ const Booking = require('./models/booking'); // Import Model Booking vừa tạo
 const Plan = require('./models/Plan');     // Mới
 const Config = require('./models/Config'); // Mới
 
-const { plans: initialPlans, shops, options } = require('./data');
+const { plans: initialPlans, shops, options, galleryImages } = require('./data');
 // --- KẾT NỐI MONGODB ---
 
 // --- KẾT NỐI MONGODB & SEED DATA ---
@@ -71,8 +71,9 @@ app.get('/', async (req, res) => {
     res.render('index', { 
         plans: dbPlans, // Dùng plans từ DB
         shops: shops,
+        galleryImages: galleryImages,
         heroImage: heroConfig ? heroConfig.value : '', // Truyền ảnh nền động
-        pageTitle: "Cho thuê Kimono Wargo"
+        pageTitle: "Cho thuê Kimono Kokoro"
     });
 });
 
@@ -309,14 +310,24 @@ app.get('/admin', requireLogin, async (req, res) => {
 // 2. Xử lý Sản phẩm (Thêm/Sửa/Xóa)
 app.post('/admin/plan/save', requireLogin, async (req, res) => {
     try {
-        const { id, title, price, originalPrice, image, desc, tag } = req.body;
+        const { id, title, price, originalPrice, image, imagesString,  desc, tag } = req.body;
+        let images = [];
+        if (imagesString && imagesString.trim() !== "") {
+            images = imagesString.split(',').map(link => link.trim());
+        }
+         // Nếu không nhập danh sách ảnh, lấy tạm ảnh đại diện làm ảnh slide đầu tiên
+        if (images.length === 0 && image) {
+            images.push(image);
+        }
         
+        const planData = { title, price, originalPrice, image, images, desc, tag };
+
         if (id) {
             // Nếu có ID -> Cập nhật (Edit)
-            await Plan.findByIdAndUpdate(id, { title, price, originalPrice, image, desc, tag });
+            await Plan.findByIdAndUpdate(id, planData);
         } else {
             // Nếu không có ID -> Thêm mới (Create)
-            await new Plan({ title, price, originalPrice, image, desc, tag }).save();
+            await new Plan(planData).save();
         }
         res.redirect('/admin');
     } catch (err) { res.send(err.message); }
