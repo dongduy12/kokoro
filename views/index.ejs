@@ -26,7 +26,7 @@
 </head>
 <body class="bg-bgBase text-main font-sans antialiased selection:bg-accent selection:text-white">
 
-    <header class="fixed top-0 w-full bg-white/80 backdrop-blur-md z-50 transition-all duration-300 border-b border-gray-100">
+    <header id="main-header" class="fixed top-0 w-full bg-white/80 backdrop-blur-md z-50 transition-all duration-300 border-b border-gray-100">
         <div class="max-w-7xl mx-auto px-5 h-[80px] flex items-center justify-between">
             <a href="/" class="w-[140px] hover:opacity-80 transition">
                 <img src="https://static.kyotokimonorental.com/app/img/common/logo.svg" alt="Logo">
@@ -94,31 +94,32 @@
         </div>
     </div>
 
-    <div class="py-6 md:py-10 bg-white border-b border-gray-100 shadow-sm sticky top-[80px] z-40">
-        <div class="max-w-7xl mx-auto px-5">
-            <div class="grid grid-cols-2 md:flex md:flex-wrap md:justify-center gap-3 md:gap-4">
-                <a href="#plans" class="group flex items-center justify-center gap-2 px-4 py-2 md:py-3 rounded-full border border-gray-200 hover:border-accent hover:bg-red-50 transition-all cursor-pointer">
-                    <span class="text-xl">👘</span>
-                    <span class="font-bold text-gray-600 group-hover:text-accent text-sm md:text-base">Gói Kimono</span>
-                </a>
-                
-                <a href="#gallery" class="group flex items-center justify-center gap-2 px-4 py-2 md:py-3 rounded-full border border-gray-200 hover:border-accent hover:bg-red-50 transition-all cursor-pointer">
-                    <span class="text-xl">📍</span>
-                    <span class="font-bold text-gray-600 group-hover:text-accent text-sm md:text-base">Bộ sưu tập</span>
-                </a>
+    <div id="quick-nav-placeholder" class="h-0"></div>
 
-                <a href="#flow" class="group flex items-center justify-center gap-2 px-4 py-2 md:py-3 rounded-full border border-gray-200 hover:border-accent hover:bg-red-50 transition-all cursor-pointer">
-                    <span class="text-xl">🔄</span>
-                    <span class="font-bold text-gray-600 group-hover:text-accent text-sm md:text-base">Quy trình</span>
-                </a>
+<div id="quick-nav" class="py-4 bg-white border-b border-gray-100 shadow-sm z-40 transition-all duration-300 w-full">
+    <div class="max-w-7xl mx-auto px-5">
+        <div class="grid grid-cols-4 gap-2 md:flex md:justify-center md:gap-6">
+            <a href="#plans" class="nav-item group flex flex-col md:flex-row items-center justify-center gap-1 md:gap-2 p-2 rounded-lg hover:bg-red-50 transition cursor-pointer">
+                <span class="text-xl">👘</span>
+                <span class="text-xs md:text-sm font-bold text-gray-600 group-hover:text-accent">Gói Kimono</span>
+            </a>
+            
+            <a href="#gallery" class="nav-item group flex flex-col md:flex-row items-center justify-center gap-1 md:gap-2 p-2 rounded-lg hover:bg-red-50 transition cursor-pointer">
+                <span class="text-xl">📸</span> <span class="text-xs md:text-sm font-bold text-gray-600 group-hover:text-accent">Thư viện</span>
+            </a>
 
-                <a href="#faq" class="group flex items-center justify-center gap-2 px-4 py-2 md:py-3 rounded-full border border-gray-200 hover:border-accent hover:bg-red-50 transition-all cursor-pointer">
-                    <span class="text-xl">❓</span>
-                    <span class="font-bold text-gray-600 group-hover:text-accent text-sm md:text-base">Hỏi đáp</span>
-                </a>
-            </div>
+            <a href="#flow" class="nav-item group flex flex-col md:flex-row items-center justify-center gap-1 md:gap-2 p-2 rounded-lg hover:bg-red-50 transition cursor-pointer">
+                <span class="text-xl">🔄</span>
+                <span class="text-xs md:text-sm font-bold text-gray-600 group-hover:text-accent">Quy trình</span>
+            </a>
+
+            <a href="#faq" class="nav-item group flex flex-col md:flex-row items-center justify-center gap-1 md:gap-2 p-2 rounded-lg hover:bg-red-50 transition cursor-pointer">
+                <span class="text-xl">❓</span>
+                <span class="text-xs md:text-sm font-bold text-gray-600 group-hover:text-accent">Hỏi đáp</span>
+            </a>
         </div>
     </div>
+</div>
         <section id="plans" class="py-20 px-5">
             <div class="max-w-6xl mx-auto">
                 <div class="text-center mb-16">
@@ -482,5 +483,60 @@
     </div>
 
     <div class="h-[80px] md:hidden"></div>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        let lastScrollTop = 0;
+        const header = document.getElementById('main-header');
+        const nav = document.getElementById('quick-nav');
+        const placeholder = document.getElementById('quick-nav-placeholder');
+        
+        // Vị trí ban đầu của thanh Nav (để biết khi nào cần dính)
+        const navOffsetTop = nav.offsetTop; 
+        const navHeight = nav.offsetHeight;
+
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            
+            // --- 1. XỬ LÝ HEADER (Ẩn/Hiện thông minh) ---
+            if (scrollTop > lastScrollTop && scrollTop > 100) {
+                // Đang kéo xuống & đã cuộn qua 100px -> Ẩn Header
+                header.classList.add('-translate-y-full');
+            } else {
+                // Đang kéo lên -> Hiện Header
+                header.classList.remove('-translate-y-full');
+            }
+
+            // --- 2. XỬ LÝ QUICK NAV (Dính dưới đáy) ---
+            
+            // Nếu cuộn qua vị trí ban đầu của Nav -> Biến nó thành Fixed ở đáy
+            if (scrollTop > navOffsetTop + 100) {
+                // Kích hoạt chế độ Sticky Bottom
+                nav.classList.add('fixed', 'bottom-0', 'left-0', 'border-t', 'shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]');
+                nav.classList.remove('border-b'); // Bỏ border dưới
+                
+                // Giữ chỗ để layout không bị giật (Jump)
+                placeholder.style.height = `${navHeight}px`;
+                
+                // Ẩn thanh Sticky Footer cũ (nếu có) để tránh chồng chéo
+                const oldStickyFooter = document.querySelector('.fixed.bottom-0.z-50.md\\:hidden');
+                if(oldStickyFooter) oldStickyFooter.style.display = 'none';
+
+            } else {
+                // Trả về vị trí cũ (Dưới Banner)
+                nav.classList.remove('fixed', 'bottom-0', 'left-0', 'border-t', 'shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]');
+                nav.classList.add('border-b'); // Trả lại border dưới
+                
+                // Xóa giữ chỗ
+                placeholder.style.height = '0';
+
+                // Hiện lại Sticky Footer cũ (nếu có)
+                const oldStickyFooter = document.querySelector('.fixed.bottom-0.z-50.md\\:hidden');
+                if(oldStickyFooter) oldStickyFooter.style.display = 'flex';
+            }
+
+            lastScrollTop = scrollTop;
+        });
+    });
+</script>
 </body>
 </html>
