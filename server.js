@@ -66,16 +66,28 @@ const requireLogin = (req, res, next) => {
 };
 
 i18n.configure({
-    locales: ['vi', 'en', 'jp', 'zh'], // Danh sách ngôn ngữ hỗ trợ
-    directory: __dirname + '/locales', // Thư mục chứa file json
-    defaultLocale: 'vi', // Mặc định là Tiếng Việt
-    cookie: 'lang', // Tên cookie lưu ngôn ngữ
-    objectNotation: true // Cho phép dùng object (VD: header.title)
+    locales: ['vi', 'en', 'jp', 'zh'],
+    directory: __dirname + '/locales',
+    defaultLocale: 'vi',
+    cookie: 'lang', // Tên cookie
+    queryParameter: 'lang', // Cho phép ?lang=vi
+    objectNotation: true, // Quan trọng: Cho phép dùng dấu chấm (header.open_time)
+    autoReload: true, // Tự load lại file json khi sửa
+    updateFiles: false // Không tự tạo key mới nếu thiếu
 });
-
 // 2. Sử dụng Middleware
 app.use(cookieParser()); // Để đọc cookie
 app.use(i18n.init); // Khởi tạo i18n cho mỗi request
+
+app.use((req, res, next) => {
+    // Nếu có cookie ngôn ngữ, set cho i18n
+    if (req.cookies.lang) {
+        req.setLocale(req.cookies.lang);
+    }
+    // Truyền biến locale xuống view để dùng trong ejs (cho hàm getLocale)
+    res.locals.locale = req.getLocale();
+    next();
+});
 
 // 3. API Đổi ngôn ngữ (Quan trọng)
 app.get('/change-lang/:lang', (req, res) => {

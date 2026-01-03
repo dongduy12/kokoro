@@ -1,3 +1,6 @@
 {
-	"header_opening_hours": "header_opening_hours"
+	"header_opening_hours": "header_opening_hours",
+	"header": {
+		"open_time": "header.open_time"
+	}
 }
