@@ -1,8 +1,29 @@
 {
-	"header_opening_hours": "09:00 - 18:00 (Daily)",
-	"header_book_now": "BOOK NOW",
-	"nav_plan": "Kimono Plans",
-	"nav_gallery": "Gallery",
-	"nav_flow": "How to rent",
-	"nav_faq": "FAQ"
+    "header_opening_hours": "09:00 - 18:00 (Daily)",
+    "header_book_now": "BOOK NOW",
+    "nav_plan": "Kimono Plans",
+    "nav_gallery": "Gallery",
+    "nav_flow": "How to rent",
+    "nav_faq": "FAQ",
+    "hero": {
+        "tagline": "Experience Japanese culture",
+        "title_line1": "Traditional Beauty",
+        "title_line2": "Within Your Reach",
+        "badge_1": "✨ 20,000+ Kimono Sets",
+        "badge_2": "🏯 8 Stores Nationwide",
+        "cta": "EXPLORE NOW"
+    },
+    "quick_nav": {
+        "plan": "Kimono Plans",
+        "gallery": "Gallery",
+        "set_contents": "What's Included?",
+        "flow": "Process",
+        "faq": "FAQ"
+    },
+    "sections": {
+        "plans": {
+            "subtitle": "Popular choices",
+            "title": "Kimono Plans"
+        }
+    }
 }

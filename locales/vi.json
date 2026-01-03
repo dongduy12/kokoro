@@ -1,8 +1,29 @@
 {
-	"header_opening_hours": "09:00 - 18:00 (Hàng ngày)",
-	"header_book_now": "ĐẶT LỊCH NGAY",
-	"nav_plan": "Gói Kimono",
-	"nav_gallery": "Thư viện",
-	"nav_flow": "Quy trình",
-	"nav_faq": "Hỏi đáp"
+    "header_opening_hours": "09:00 - 18:00 (Hàng ngày)",
+    "header_book_now": "ĐẶT LỊCH NGAY",
+    "nav_plan": "Gói Kimono",
+    "nav_gallery": "Thư viện",
+    "nav_flow": "Quy trình",
+    "nav_faq": "Hỏi đáp",
+    "hero": {
+        "tagline": "Trải nghiệm văn hóa Nhật Bản",
+        "title_line1": "Vẻ Đẹp Truyền Thống",
+        "title_line2": "Trong Tầm Tay Bạn",
+        "badge_1": "✨ 20,000+ Bộ Kimono",
+        "badge_2": "🏯 8 Cửa hàng toàn quốc",
+        "cta": "KHÁM PHÁ NGAY"
+    },
+    "quick_nav": {
+        "plan": "Gói Kimono",
+        "gallery": "Thư viện",
+        "set_contents": "Đồ gồm gì?",
+        "flow": "Quy trình",
+        "faq": "Hỏi đáp"
+    },
+    "sections": {
+        "plans": {
+            "subtitle": "Lựa chọn phổ biến",
+            "title": "Các Gói Kimono"
+        }
+    }
 }

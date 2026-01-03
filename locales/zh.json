@@ -1,1 +1,29 @@
-{}
+{
+    "header_opening_hours": "09:00 - 18:00 (每日营业)",
+    "header_book_now": "立即预约",
+    "nav_plan": "和服方案",
+    "nav_gallery": "图库",
+    "nav_flow": "租赁流程",
+    "nav_faq": "常见问题",
+    "hero": {
+        "tagline": "体验日本文化",
+        "title_line1": "传统之美",
+        "title_line2": "触手可及",
+        "badge_1": "✨ 20,000+ 套和服",
+        "badge_2": "🏯 全国 8 家门店",
+        "cta": "立即探索"
+    },
+    "quick_nav": {
+        "plan": "和服方案",
+        "gallery": "图库",
+        "set_contents": "套餐内容",
+        "flow": "流程",
+        "faq": "常见问题"
+    },
+    "sections": {
+        "plans": {
+            "subtitle": "热门选择",
+            "title": "和服方案"
+        }
+    }
+}

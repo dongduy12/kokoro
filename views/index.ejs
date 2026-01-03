@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="<%= getLocale() %>">
 <head>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <meta charset="UTF-8">
@@ -93,7 +93,7 @@
 
                     <a href="/booking-step1" class="hidden md:flex bg-accent text-white px-6 py-2.5 rounded-full font-bold shadow-lg hover:bg-red-700 transition items-center gap-2">
                         <span>📅</span>
-                        <span>ĐẶT LỊCH NGAY</span>
+                        <span><%= __('header_book_now') %></span>
                     </a>
                 </div>
             </div>
@@ -129,18 +129,18 @@
 
         <div class="absolute inset-0 z-20 flex items-center justify-center pointer-events-none">
             <div class="text-center text-white p-5 animate-fade-in-up pointer-events-auto">
-                <span class="block text-gold font-serif text-xl mb-4 italic tracking-wider drop-shadow-md">Trải nghiệm văn hóa Nhật Bản</span>
+                <span class="block text-gold font-serif text-xl mb-4 italic tracking-wider drop-shadow-md"><%= __('hero.tagline') %></span>
                 <h1 class="text-4xl md:text-7xl font-bold font-serif leading-tight mb-6 drop-shadow-lg">
-                    Vẻ Đẹp Truyền Thống <br> Trong Tầm Tay Bạn
+                    <%= __('hero.title_line1') %> <br> <%= __('hero.title_line2') %>
                 </h1>
                 
                 <div class="flex justify-center gap-4 mb-8 text-sm md:text-base font-medium">
-                    <span class="bg-white/20 backdrop-blur px-4 py-1 rounded-full border border-white/30">✨ 20,000+ Bộ Kimono</span>
-                    <span class="bg-white/20 backdrop-blur px-4 py-1 rounded-full border border-white/30">🏯 8 Cửa hàng toàn quốc</span>
+                    <span class="bg-white/20 backdrop-blur px-4 py-1 rounded-full border border-white/30"><%= __('hero.badge_1') %></span>
+                    <span class="bg-white/20 backdrop-blur px-4 py-1 rounded-full border border-white/30"><%= __('hero.badge_2') %></span>
                 </div>
 
                 <a href="#plans" class="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-accent px-10 py-4 font-bold text-white transition-all hover:bg-red-700 hover:ring-4 hover:ring-red-200">
-                    <span>KHÁM PHÁ NGAY</span>
+                    <span><%= __('hero.cta') %></span>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="h-5 w-5 transition-transform group-hover:translate-x-1">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
                     </svg>
@@ -156,26 +156,26 @@
         <div class="grid grid-cols-4 gap-2 md:flex md:justify-center md:gap-6">
             <a href="#plans" class="nav-item group flex flex-col md:flex-row items-center justify-center gap-1 md:gap-2 p-2 rounded-lg hover:bg-red-50 transition cursor-pointer">
                 <span class="text-xl">👘</span>
-                <span class="text-xs md:text-sm font-bold text-gray-600 group-hover:text-accent">Gói Kimono</span>
-            </a>
+                        <span class="text-xs md:text-sm font-bold text-gray-600 group-hover:text-accent"><%= __('quick_nav.plan') %></span>
+                    </a>
             
             <a href="#gallery" class="nav-item group flex flex-col md:flex-row items-center justify-center gap-1 md:gap-2 p-2 rounded-lg hover:bg-red-50 transition cursor-pointer">
-                <span class="text-xl">📸</span> <span class="text-xs md:text-sm font-bold text-gray-600 group-hover:text-accent">Thư viện</span>
+                <span class="text-xl">📸</span> <span class="text-xs md:text-sm font-bold text-gray-600 group-hover:text-accent"><%= __('quick_nav.gallery') %></span>
             </a>
 
             <a href="#set-contents" class="nav-item group flex flex-col md:flex-row items-center justify-center gap-1 md:gap-2 p-2 rounded-lg hover:bg-red-50 transition cursor-pointer">
                 <span class="text-xl">🎒</span>
-                <span class="text-xs md:text-sm font-bold text-gray-600 group-hover:text-accent">Đồ gồm gì?</span>
+                <span class="text-xs md:text-sm font-bold text-gray-600 group-hover:text-accent"><%= __('quick_nav.set_contents') %></span>
             </a>
 
             <a href="#flow" class="nav-item group flex flex-col md:flex-row items-center justify-center gap-1 md:gap-2 p-2 rounded-lg hover:bg-red-50 transition cursor-pointer">
                 <span class="text-xl">🔄</span>
-                <span class="text-xs md:text-sm font-bold text-gray-600 group-hover:text-accent">Quy trình</span>
+                <span class="text-xs md:text-sm font-bold text-gray-600 group-hover:text-accent"><%= __('quick_nav.flow') %></span>
             </a>
 
             <a href="#faq" class="nav-item group flex flex-col md:flex-row items-center justify-center gap-1 md:gap-2 p-2 rounded-lg hover:bg-red-50 transition cursor-pointer">
                 <span class="text-xl">❓</span>
-                <span class="text-xs md:text-sm font-bold text-gray-600 group-hover:text-accent">Hỏi đáp</span>
+                <span class="text-xs md:text-sm font-bold text-gray-600 group-hover:text-accent"><%= __('quick_nav.faq') %></span>
             </a>
         </div>
     </div>
@@ -183,8 +183,8 @@
         <section id="plans" class="py-20 px-5">
             <div class="max-w-6xl mx-auto">
                 <div class="text-center mb-16">
-                    <span class="text-accent font-bold text-sm tracking-widest uppercase mb-2 block">Lựa chọn phổ biến</span>
-                    <h2 class="text-3xl md:text-4xl font-serif font-bold text-main">Các Gói Kimono</h2>
+                    <span class="text-accent font-bold text-sm tracking-widest uppercase mb-2 block"><%= __('sections.plans.subtitle') %></span>
+                    <h2 class="text-3xl md:text-4xl font-serif font-bold text-main"><%= __('sections.plans.title') %></h2>
                     <div class="w-20 h-1 bg-gold mx-auto mt-6"></div>
                 </div>
 
