@@ -1,6 +1,29 @@
 {
-	"header_opening_hours": "header_opening_hours",
-	"header": {
-		"open_time": "header.open_time"
-	}
+    "header_opening_hours": "09:00 - 18:00 (毎日営業)",
+    "header_book_now": "今すぐ予約",
+    "nav_plan": "着物プラン",
+    "nav_gallery": "ギャラリー",
+    "nav_flow": "レンタルの流れ",
+    "nav_faq": "よくある質問",
+    "hero": {
+        "tagline": "日本文化を体験する",
+        "title_line1": "伝統の美しさ",
+        "title_line2": "あなたの手の届く場所に",
+        "badge_1": "✨ 20,000着以上の着物",
+        "badge_2": "🏯 全国8店舗",
+        "cta": "今すぐ見る"
+    },
+    "quick_nav": {
+        "plan": "着物プラン",
+        "gallery": "ギャラリー",
+        "set_contents": "セット内容",
+        "flow": "手順",
+        "faq": "よくある質問"
+    },
+    "sections": {
+        "plans": {
+            "subtitle": "人気のセレクション",
+            "title": "着物プラン一覧"
+        }
+    }
 }

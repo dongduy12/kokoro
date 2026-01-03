@@ -95,7 +95,8 @@ app.get('/change-lang/:lang', (req, res) => {
     if (['vi', 'en', 'jp', 'zh'].includes(lang)) {
         res.cookie('lang', lang, { maxAge: 90000000, httpOnly: true }); // Lưu cookie 90 ngày
     }
-    res.redirect('back'); // Quay lại trang trước đó
+    const fallbackUrl = req.get('Referrer') || '/';
+    res.redirect(fallbackUrl); // Quay lại trang trước đó hoặc trang chủ nếu không có referrer
 });
 
 
