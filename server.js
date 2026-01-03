@@ -3,6 +3,10 @@ require('dotenv').config(); // 👈 Dòng này phải ở trên cùng!
 const express = require('express');
 const mongoose = require('mongoose'); // Import Mongoose
 const session = require('express-session');
+
+const i18n = require('i18n');
+const cookieParser = require('cookie-parser');
+
 const app = express();
 const path = require('path');
 
@@ -60,6 +64,27 @@ const requireLogin = (req, res, next) => {
         res.redirect('/login'); // Chưa đăng nhập -> Đá về trang login
     }
 };
+
+i18n.configure({
+    locales: ['vi', 'en', 'jp', 'zh'], // Danh sách ngôn ngữ hỗ trợ
+    directory: __dirname + '/locales', // Thư mục chứa file json
+    defaultLocale: 'vi', // Mặc định là Tiếng Việt
+    cookie: 'lang', // Tên cookie lưu ngôn ngữ
+    objectNotation: true // Cho phép dùng object (VD: header.title)
+});
+
+// 2. Sử dụng Middleware
+app.use(cookieParser()); // Để đọc cookie
+app.use(i18n.init); // Khởi tạo i18n cho mỗi request
+
+// 3. API Đổi ngôn ngữ (Quan trọng)
+app.get('/change-lang/:lang', (req, res) => {
+    const lang = req.params.lang;
+    if (['vi', 'en', 'jp', 'zh'].includes(lang)) {
+        res.cookie('lang', lang, { maxAge: 90000000, httpOnly: true }); // Lưu cookie 90 ngày
+    }
+    res.redirect('back'); // Quay lại trang trước đó
+});
 
 
 // Route trang chủ
