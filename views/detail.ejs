@@ -12,7 +12,7 @@
         <a href="/" class="font-bold text-xl flex items-center gap-2">
             ⬅ Quay lại trang chủ
         </a>
-        <span class="font-bold text-[#BA2636]">WARGO RENTAL</span>
+        <span class="font-bold text-[#BA2636]">KOKORO RENTAL</span>
     </header>
 
     <main class="max-w-[1000px] mx-auto p-5 md:py-10">
@@ -42,12 +42,22 @@
 
                 <div class="bg-gray-50 p-4 rounded-lg mb-8">
                     <h3 class="font-bold mb-2">Gói này bao gồm:</h3>
+                    
                     <ul class="grid grid-cols-2 gap-2">
-                        <% plan.includes.forEach(item => { %>
-                            <li class="flex items-center gap-2 text-sm">
-                                ✅ <%= item %>
-                            </li>
-                        <% }) %>
+                        <% if (plan.includes && plan.includes.length > 0) { %>
+                            <% plan.includes.forEach(item => { %>
+                                <li class="flex items-center gap-2 text-sm">
+                                    ✅ <%= item %>
+                                </li>
+                            <% }) %>
+                        <% } else { %>
+                            <li class="flex items-center gap-2 text-sm">✅ Kimono/Yukata</li>
+                            <li class="flex items-center gap-2 text-sm">✅ Đai lưng (Obi)</li>
+                            <li class="flex items-center gap-2 text-sm">✅ Dép (Zori) & Tất (Tabi)</li>
+                            <li class="flex items-center gap-2 text-sm">✅ Túi xách Nhật Bản</li>
+                            <li class="flex items-center gap-2 text-sm">✅ Dịch vụ mặc đồ</li>
+                            <li class="flex items-center gap-2 text-sm">✅ Làm tóc cơ bản</li>
+                        <% } %>
                     </ul>
                 </div>
 
