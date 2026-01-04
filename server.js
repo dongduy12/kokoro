@@ -65,6 +65,29 @@ const requireLogin = (req, res, next) => {
     }
 };
 
+
+const cloudinary = require('cloudinary').v2;
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const multer = require('multer');
+
+// 1. Cấu hình Cloudinary (Thay thông tin của bạn vào đây)
+cloudinary.config({
+    cloud_name: 'dgpfqmncu',
+    api_key: '324438863362332',
+    api_secret: '**********'
+});
+
+// 2. Cấu hình Multer để đẩy thẳng lên Cloudinary
+const storage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {
+        folder: 'kokoro_shop', // Tên thư mục trên Cloudinary
+        allowed_formats: ['jpg', 'png', 'webp', 'jpeg'], // Định dạng cho phép
+    },
+});
+
+const upload = multer({ storage: storage });
+
 i18n.configure({
     locales: ['vi', 'en', 'jp', 'zh'],
     directory: __dirname + '/locales',
@@ -346,27 +369,49 @@ app.get('/admin', requireLogin, async (req, res) => {
 });
 
 // 2. Xử lý Sản phẩm (Thêm/Sửa/Xóa)
-app.post('/admin/plan/save', requireLogin, async (req, res) => {
+// 👇 SỬA ROUTE NÀY: Thêm middleware upload.array('photos', 10) để cho phép up tối đa 10 ảnh
+app.post('/admin/plan/save', requireLogin, upload.array('photos', 10), async (req, res) => {
     try {
-        const { id, title, price, originalPrice, image, imagesString,  desc, tag } = req.body;
-        let images = [];
-        if (imagesString && imagesString.trim() !== "") {
-            images = imagesString.split(',').map(link => link.trim());
-        }
-         // Nếu không nhập danh sách ảnh, lấy tạm ảnh đại diện làm ảnh slide đầu tiên
-        if (images.length === 0 && image) {
-            images.push(image);
-        }
+        const { id, title, price, originalPrice, desc, tag, image: oldImage, imagesString } = req.body;
         
-        const planData = { title, price, originalPrice, image, images, desc, tag };
+        let images = [];
+
+        // 1. Nếu có file mới upload từ máy tính
+        if (req.files && req.files.length > 0) {
+            // Tạo đường dẫn: /uploads/ten-file.jpg
+            const uploadedImages = req.files.map(file => file.path);
+            images = [...uploadedImages];
+        } 
+        // 2. Nếu không upload mới, giữ lại link ảnh cũ (nếu nhập tay hoặc từ DB)
+        else if (imagesString) {
+             images = imagesString.split(',').map(s => s.trim());
+        }
+
+        // Ảnh đại diện (Thumbnail) lấy cái đầu tiên trong danh sách
+        const mainImage = images.length > 0 ? images[0] : (oldImage || '');
+
+        const planData = { 
+            title, 
+            price, 
+            originalPrice, 
+            image: mainImage, 
+            images: images, 
+            desc, 
+            tag 
+        };
 
         if (id) {
-            // Nếu có ID -> Cập nhật (Edit)
+            // Nếu là sửa, và không upload ảnh mới thì giữ nguyên ảnh cũ trong DB
+            if (images.length === 0) {
+                // Xóa trường images khỏi planData để không bị ghi đè thành rỗng
+                delete planData.images;
+                delete planData.image;
+            }
             await Plan.findByIdAndUpdate(id, planData);
         } else {
-            // Nếu không có ID -> Thêm mới (Create)
             await new Plan(planData).save();
         }
+        
         res.redirect('/admin');
     } catch (err) { res.send(err.message); }
 });
@@ -403,6 +448,8 @@ app.post('/admin/delete/:id', requireLogin, async (req, res) => {
         res.redirect('/admin');
     } catch (err) { res.send(err.message); }
 });
+
+
 
 // --- CHẠY SERVER ---
 const PORT = 3000;
