@@ -67,13 +67,13 @@ const options = [
 ];
 
 const galleryImages = [
-    "https://static.kyotokimonorental.com/app/img/gallery/kimono/1.webp",
-    "https://static.kyotokimonorental.com/app/img/gallery/kimono/2.webp",
-    "https://static.kyotokimonorental.com/app/img/gallery/kimono/3.webp",
-    "https://static.kyotokimonorental.com/app/img/gallery/kimono/4.webp",
-    "https://static.kyotokimonorental.com/app/img/gallery/kimono/5.webp",
-    "https://static.kyotokimonorental.com/app/img/gallery/kimono/6.webp",
-    "https://static.kyotokimonorental.com/app/img/gallery/kimono/7.webp",
-    "https://static.kyotokimonorental.com/app/img/gallery/kimono/8.webp"
+    "/img/gallery/1.jpg", // Đường dẫn ảnh 1
+    "/img/gallery/2.jpg", // Đường dẫn ảnh 2
+    "/img/gallery/3.jpg",
+    "/img/gallery/4.jpg",
+    "/img/gallery/5.jpg",
+    "/img/gallery/6.jpg",
+    "/img/gallery/7.jpg",
+    "/img/gallery/8.jpg",
 ];
 module.exports = { plans, shops, options, galleryImages }; //export thêm options
