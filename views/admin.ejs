@@ -176,25 +176,51 @@
 
         <div id="tab-settings" class="tab-content hidden">
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8 max-w-2xl">
-                <h3 class="text-lg font-bold mb-6 border-b pb-2">Cấu hình giao diện</h3>
-                
-                <form action="/admin/config/save" method="POST">
-                    <div class="mb-6">
-                        <label class="block font-bold text-sm text-gray-700 mb-2">Ảnh nền trang chủ (Hero Image)</label>
-                        <input type="text" name="hero_image" value="<%= heroImage %>" class="w-full border p-3 rounded-lg bg-gray-50 mb-2" placeholder="Nhập link ảnh...">
-                        <p class="text-xs text-gray-500">Dán link ảnh từ các nguồn như Imgur, Cloudinary...</p>
-                        
-                        <% if(heroImage) { %>
-                            <div class="mt-4 h-32 w-full rounded-lg overflow-hidden border">
-                                <img src="<%= heroImage %>" class="w-full h-full object-cover">
-                            </div>
-                        <% } %>
+                <h3 class="font-bold text-gray-700 mb-4 flex items-center gap-2">
+                    <span>🖼️</span> Ảnh nền trang chủ (Hero Image)
+                </h3>
+
+                <form action="/admin/config/save" method="POST" enctype="multipart/form-data">
+        
+                    <div class="mb-4">
+                        <p class="text-xs text-gray-400 mb-2">Ảnh đang hiển thị (Bỏ tick để xóa):</p>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            <% 
+                            // Logic xử lý hiển thị ảnh trong Admin (tương tự server.js)
+                            let currentHeroes = [];
+                            if (heroImage) { // heroImage được truyền từ server.js (dòng cũ)
+                                if (Array.isArray(heroImage)) currentHeroes = heroImage;
+                                else if (typeof heroImage === 'string' && heroImage.startsWith('[')) {
+                                    try { currentHeroes = JSON.parse(heroImage); } catch(e) {}
+                                } else { currentHeroes = [heroImage]; }
+                            }
+                            %>
+
+                            <% currentHeroes.forEach((img, index) => { %>
+                                <div class="relative group border rounded-lg overflow-hidden">
+                                    <img src="<%= img %>" class="w-full h-24 object-cover">
+                                    <div class="absolute top-1 right-1">
+                                        <input type="checkbox" name="hero_images_old" value="<%= img %>" checked 
+                                            class="w-5 h-5 accent-red-500 cursor-pointer shadow-sm">
+                                    </div>
+                                </div>
+                            <% }) %>
+                        </div>
                     </div>
-                    
-                    <button type="submit" class="bg-gray-800 text-white px-6 py-3 rounded-lg font-bold hover:bg-black transition">
-                        Lưu cài đặt
+
+                    <div class="mb-4">
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Thêm ảnh mới (Chọn nhiều)</label>
+                        <input type="file" name="hero_photos" multiple accept="image/*" 
+                            class="block w-full text-sm text-gray-500 border rounded-lg p-2
+                                    file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0
+                                    file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                    </div>
+
+                    <button type="submit" class="bg-main text-white px-6 py-2 rounded-lg font-bold hover:opacity-90">
+                        Lưu Cấu Hình
                     </button>
                 </form>
+
             </div>
         </div>
 
@@ -207,7 +233,7 @@
                 <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
             </div>
             
-            <form action="/admin/plan/save" method="POST" class="p-6 space-y-4">
+            <form action="/admin/plan/save" method="POST" class="p-6 space-y-4" enctype="multipart/form-data">
                 <input type="hidden" name="id" id="planId">
                 <input type="hidden" name="image" id="planImage"> 
                 <input type="hidden" name="imagesString" id="planImagesString">

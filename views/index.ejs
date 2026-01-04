@@ -105,25 +105,23 @@
         
         <div class="swiper mySwiper w-full h-full">
             <div class="swiper-wrapper">
-                <div class="swiper-slide relative">
-                    <img src="<%= heroImage || 'https://static.kyotokimonorental.com/app/img/top/hero/autumn/vi/sp/hero01.webp' %>" 
-                         class="w-full h-full object-cover">
-                    <div class="absolute inset-0 bg-black/40"></div>
-                </div>
-                
-                <div class="swiper-slide relative">
-                    <img src="https://static.kyotokimonorental.com/app/img/top/hero/autumn/vi/sp/hero05.webp" 
-                         class="w-full h-full object-cover">
-                    <div class="absolute inset-0 bg-black/40"></div>
-                </div>
+                <% if (typeof heroImages !== 'undefined' && heroImages && heroImages.length > 0) { %>
+                    
+                    <% heroImages.forEach(img => { %>
+                        <div class="swiper-slide relative">
+                            <img src="<%= img %>" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-black/40"></div>
+                        </div>
+                    <% }) %>
 
-                <div class="swiper-slide relative">
-                    <img src="https://static.kyotokimonorental.com/app/img/top/hero/autumn/vi/sp/hero08.webp" 
-                         class="w-full h-full object-cover">
-                    <div class="absolute inset-0 bg-black/40"></div>
-                </div>
+                <% } else { %>
+                    <div class="swiper-slide relative">
+                        <img src="https://static.kyotokimonorental.com/app/img/top/hero/autumn/vi/sp/hero01.webp" 
+                             class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-black/40"></div>
+                    </div>
+                <% } %>
             </div>
-            
             <div class="swiper-pagination"></div>
         </div>
 

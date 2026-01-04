@@ -1,35 +1,36 @@
-// server.js
-require('dotenv').config(); // 👈 Dòng này phải ở trên cùng!
+require('dotenv').config();
 const express = require('express');
-const mongoose = require('mongoose'); // Import Mongoose
+const mongoose = require('mongoose');
 const session = require('express-session');
-
 const i18n = require('i18n');
 const cookieParser = require('cookie-parser');
+const path = require('path');
+const cloudinary = require('cloudinary').v2;
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const multer = require('multer');
+
+// Import Models
+const Booking = require('./models/booking');
+const Plan = require('./models/Plan');
+const Config = require('./models/Config');
+
+// Import dữ liệu tĩnh (để dùng fallback cho shops, options)
+const { plans: initialPlans, shops, options, galleryImages } = require('./data');
 
 const app = express();
-const path = require('path');
 
-const Booking = require('./models/booking'); // Import Model Booking vừa tạo
-const Plan = require('./models/Plan');     // Mới
-const Config = require('./models/Config'); // Mới
-
-const { plans: initialPlans, shops, options, galleryImages } = require('./data');
 // --- KẾT NỐI MONGODB ---
-
-// --- KẾT NỐI MONGODB & SEED DATA ---
 mongoose.connect(process.env.MONGO_URI)
     .then(async () => {
         console.log('✅ Đã kết nối MongoDB!');
         
-        // --- SENIOR LOGIC: Tự động nạp dữ liệu mẫu nếu DB trống ---
+        // Seed Data nếu DB trống
         const planCount = await Plan.countDocuments();
         if (planCount === 0) {
             await Plan.insertMany(initialPlans);
-            console.log('📦 Đã khởi tạo dữ liệu gói dịch vụ vào DB');
+            console.log('📦 Đã khởi tạo dữ liệu gói dịch vụ');
         }
         
-        // Khởi tạo Config mặc định nếu chưa có
         const heroImg = await Config.findOne({ key: 'hero_image' });
         if (!heroImg) {
             await Config.create({ 
@@ -38,137 +39,135 @@ mongoose.connect(process.env.MONGO_URI)
             });
         }
     })
-    .catch(err => console.error('❌Lỗi DB:', err));
+    .catch(err => console.error('❌ Lỗi DB:', err));
 
-// --- CẤU HÌNH ---
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
-// Cấu hình thư mục public (để chứa ảnh, css tĩnh nếu cần)
-app.use(express.static(path.join(__dirname, 'public')));
-//server đọc dữ liệu từ Form (POST request)
-app.use(express.urlencoded({ extended: true }));
-
-// 2. THÊM CẤU HÌNH SESSION (Để server nhớ đăng nhập) 
-app.use(session({
-    secret: process.env.SESSION_SECRET || 'secret_key', // Chuỗi bí mật để mã hóa
-    resave: false,
-    saveUninitialized: true,
-    cookie: { maxAge: 60 * 60 * 8000 } // Phiên tồn tại 8 tiếng
-}));
-
-// 👇👇👇 3. TẠO MIDDLEWARE BẢO VỆ (Người gác cổng) 👇👇👇
-const requireLogin = (req, res, next) => {
-    if (req.session.isAdmin) {
-        next(); // Nếu đã đăng nhập -> Cho qua
-    } else {
-        res.redirect('/login'); // Chưa đăng nhập -> Đá về trang login
-    }
-};
-
-
-const cloudinary = require('cloudinary').v2;
-const { CloudinaryStorage } = require('multer-storage-cloudinary');
-const multer = require('multer');
-
-// 1. Cấu hình Cloudinary (Thay thông tin của bạn vào đây)
+// --- CẤU HÌNH CLOUDINARY & MULTER (UPLOAD ẢNH) ---
 cloudinary.config({
     cloud_name: 'dgpfqmncu',
     api_key: '324438863362332',
-    api_secret: '**********'
+    // 👇👇👇 QUAN TRỌNG: BẠN PHẢI ĐIỀN API SECRET THẬT VÀO DƯỚI ĐÂY 👇👇👇
+    api_secret: process.env.CLOUDINARY_SECRET
 });
 
-// 2. Cấu hình Multer để đẩy thẳng lên Cloudinary
 const storage = new CloudinaryStorage({
     cloudinary: cloudinary,
     params: {
-        folder: 'kokoro_shop', // Tên thư mục trên Cloudinary
-        allowed_formats: ['jpg', 'png', 'webp', 'jpeg'], // Định dạng cho phép
+        folder: 'kokoro_shop',
+        allowed_formats: ['jpg', 'png', 'webp', 'jpeg'],
     },
 });
 
 const upload = multer({ storage: storage });
 
+// --- CẤU HÌNH APP ---
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.urlencoded({ extended: true }));
+
+// Cấu hình Session
+app.use(session({
+    secret: process.env.SESSION_SECRET || 'secret_key',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { maxAge: 60 * 60 * 8000 }
+}));
+
+// Cấu hình i18n
 i18n.configure({
     locales: ['vi', 'en', 'jp', 'zh'],
     directory: __dirname + '/locales',
     defaultLocale: 'vi',
-    cookie: 'lang', // Tên cookie
-    queryParameter: 'lang', // Cho phép ?lang=vi
-    objectNotation: true, // Quan trọng: Cho phép dùng dấu chấm (header.open_time)
-    autoReload: true, // Tự load lại file json khi sửa
-    updateFiles: false // Không tự tạo key mới nếu thiếu
+    cookie: 'lang',
+    queryParameter: 'lang',
+    objectNotation: true,
+    autoReload: true,
+    updateFiles: false
 });
-// 2. Sử dụng Middleware
-app.use(cookieParser()); // Để đọc cookie
-app.use(i18n.init); // Khởi tạo i18n cho mỗi request
+
+app.use(cookieParser());
+app.use(i18n.init);
 
 app.use((req, res, next) => {
-    // Nếu có cookie ngôn ngữ, set cho i18n
     if (req.cookies.lang) {
         req.setLocale(req.cookies.lang);
     }
-    // Truyền biến locale xuống view để dùng trong ejs (cho hàm getLocale)
     res.locals.locale = req.getLocale();
     next();
 });
 
-// 3. API Đổi ngôn ngữ (Quan trọng)
-app.get('/change-lang/:lang', (req, res) => {
-    const lang = req.params.lang;
-    if (['vi', 'en', 'jp', 'zh'].includes(lang)) {
-        res.cookie('lang', lang, { maxAge: 90000000, httpOnly: true }); // Lưu cookie 90 ngày
+// Middleware Bảo vệ Admin
+const requireLogin = (req, res, next) => {
+    if (req.session.isAdmin) {
+        next();
+    } else {
+        res.redirect('/login');
     }
-    const fallbackUrl = req.get('Referrer') || '/';
-    res.redirect(fallbackUrl); // Quay lại trang trước đó hoặc trang chủ nếu không có referrer
-});
+};
 
+// --- ROUTES ---
 
-// Route trang chủ
+// 1. Trang chủ
+// Tìm route trang chủ và sửa đoạn lấy heroConfig:
 app.get('/', async (req, res) => {
-    // Lấy dữ liệu động từ DB thay vì file cứng
     const dbPlans = await Plan.find({ isVisible: true }); 
     const heroConfig = await Config.findOne({ key: 'hero_image' });
     
+    // 👇 LOGIC MỚI: Xử lý Hero Image (Dù DB lưu là Chuỗi hay Mảng, ta đều ép về Mảng để view dễ dùng)
+    let heroImages = [];
+    if (heroConfig && heroConfig.value) {
+        // Nếu value là mảng (do Mongo lưu) -> dùng luôn
+        if (Array.isArray(heroConfig.value)) {
+            heroImages = heroConfig.value;
+        } 
+        // Nếu value là chuỗi JSON (ví dụ: '["link1","link2"]') -> Parse ra
+        else if (typeof heroConfig.value === 'string' && heroConfig.value.startsWith('[')) {
+             try { heroImages = JSON.parse(heroConfig.value); } catch(e) {}
+        }
+        // Nếu là chuỗi đơn (link ảnh cũ) -> Đẩy vào mảng
+        else {
+            heroImages = [heroConfig.value];
+        }
+    }
+    // Fallback: Nếu không có ảnh nào, dùng ảnh mặc định
+    if (heroImages.length === 0) {
+        heroImages = ['https://static.kyotokimonorental.com/app/img/top/hero/autumn/vi/sp/hero01.webp'];
+    }
+
     res.render('index', { 
-        plans: dbPlans, // Dùng plans từ DB
+        plans: dbPlans,
         shops: shops,
         galleryImages: galleryImages,
-        heroImage: heroConfig ? heroConfig.value : '', // Truyền ảnh nền động
+        heroImages: heroImages, // 👈 Truyền biến số nhiều (Array) sang View
         pageTitle: "Cho thuê Kimono Kokoro"
     });
 });
 
+// API Đổi ngôn ngữ
+app.get('/change-lang/:lang', (req, res) => {
+    const lang = req.params.lang;
+    if (['vi', 'en', 'jp', 'zh'].includes(lang)) {
+        res.cookie('lang', lang, { maxAge: 90000000, httpOnly: true });
+    }
+    const fallbackUrl = req.get('Referrer') || '/';
+    res.redirect(fallbackUrl);
+});
 
 // 2. Trang chi tiết
-app.get('/plan/:id', (req, res) => {
-    const planId = parseInt(req.params.id);
-    const foundPlan = plans.find(p => p.id === planId);
+app.get('/plan/:id', async (req, res) => {
+    // Tìm trong DB thay vì mảng tĩnh
+    // Lưu ý: Nếu data cũ dùng id số (1,2,3), nếu data mới tạo tự động bởi mongo sẽ dùng _id
+    // Code này ưu tiên tìm theo id số trước
+    let foundPlan = await Plan.findOne({ id: parseInt(req.params.id) });
+    if(!foundPlan) {
+        try { foundPlan = await Plan.findById(req.params.id); } catch(e){}
+    }
+
     if (!foundPlan) return res.send('Không tìm thấy gói!');
     res.render('detail', { plan: foundPlan, pageTitle: foundPlan.title });
 });
 
-// 3. Xử lý đặt chỗ (Lưu vào Database)
-app.post('/booking', async (req, res) => {
-    // Tạo một bản ghi mới từ dữ liệu form
-    const newBooking = new Booking({
-        planId: req.body.planId,
-        planName: req.body.planName,
-        fullname: req.body.fullname,
-        date: req.body.date,
-        quantity: req.body.quantity,
-        phone: req.body.phone
-    });
-
-    // Lưu vào database (dùng await vì kết nối mạng cần thời gian)
-    await newBooking.save();
-    
-    console.log("Đã lưu đơn hàng vào DB:", newBooking);
-
-    res.render('success', { info: req.body });
-});
-
-
-// Route trang chọn Gói và Cửa hàng (Giao diện mới)
+// 3. Booking Step 1
 app.get('/booking-step1', async (req, res) => {
     const dbPlans = await Plan.find({ isVisible: true });
     res.render('booking_step1', { 
@@ -176,27 +175,32 @@ app.get('/booking-step1', async (req, res) => {
         pageTitle: "Chọn Gói Kimono"
     });
 });
-// Route Bước 2: Điền thông tin (Nhận dữ liệu từ Bước 1)
-// ROUTE BƯỚC 2: NHẬN DANH SÁCH GÓI -> CHỌN NGÀY GIỜ (Đổi sang POST)
-// -------------------------------------------------
-app.post('/booking-step2', (req, res) => {
-    // req.body.plans sẽ là một mảng hoặc object chứa ID và Quantity
-    // Ví dụ cấu trúc gửi lên: { 'plan_1': '2', 'plan_3': '1' } (Gói 1 đặt 2, Gói 3 đặt 1)
-    
+
+// 4. Booking Step 2 (ĐÃ SỬA LỖI)
+app.post('/booking-step2', async (req, res) => {
     const selectedPlans = [];
     let totalQuantity = 0;
     let totalPrice = 0;
 
-    // Duyệt qua dữ liệu gửi lên để lọc ra những gói có số lượng > 0
+    // 👇 FIX: Lấy danh sách gói từ DB để tra cứu giá tiền
+    const dbPlans = await Plan.find(); 
+
     for (const [key, value] of Object.entries(req.body)) {
         if (key.startsWith('plan_') && parseInt(value) > 0) {
-            const planId = parseInt(key.replace('plan_', ''));
+            // Lấy ID từ key (plan_1 -> 1) hoặc (plan_659abc... -> 659abc...)
+            const rawId = key.replace('plan_', '');
             const qty = parseInt(value);
             
-            const foundPlan = plans.find(p => p.id === planId);
+            // Tìm gói trong DB
+            // So sánh id (số) HOẶC _id (chuỗi mongo)
+            const foundPlan = dbPlans.find(p => p.id == rawId || p._id.toString() == rawId);
+
             if (foundPlan) {
                 selectedPlans.push({
-                    ...foundPlan,
+                    id: foundPlan.id || foundPlan._id, // Giữ ID để step sau dùng
+                    title: foundPlan.title,
+                    price: foundPlan.price,
+                    image: foundPlan.image,
                     qty: qty,
                     subTotal: foundPlan.price * qty
                 });
@@ -210,34 +214,26 @@ app.post('/booking-step2', (req, res) => {
         return res.send("<script>alert('Vui lòng chọn ít nhất 1 gói!'); window.history.back();</script>");
     }
 
-    // Render Step 2
     res.render('booking_step2', { 
         selectedPlans: selectedPlans,
         totalQuantity: totalQuantity,
         totalPrice: totalPrice,
-        shop: shops[0], // Mặc định shop 1
+        shop: shops[0],
         pageTitle: "Chọn Ngày & Giờ" 
     });
 });
 
-// ROUTE BƯỚC 3: NHẬP THÔNG TIN & TÙY CHỌN
-// -------------------------------------------------
-// ROUTE BƯỚC 3: NHẬP THÔNG TIN (POST từ Step 2)
-// -------------------------------------------------
+// 5. Booking Step 3
 app.post('/booking-step3', (req, res) => {
-    // Nhận dữ liệu thô từ Step 2
     const { selectedPlans, shopId, date, time, totalQuantity } = req.body;
-    
-    // Parse lại chuỗi JSON thành Object
     const plansData = JSON.parse(selectedPlans);
     const shop = shops.find(s => s.id == shopId) || shops[0];
 
-    // Tính tổng tiền gói cơ bản
     let baseTotal = 0;
     plansData.forEach(p => baseTotal += p.subTotal);
 
     res.render('booking_step3', {
-        plansData: plansData, // Danh sách các gói đã chọn
+        plansData: plansData,
         shop: shop,
         bookingInfo: { date, time, totalQuantity },
         options: options,
@@ -246,40 +242,26 @@ app.post('/booking-step3', (req, res) => {
     });
 });
 
-// XỬ LÝ CUỐI CÙNG: LƯU DATABASE (BỎ THANH TOÁN)
-// -------------------------------------------------
-// -------------------------------------------------
-// XỬ LÝ LƯU ĐƠN HÀNG (Finish)
-// -------------------------------------------------
+// 6. Booking Finish (Lưu đơn hàng)
 app.post('/booking-finish', async (req, res) => {
     try {
         const { shopId, date, time, fullname, email, phone, plansDataString, ...body } = req.body;
-        
-        // 1. Lấy lại thông tin gốc các gói
         const plansData = JSON.parse(plansDataString);
-        const shop = shops.find(s => s.id == shopId);
+        const shop = shops.find(s => s.id == shopId) || shops[0];
 
-        // 2. Xử lý danh sách khách và tùy chọn
         const guests = [];
         let finalTotal = 0;
 
-        // Duyệt qua từng gói khách đã đặt
         plansData.forEach(plan => {
-            // Với mỗi gói, duyệt qua số lượng khách của gói đó
             for (let i = 1; i <= plan.qty; i++) {
-                // Tạo ID duy nhất để tìm tùy chọn trong req.body
-                // Ví dụ: name="options_plan1_guest1"
                 const inputName = `options_${plan.id}_${i}`;
-                const selectedOpts = body[inputName]; // Lấy mảng tùy chọn khách đã tích
+                const selectedOpts = body[inputName];
                 
-                // Tính tiền tùy chọn
                 let optionsPrice = 0;
                 let optionsList = [];
                 
                 if (selectedOpts) {
-                    // Nếu chọn 1 cái nó là string, chọn nhiều là array. Chuyển hết về array
                     const optsArray = Array.isArray(selectedOpts) ? selectedOpts : [selectedOpts];
-                    
                     optsArray.forEach(optId => {
                         const opt = options.find(o => o.id === optId);
                         if (opt) {
@@ -289,12 +271,10 @@ app.post('/booking-finish', async (req, res) => {
                     });
                 }
 
-                // Cộng vào tổng tiền
                 finalTotal += plan.price + optionsPrice;
 
-                // Thêm vào danh sách khách
                 guests.push({
-                    planName: plan.title,
+                    planName: plan.title, // Giờ title lấy từ DB nên chắc chắn có
                     price: plan.price + optionsPrice,
                     guestIndex: guests.length + 1,
                     selectedOptions: optionsList
@@ -302,98 +282,88 @@ app.post('/booking-finish', async (req, res) => {
             }
         });
 
-        // 3. Lưu vào Database
         const newBooking = new Booking({
             fullname, email, phone,
             shopId: shop.id,
             shopName: shop.name,
             date, time,
             totalPrice: finalTotal,
-            guests: guests, // Lưu mảng khách chi tiết
+            guests: guests,
             status: 'Đã đặt (Chờ đến)'
         });
 
         await newBooking.save();
-        console.log("📝 Đơn hàng mới:", newBooking);
+        console.log("📝 Đơn hàng mới:", newBooking._id);
 
         res.render('success', { info: newBooking });
 
     } catch (err) {
         console.error(err);
-        res.send("Lỗi: " + err.message);
+        res.send("Lỗi xử lý đơn hàng: " + err.message);
     }
 });
 
-// 👇👇👇 4. THÊM CÁC ROUTE ĐĂNG NHẬP 👇👇👇
+// --- ADMIN & LOGIN ROUTES ---
 
-// Hiện form đăng nhập
 app.get('/login', (req, res) => {
     res.render('login', { error: null });
 });
 
-// Xử lý khi bấm nút Đăng nhập
 app.post('/login', (req, res) => {
     const { username, password } = req.body;
-    
-    // Kiểm tra với tài khoản trong file .env
     if (username === process.env.ADMIN_USER && password === process.env.ADMIN_PASS) {
-        req.session.isAdmin = true; // Cấp thẻ bài "Admin"
+        req.session.isAdmin = true;
         res.redirect('/admin');
     } else {
         res.render('login', { error: 'Sai tài khoản hoặc mật khẩu!' });
     }
 });
 
-// Đăng xuất
 app.get('/logout', (req, res) => {
-    req.session.destroy(); // Hủy phiên làm việc
+    req.session.destroy();
     res.redirect('/login');
 });
-// Trang Admin (Chỉ Admin mới được xem)
-// 1. Trang Dashboard (Hiển thị tất cả)
+
 app.get('/admin', requireLogin, async (req, res) => {
     try {
         const bookings = await Booking.find().sort({ createdAt: -1 });
-        const plans = await Plan.find(); // Lấy danh sách sản phẩm để quản lý
-        const heroConfig = await Config.findOne({ key: 'hero_image' }); // Lấy config
+        const plans = await Plan.find(); 
+        const heroConfig = await Config.findOne({ key: 'hero_image' });
 
         res.render('admin', { 
             bookings, 
             plans, 
             heroImage: heroConfig ? heroConfig.value : '',
-            pageTitle: "Hệ thống Quản trị Senior" 
+            pageTitle: "Quản trị Hệ thống" 
         });
     } catch (error) {
-        res.send("Lỗi: " + error.message);
+        res.send("Lỗi Admin: " + error.message);
     }
 });
 
-// 2. Xử lý Sản phẩm (Thêm/Sửa/Xóa)
-// 👇 SỬA ROUTE NÀY: Thêm middleware upload.array('photos', 10) để cho phép up tối đa 10 ảnh
+// Xử lý Lưu/Sửa Gói (CÓ UPLOAD ẢNH)
 app.post('/admin/plan/save', requireLogin, upload.array('photos', 10), async (req, res) => {
     try {
         const { id, title, price, originalPrice, desc, tag, image: oldImage, imagesString } = req.body;
         
         let images = [];
 
-        // 1. Nếu có file mới upload từ máy tính
+        // 1. Nếu có file mới upload -> Lấy link từ Cloudinary
         if (req.files && req.files.length > 0) {
-            // Tạo đường dẫn: /uploads/ten-file.jpg
-            const uploadedImages = req.files.map(file => file.path);
+            const uploadedImages = req.files.map(file => file.path); // file.path là link Cloudinary
             images = [...uploadedImages];
         } 
-        // 2. Nếu không upload mới, giữ lại link ảnh cũ (nếu nhập tay hoặc từ DB)
+        // 2. Nếu không upload mới -> Giữ ảnh cũ
         else if (imagesString) {
-             images = imagesString.split(',').map(s => s.trim());
+             images = imagesString.split(',').map(s => s.trim()).filter(s => s);
         }
 
-        // Ảnh đại diện (Thumbnail) lấy cái đầu tiên trong danh sách
         const mainImage = images.length > 0 ? images[0] : (oldImage || '');
 
         const planData = { 
             title, 
-            price, 
-            originalPrice, 
+            price: parseInt(price), 
+            originalPrice: parseInt(originalPrice), 
             image: mainImage, 
             images: images, 
             desc, 
@@ -401,19 +371,27 @@ app.post('/admin/plan/save', requireLogin, upload.array('photos', 10), async (re
         };
 
         if (id) {
-            // Nếu là sửa, và không upload ảnh mới thì giữ nguyên ảnh cũ trong DB
+            // Logic cập nhật
             if (images.length === 0) {
-                // Xóa trường images khỏi planData để không bị ghi đè thành rỗng
+                // Nếu không up ảnh mới, xóa field images khỏi object update để tránh ghi đè thành rỗng
                 delete planData.images;
                 delete planData.image;
             }
             await Plan.findByIdAndUpdate(id, planData);
         } else {
+            // Logic tạo mới
+            // Nếu tạo mới mà không có ảnh -> Gán ảnh mặc định để không lỗi
+            if (!planData.image) {
+                planData.image = 'https://via.placeholder.com/300';
+            }
             await new Plan(planData).save();
         }
         
         res.redirect('/admin');
-    } catch (err) { res.send(err.message); }
+    } catch (err) { 
+        console.error(err);
+        res.send("Lỗi lưu gói: " + err.message); 
+    }
 });
 
 app.post('/admin/plan/delete/:id', requireLogin, async (req, res) => {
@@ -421,37 +399,52 @@ app.post('/admin/plan/delete/:id', requireLogin, async (req, res) => {
     res.redirect('/admin');
 });
 
-// 3. Xử lý Cấu hình (Thay ảnh nền)
-app.post('/admin/config/save', requireLogin, async (req, res) => {
-    const { hero_image } = req.body;
-    await Config.findOneAndUpdate(
-        { key: 'hero_image' }, 
-        { value: hero_image }, 
-        { upsert: true } // Nếu chưa có thì tạo mới
-    );
+// 👇 ROUTE XỬ LÝ CẤU HÌNH (Thay ảnh Hero) - Đã nâng cấp Upload Cloudinary
+// 👇 SỬA ROUTE NÀY: Dùng upload.array để nhận nhiều ảnh (tối đa 5 ảnh)
+app.post('/admin/config/save', requireLogin, upload.array('hero_photos', 5), async (req, res) => {
+    try {
+        // 1. Lấy danh sách ảnh cũ (đang hiển thị)
+        // Nếu user không xóa ảnh cũ, nó sẽ gửi lên dạng input hidden
+        let currentImages = req.body.hero_images_old || [];
+        if (!Array.isArray(currentImages)) {
+            currentImages = [currentImages]; // Ép về mảng nếu chỉ có 1 ảnh
+        }
+        // Lọc bỏ các giá trị rỗng/undefined
+        currentImages = currentImages.filter(img => img && img.trim() !== "");
+
+        // 2. Lấy danh sách ảnh MỚI vừa upload lên Cloudinary
+        let newImages = [];
+        if (req.files && req.files.length > 0) {
+            newImages = req.files.map(file => file.path);
+        }
+
+        // 3. Gộp ảnh cũ + ảnh mới
+        const finalImages = [...currentImages, ...newImages];
+
+        // 4. Lưu vào Database (Lưu đè value bằng mảng mới)
+        await Config.findOneAndUpdate(
+            { key: 'hero_image' }, 
+            { value: finalImages }, // Mongoose sẽ tự lưu mảng này
+            { upsert: true }
+        );
+
+        res.redirect('/admin');
+    } catch (err) {
+        console.error(err);
+        res.send("Lỗi lưu cấu hình: " + err.message);
+    }
+});
+
+app.post('/admin/update/:id', requireLogin, async (req, res) => {
+    await Booking.findByIdAndUpdate(req.params.id, { status: req.body.status });
     res.redirect('/admin');
 });
 
-
-// Update (Chỉ Admin mới được sửa)
-app.post('/admin/update/:id', requireLogin, async (req, res) => {
-    try {
-        await Booking.findByIdAndUpdate(req.params.id, { status: req.body.status });
-        res.redirect('/admin');
-    } catch (err) { res.send(err.message); }
-});
-
-// Delete (Chỉ Admin mới được xóa)
 app.post('/admin/delete/:id', requireLogin, async (req, res) => {
-    try {
-        await Booking.findByIdAndDelete(req.params.id);
-        res.redirect('/admin');
-    } catch (err) { res.send(err.message); }
+    await Booking.findByIdAndDelete(req.params.id);
+    res.redirect('/admin');
 });
 
-
-
-// --- CHẠY SERVER ---
 const PORT = 3000;
 app.listen(PORT, () => {
     console.log(`Server đang chạy tại http://localhost:${PORT}`);
