@@ -25,22 +25,23 @@
 
         // JS để mở Modal sửa sản phẩm
         // Thay thế hàm openEditModal cũ bằng hàm này
-        function openEditModal(id, title, price, original, image, desc, tag, imagesArray) {
+        function openEditModal(id, title, price, original, mainImage, desc, tag, imagesCsv) {
             document.getElementById('planId').value = id || '';
             document.getElementById('planTitle').value = title || '';
             document.getElementById('planPrice').value = price || '';
             document.getElementById('planOriginal').value = original || '';
-            document.getElementById('planImage').value = image || '';
+            document.getElementById('planImage').value = mainImage || '';
             document.getElementById('planDesc').value = desc || '';
             document.getElementById('planTag').value = tag || '';
+            document.getElementById('planImagesString').value = imagesCsv || '';
             
             // Xử lý hiển thị ảnh cũ
             const imgContainer = document.getElementById('currentImages');
             imgContainer.innerHTML = ''; // Xóa cũ
             
             // Nếu có danh sách ảnh cũ (imagesArray truyền vào là chuỗi ngăn cách phẩy)
-            if (imagesArray) {
-                const imgs = imagesArray.split(',');
+            if (imagesCsv) {
+                const imgs = imagesCsv.split(',');
                 imgs.forEach(src => {
                     if(src.trim()) {
                         const img = document.createElement('img');
@@ -49,9 +50,9 @@
                         imgContainer.appendChild(img);
                     }
                 });
-            } else if (image) { // Fallback ảnh lẻ
+            } else if (mainImage) { // Fallback ảnh lẻ
                 const img = document.createElement('img');
-                img.src = image;
+                img.src = mainImage;
                 img.className = 'w-16 h-16 object-cover rounded border';
                 imgContainer.appendChild(img);
             }
@@ -162,7 +163,7 @@
                             <p class="text-gray-500 text-xs line-clamp-2"><%= plan.desc %></p>
                         </div>
                         <div class="p-4 bg-gray-50 border-t flex justify-between">
-                            <button onclick="openEditModal('<%= plan._id %>', '<%= plan.title %>', '<%= plan.price %>', '<%= plan.originalPrice %>', `<%= plan.images ? plan.images.join(', ') : '' %>`, `<%= plan.desc %>`, '<%= plan.tag %>')" 
+                            <button onclick="openEditModal('<%= plan._id %>', '<%= plan.title %>', '<%= plan.price %>', '<%= plan.originalPrice %>', '<%= plan.image %>', <%- JSON.stringify(plan.desc || '') %>, '<%= plan.tag %>', <%- JSON.stringify(plan.images ? plan.images.join(', ') : '') %>)" 
                                 class="text-blue-600 font-bold text-sm hover:underline">Chỉnh sửa</button>
                             
                             <form action="/admin/plan/delete/<%= plan._id %>" method="POST" onsubmit="return confirm('Xóa gói này?')">
@@ -207,7 +208,7 @@
                 <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
             </div>
             
-            <form action="/admin/plan/save" method="POST" class="p-6 space-y-4">
+            <form action="/admin/plan/save" method="POST" enctype="multipart/form-data" class="p-6 space-y-4">
                 <input type="hidden" name="id" id="planId">
                 <input type="hidden" name="image" id="planImage"> 
                 <input type="hidden" name="imagesString" id="planImagesString">
