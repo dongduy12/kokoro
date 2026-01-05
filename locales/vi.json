@@ -10,8 +10,14 @@
         "title_line1": "Vẻ Đẹp Truyền Thống",
         "title_line2": "Trong Tầm Tay Bạn",
         "badge_1": "✨ 20,000+ Bộ Kimono",
-        "badge_2": "🏯 8 Cửa hàng toàn quốc",
+        "badge_2": "🏯...",
         "cta": "KHÁM PHÁ NGAY"
+    },
+    "titles": {
+        "home": "Cho thuê Kimono Kokoro",
+        "booking_step1": "Chọn Gói Kimono",
+        "booking_step2": "Chọn Ngày & Giờ",
+        "booking_step3": "Thông tin khách hàng & Tùy chọn"
     },
     "quick_nav": {
         "plan": "Gói Kimono",
@@ -24,6 +30,58 @@
         "plans": {
             "subtitle": "Lựa chọn phổ biến",
             "title": "Các Gói Kimono"
+        }
+    },
+    "booking": {
+        "nav": {
+            "step1": "1. Chọn Gói & Số lượng",
+            "step2": "2. Ngày & Giờ",
+            "step3": "3. Thông tin & Tùy chọn",
+            "step4": "4. Hoàn tất"
+        },
+        "common": {
+            "per_person": "/ người",
+            "guest_count": "%d khách",
+            "guest_count_plural": "%d khách",
+            "guest_count_10_plus": "10+ khách",
+            "total": "Tổng cộng",
+            "back": "Quay lại",
+            "confirm_booking": "Xác nhận đặt chỗ",
+            "required": "Bắt buộc",
+            "shop": "Cửa hàng",
+            "date_time": "Ngày giờ",
+            "guests": "Số khách",
+            "tax_included": "(Đã bao gồm thuế)",
+            "mobile_total": "Tổng cộng (gồm tùy chọn)"
+        },
+        "step1": {
+            "title": "Vui lòng chọn số lượng cho từng gói",
+            "quantity_label": "Số lượng khách:",
+            "selected_label": "Đã chọn:",
+            "submit": "Tiếp tục: Chọn ngày giờ →",
+            "validation_no_plan": "Vui lòng chọn ít nhất 1 gói!"
+        },
+        "step2": {
+            "title": "Vui lòng chọn ngày và giờ cho %d khách",
+            "title_plural": "Vui lòng chọn ngày và giờ cho %d khách",
+            "date_label": "Ngày đến cửa hàng:",
+            "timeslot_label": "Chọn khung giờ:",
+            "time_full": "Hết chỗ",
+            "time_available": "Còn chỗ",
+            "selected_plans": "Gói đã chọn",
+            "total_label": "Tổng cộng (%d khách):",
+            "total_label_plural": "Tổng cộng (%d khách):",
+            "next_cta": "Nhập thông tin khách hàng →"
+        },
+        "step3": {
+            "info_title": "1. Vui lòng nhập thông tin của bạn.",
+            "fullname": "Họ và tên",
+            "phone": "Số điện thoại",
+            "option_title": "2. Vui lòng chọn các tùy chọn bạn muốn.",
+            "guest_label": "Khách %{number} (%{plan})",
+            "base_price": "Giá gốc:",
+            "addon_title": "Thêm dịch vụ (Làm tóc, Bảo hiểm...)",
+            "payment_details": "Chi tiết thanh toán"
         }
     }
 }

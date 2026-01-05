@@ -10,8 +10,14 @@
         "title_line1": "Traditional Beauty",
         "title_line2": "Within Your Reach",
         "badge_1": "✨ 20,000+ Kimono Sets",
-        "badge_2": "🏯 8 Stores Nationwide",
+        "badge_2": "🏯...",
         "cta": "EXPLORE NOW"
+    },
+    "titles": {
+        "home": "Kokoro Kimono Rental",
+        "booking_step1": "Choose Kimono Plan",
+        "booking_step2": "Select Date & Time",
+        "booking_step3": "Guest Info & Options"
     },
     "quick_nav": {
         "plan": "Kimono Plans",
@@ -24,6 +30,58 @@
         "plans": {
             "subtitle": "Popular choices",
             "title": "Kimono Plans"
+        }
+    },
+    "booking": {
+        "nav": {
+            "step1": "1. Choose Plan & Quantity",
+            "step2": "2. Date & Time",
+            "step3": "3. Info & Options",
+            "step4": "4. Complete"
+        },
+        "common": {
+            "per_person": "/ person",
+            "guest_count": "%d guest",
+            "guest_count_plural": "%d guests",
+            "guest_count_10_plus": "10+ guests",
+            "total": "Total",
+            "back": "Back",
+            "confirm_booking": "Confirm booking",
+            "required": "Required",
+            "shop": "Shop",
+            "date_time": "Date & time",
+            "guests": "Guests",
+            "tax_included": "(Tax included)",
+            "mobile_total": "Total (incl. options)"
+        },
+        "step1": {
+            "title": "Please choose quantities for each plan",
+            "quantity_label": "Guest quantity:",
+            "selected_label": "Selected guests:",
+            "submit": "Continue: Pick date & time →",
+            "validation_no_plan": "Please select at least one plan!"
+        },
+        "step2": {
+            "title": "Choose date & time for %d guest",
+            "title_plural": "Choose date & time for %d guests",
+            "date_label": "Visit date:",
+            "timeslot_label": "Select a time slot:",
+            "time_full": "Fully booked",
+            "time_available": "Available",
+            "selected_plans": "Selected plans",
+            "total_label": "Total (%d guest):",
+            "total_label_plural": "Total (%d guests):",
+            "next_cta": "Enter guest details →"
+        },
+        "step3": {
+            "info_title": "1. Please enter your information.",
+            "fullname": "Full name",
+            "phone": "Phone number",
+            "option_title": "2. Choose your desired options.",
+            "guest_label": "Guest %{number} (%{plan})",
+            "base_price": "Base price:",
+            "addon_title": "Add services (Hair, Insurance...)",
+            "payment_details": "Payment details"
         }
     }
 }

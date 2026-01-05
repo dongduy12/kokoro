@@ -10,8 +10,14 @@
         "title_line1": "传统之美",
         "title_line2": "触手可及",
         "badge_1": "✨ 20,000+ 套和服",
-        "badge_2": "🏯 全国 8 家门店",
+        "badge_2": "🏯...",
         "cta": "立即探索"
+    },
+    "titles": {
+        "home": "Kokoro 和服租赁",
+        "booking_step1": "选择和服方案",
+        "booking_step2": "选择日期和时间",
+        "booking_step3": "填写信息与选项"
     },
     "quick_nav": {
         "plan": "和服方案",
@@ -24,6 +30,58 @@
         "plans": {
             "subtitle": "热门选择",
             "title": "和服方案"
+        }
+    },
+    "booking": {
+        "nav": {
+            "step1": "1. 选择方案与人数",
+            "step2": "2. 日期与时间",
+            "step3": "3. 信息与选项",
+            "step4": "4. 完成"
+        },
+        "common": {
+            "per_person": "/ 人",
+            "guest_count": "%d 位",
+            "guest_count_plural": "%d 位",
+            "guest_count_10_plus": "10 位以上",
+            "total": "合计",
+            "back": "返回",
+            "confirm_booking": "确认预约",
+            "required": "必填",
+            "shop": "门店",
+            "date_time": "日期时间",
+            "guests": "人数",
+            "tax_included": "（含税）",
+            "mobile_total": "合计（含选项）"
+        },
+        "step1": {
+            "title": "请选择各方案的人数",
+            "quantity_label": "人数：",
+            "selected_label": "已选择人数:",
+            "submit": "继续：选择日期时间 →",
+            "validation_no_plan": "请至少选择一个方案！"
+        },
+        "step2": {
+            "title": "为 %d 位客人选择日期和时间",
+            "title_plural": "为 %d 位客人选择日期和时间",
+            "date_label": "到店日期：",
+            "timeslot_label": "选择时间段：",
+            "time_full": "已满",
+            "time_available": "有位",
+            "selected_plans": "已选方案",
+            "total_label": "合计（%d 位）：",
+            "total_label_plural": "合计（%d 位）：",
+            "next_cta": "填写客户信息 →"
+        },
+        "step3": {
+            "info_title": "1. 请填写您的信息。",
+            "fullname": "姓名",
+            "phone": "手机号",
+            "option_title": "2. 请选择需要的附加服务。",
+            "guest_label": "客人 %{number}（%{plan}）",
+            "base_price": "基础价格：",
+            "addon_title": "附加服务（做发型、保险等）",
+            "payment_details": "付款明细"
         }
     }
 }

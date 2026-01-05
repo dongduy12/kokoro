@@ -34,18 +34,18 @@
 <body class="bg-bgBase text-main font-sans pb-40">
 
     <header class="py-5 px-8 flex justify-center bg-white shadow-sm sticky top-0 z-50">
-        <a href="/"><img src="/img/common/logo.svg" alt="logo" class="h-10"></a>
+        <a href="/"><img src="/img/common/logo.svg" alt="logo" class="h-12"></a>
     </header>
 
     <main class="max-w-[1260px] mx-auto px-5 md:px-8 mt-8">
         
         <div class="hidden lg:grid grid-cols-4 gap-4 mb-10 text-sm font-bold text-gray-400">
-            <div class="flex items-center gap-2">1. Chọn Gói</div>
-            <div class="flex items-center gap-2">2. Ngày & Giờ</div>
+            <div class="flex items-center gap-2"><%= __('booking.nav.step1') %></div>
+            <div class="flex items-center gap-2"><%= __('booking.nav.step2') %></div>
             <div class="flex items-center gap-2 text-accent">
-                <span class="w-2 h-2 rounded-full bg-accent"></span> 3. Thông tin & Tùy chọn
+                <span class="w-2 h-2 rounded-full bg-accent"></span> <%= __('booking.nav.step3') %>
             </div>
-            <div>4. Hoàn tất</div>
+            <div><%= __('booking.nav.step4') %></div>
         </div>
 
         <form action="/booking-finish" method="POST" id="bookingForm">
@@ -58,27 +58,27 @@
                 <div>
                     <div class="mb-12">
                         <h3 class="border-b border-sub1 border-dashed pb-2 mb-5 font-bold text-lg">
-                            1. Vui lòng nhập thông tin của bạn.
+                            <%= __('booking.step3.info_title') %>
                         </h3>
                         <div class="bg-white p-6 rounded-xl shadow-sm space-y-5">
                             <div>
                                 <div class="flex gap-2 mb-2">
-                                    <span class="font-bold">Họ và tên</span>
-                                    <span class="bg-red-600 text-white text-[10px] px-2 py-[2px] rounded">Bắt buộc</span>
+                                    <span class="font-bold"><%= __('booking.step3.fullname') %></span>
+                                    <span class="bg-red-600 text-white text-[10px] px-2 py-[2px] rounded"><%= __('booking.common.required') %></span>
                                 </div>
                                 <input type="text" name="fullname" required placeholder="Nguyễn Văn A" class="w-full border p-3 rounded bg-gray-50 focus:bg-white focus:border-accent outline-none transition">
                             </div>
                             <div>
                                 <div class="flex gap-2 mb-2">
                                     <span class="font-bold">Email</span>
-                                    <span class="bg-red-600 text-white text-[10px] px-2 py-[2px] rounded">Bắt buộc</span>
+                                    <span class="bg-red-600 text-white text-[10px] px-2 py-[2px] rounded"><%= __('booking.common.required') %></span>
                                 </div>
                                 <input type="email" name="email" required placeholder="email@example.com" class="w-full border p-3 rounded bg-gray-50 focus:bg-white focus:border-accent outline-none transition">
                             </div>
                             <div>
                                 <div class="flex gap-2 mb-2">
-                                    <span class="font-bold">Số điện thoại</span>
-                                    <span class="bg-red-600 text-white text-[10px] px-2 py-[2px] rounded">Bắt buộc</span>
+                                    <span class="font-bold"><%= __('booking.step3.phone') %></span>
+                                    <span class="bg-red-600 text-white text-[10px] px-2 py-[2px] rounded"><%= __('booking.common.required') %></span>
                                 </div>
                                 <input type="tel" name="phone" required placeholder="0901234567" class="w-full border p-3 rounded bg-gray-50 focus:bg-white focus:border-accent outline-none transition">
                             </div>
@@ -87,7 +87,7 @@
 
                     <div>
                         <h3 class="border-b border-sub1 border-dashed pb-2 mb-5 font-bold text-lg">
-                            2. Vui lòng chọn các tùy chọn bạn muốn.
+                            <%= __('booking.step3.option_title') %>
                         </h3>
                         
                         <% let globalGuestCount = 0; %>
@@ -96,13 +96,13 @@
                                 <% globalGuestCount++; %>
                                 
                                 <div class="mb-8">
-                                    <div class="font-bold text-lg mb-2">Khách <%= globalGuestCount %> (<%= plan.title %>)</div>
+                                    <div class="font-bold text-lg mb-2"><%= __('booking.step3.guest_label', { number: globalGuestCount, plan: plan.title }) %></div>
                                     
                                     <div class="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100">
                                         <div class="p-4 bg-bgAccentMain flex justify-between items-center border-b border-red-100">
                                             <div>
                                                 <div class="font-bold text-accent"><%= plan.title %></div>
-                                                <div class="text-sm">Giá gốc: ¥<%= plan.price.toLocaleString() %></div>
+                                                <div class="text-sm"><%= __('booking.step3.base_price') %> ¥<%= plan.price.toLocaleString() %></div>
                                             </div>
                                         </div>
 
@@ -111,7 +111,7 @@
                                             <details class="group open:bg-gray-50 transition">
                                                 <summary class="flex justify-between items-center p-4 cursor-pointer hover:bg-gray-50">
                                                     <span class="font-medium flex items-center gap-2">
-                                                        <span class="text-accent text-xl">＋</span> Thêm dịch vụ (Làm tóc, Bảo hiểm...)
+                                                        <span class="text-accent text-xl">＋</span> <%= __('booking.step3.addon_title') %>
                                                     </span>
                                                     <div class="text-gray-400 group-open:rotate-180 transition">▼</div>
                                                 </summary>
@@ -152,31 +152,31 @@
 
                 <div class="hidden lg:block">
                     <div class="bg-white rounded-xl p-6 shadow-lg sticky top-24 border border-gray-100">
-                        <h3 class="font-bold text-lg mb-4">Chi tiết thanh toán</h3>
+                        <h3 class="font-bold text-lg mb-4"><%= __('booking.step3.payment_details') %></h3>
                         
                         <div class="space-y-3 text-sm border-b pb-4 mb-4">
                             <div class="flex justify-between">
-                                <span class="text-sub1">Cửa hàng</span>
+                                <span class="text-sub1"><%= __('booking.common.shop') %></span>
                                 <span class="font-bold"><%= shop.name %></span>
                             </div>
                             <div class="flex justify-between">
-                                <span class="text-sub1">Ngày giờ</span>
+                                <span class="text-sub1"><%= __('booking.common.date_time') %></span>
                                 <span class="font-bold"><%= bookingInfo.date %> <%= bookingInfo.time %></span>
                             </div>
                             <div class="flex justify-between">
-                                <span class="text-sub1">Số khách</span>
-                                <span class="font-bold"><%= bookingInfo.totalQuantity %> người</span>
+                                <span class="text-sub1"><%= __('booking.common.guests') %></span>
+                                <span class="font-bold"><%= bookingInfo.totalQuantity %></span>
                             </div>
                         </div>
 
                         <div class="flex justify-between items-end">
-                            <span class="font-bold text-lg">Tổng cộng</span>
+                            <span class="font-bold text-lg"><%= __('booking.common.total') %></span>
                             <span class="text-3xl font-bold text-accent">¥<span id="finalTotalDisplay"><%= baseTotal.toLocaleString() %></span></span>
                         </div>
-                        <p class="text-xs text-right text-gray-400">(Đã bao gồm thuế)</p>
+                        <p class="text-xs text-right text-gray-400"><%= __('booking.common.tax_included') %></p>
 
                         <button type="submit" class="w-full bg-gradient-to-r from-pink-500 to-[#BA2636] text-white font-bold py-4 rounded-full mt-6 shadow-lg hover:shadow-xl hover:-translate-y-1 transition">
-                            Xác nhận đặt chỗ
+                            <%= __('booking.common.confirm_booking') %>
                         </button>
                     </div>
                 </div>
@@ -185,11 +185,11 @@
             <div class="fixed bottom-0 left-0 w-full bg-white border-t p-4 shadow-[0_-4px_10px_rgba(0,0,0,0.1)] z-50 lg:hidden">
                 <div class="flex justify-between items-center gap-2">
                     <div class="flex flex-col">
-                        <span class="text-xs text-gray-500">Tổng cộng (gồm tùy chọn)</span>
+                        <span class="text-xs text-gray-500"><%= __('booking.common.mobile_total') %></span>
                         <span class="text-xl font-bold text-accent">¥<span id="mobileTotalDisplay"><%= baseTotal.toLocaleString() %></span></span>
                     </div>
                     <button type="submit" class="bg-accent text-white font-bold py-3 px-6 rounded-full shadow-md text-sm">
-                        Xác nhận đặt chỗ
+                        <%= __('booking.common.confirm_booking') %>
                     </button>
                 </div>
             </div>

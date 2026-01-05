@@ -10,8 +10,14 @@
         "title_line1": "伝統の美しさ",
         "title_line2": "あなたの手の届く場所に",
         "badge_1": "✨ 20,000着以上の着物",
-        "badge_2": "🏯 全国8店舗",
+        "badge_2": "🏯....",
         "cta": "今すぐ見る"
+    },
+    "titles": {
+        "home": "Kokoro 着物レンタル",
+        "booking_step1": "着物プランを選ぶ",
+        "booking_step2": "日付と時間を選択",
+        "booking_step3": "お客様情報とオプション"
     },
     "quick_nav": {
         "plan": "着物プラン",
@@ -24,6 +30,58 @@
         "plans": {
             "subtitle": "人気のセレクション",
             "title": "着物プラン一覧"
+        }
+    },
+    "booking": {
+        "nav": {
+            "step1": "1. プラン・人数を選択",
+            "step2": "2. 日付と時間",
+            "step3": "3. 情報とオプション",
+            "step4": "4. 完了"
+        },
+        "common": {
+            "per_person": "/ 人",
+            "guest_count": "%d 名様",
+            "guest_count_plural": "%d 名様",
+            "guest_count_10_plus": "10名以上",
+            "total": "合計",
+            "back": "戻る",
+            "confirm_booking": "予約を確定する",
+            "required": "必須",
+            "shop": "店舗",
+            "date_time": "日時",
+            "guests": "人数",
+            "tax_included": "(税込み)",
+            "mobile_total": "合計（金額＋オプション）"
+        },
+        "step1": {
+            "title": "各プランの人数を選択してください",
+            "quantity_label": "人数：",
+            "selected_label": "選択済み人数:",
+            "submit": "続ける：日時を選択 →",
+            "validation_no_plan": "少なくとも1つのプランを選択してください！"
+        },
+        "step2": {
+            "title": "%d 名様の日時を選択してください",
+            "title_plural": "%d 名様の日時を選択してください",
+            "date_label": "来店日：",
+            "timeslot_label": "時間帯を選択：",
+            "time_full": "満席",
+            "time_available": "空きあり",
+            "selected_plans": "選択したプラン",
+            "total_label": "合計（%d 名様）：",
+            "total_label_plural": "合計（%d 名様）：",
+            "next_cta": "お客様情報を入力 →"
+        },
+        "step3": {
+            "info_title": "1. お客様情報をご入力ください。",
+            "fullname": "お名前",
+            "phone": "電話番号",
+            "option_title": "2. 希望するオプションをお選びください。",
+            "guest_label": "お客様 %{number}（%{plan}）",
+            "base_price": "基本料金：",
+            "addon_title": "追加サービス（ヘアセット、保険など）",
+            "payment_details": "お支払い内訳"
         }
     }
 }
