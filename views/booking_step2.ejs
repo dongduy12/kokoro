@@ -23,13 +23,13 @@
         
         <div class="hidden lg:block mb-10">
             <ol class="flex gap-4">
-                <li class="text-sub1">1. Chọn Gói</li>
+                <li class="text-sub1"><%= __('booking.nav.step1') %></li>
                 <li class="font-bold text-accent relative pl-4">
                     <span class="absolute top-2 left-0 w-2 h-2 bg-accent rounded-full"></span>
-                    2. Ngày và giờ
+                    <%= __('booking.nav.step2') %>
                 </li>
-                <li class="text-sub1">3. Thông tin</li>
-                <li class="text-sub1">4. Hoàn tất</li>
+                <li class="text-sub1"><%= __('booking.nav.step3') %></li>
+                <li class="text-sub1"><%= __('booking.nav.step4') %></li>
             </ol>
         </div>
 
@@ -41,17 +41,17 @@
                 
                 <div>
                     <h2 class="text-xl font-bold border-b border-dashed border-sub1 pb-3 mb-6">
-                        Vui lòng chọn ngày và giờ cho <%= totalQuantity %> khách
+                        <%= __n('booking.step2.title', totalQuantity, totalQuantity) %>
                     </h2>
 
                     <div class="bg-white p-6 rounded-3xl shadow-sm mb-6">
-                        <label class="block font-bold mb-2 text-lg">Ngày đến cửa hàng:</label>
+                        <label class="block font-bold mb-2 text-lg"><%= __('booking.step2.date_label') %></label>
                         <input type="date" name="date" required 
                                class="w-full border border-gray-300 p-4 rounded-xl text-lg focus:border-accent focus:ring-1 focus:ring-accent outline-none">
                     </div>
 
                     <div class="bg-white p-6 rounded-3xl shadow-sm">
-                        <h3 class="font-bold mb-4">Chọn khung giờ:</h3>
+                        <h3 class="font-bold mb-4"><%= __('booking.step2.timeslot_label') %></h3>
                         <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
                             <% const timeSlots = ["09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00"]; %>
                             <% timeSlots.forEach((time, index) => { %>
@@ -59,7 +59,7 @@
                                     <input type="radio" name="time" value="<%= time %>" class="time-radio hidden" required <%= index < 2 ? 'disabled' : '' %> >
                                     <div class="border border-sub1 rounded-lg py-3 text-center transition hover:border-accent hover:text-accent">
                                         <div class="text-lg font-bold"><%= time %></div>
-                                        <div class="text-xs mt-1"><%= index < 2 ? 'Hết chỗ' : 'Còn chỗ' %></div>
+                                        <div class="text-xs mt-1"><%= index < 2 ? __('booking.step2.time_full') : __('booking.step2.time_available') %></div>
                                     </div>
                                 </label>
                             <% }) %>
@@ -69,7 +69,7 @@
 
                 <div class="hidden lg:block">
                     <div class="bg-white rounded-xl p-6 shadow-lg sticky top-24 border border-gray-100">
-                        <h3 class="font-bold text-xl mb-4 border-b pb-2">Gói đã chọn</h3>
+                        <h3 class="font-bold text-xl mb-4 border-b pb-2"><%= __('booking.step2.selected_plans') %></h3>
                         
                         <div class="space-y-4 mb-4">
                             <% selectedPlans.forEach(p => { %>
@@ -78,7 +78,7 @@
                                     <div class="flex-1">
                                         <p class="font-bold text-sm text-main"><%= p.title %></p>
                                         <div class="flex justify-between text-xs text-sub1 mt-1">
-                                            <span>x <%= p.qty %> khách</span>
+                                            <span>x <%= __n('booking.common.guest_count', p.qty, p.qty) %></span>
                                             <span class="text-accent font-bold">¥<%= p.subTotal.toLocaleString() %></span>
                                         </div>
                                     </div>
@@ -87,7 +87,7 @@
                         </div>
 
                         <div class="border-t pt-4 mt-4 flex justify-between items-end">
-                            <span class="font-bold text-main">Tổng cộng (<%= totalQuantity %>):</span>
+                            <span class="font-bold text-main"><%= __n('booking.step2.total_label', totalQuantity, totalQuantity) %></span>
                             <span class="text-2xl font-bold text-accent">¥<%= totalPrice.toLocaleString() %></span>
                         </div>
                     </div>
@@ -98,16 +98,16 @@
             <div class="fixed bottom-0 left-0 w-full bg-white border-t p-4 shadow-[0_-4px_10px_rgba(0,0,0,0.1)] z-50">
                 <div class="max-w-[1000px] mx-auto grid grid-cols-2 gap-4 md:flex md:justify-between md:items-center">
                     <div class="hidden md:block">
-                        <span class="text-gray-500">Tổng cộng:</span>
+                        <span class="text-gray-500"><%= __('booking.common.total') %></span>
                         <span class="text-2xl font-bold text-accent ml-2">¥<%= totalPrice.toLocaleString() %></span>
                     </div>
                     
                     <a href="/booking-step1" class="border border-sub1 text-main font-bold py-3 rounded-full text-center hover:bg-gray-100 transition">
-                        Quay lại
+                        <%= __('booking.common.back') %>
                     </a>
                     
                     <button type="submit" class="bg-gradient-to-r from-pink-500 to-[#BA2636] text-white font-bold py-3 rounded-full shadow-lg hover:shadow-xl hover:-translate-y-1 transition">
-                        Nhập thông tin khách hàng →
+                        <%= __('booking.step2.next_cta') %>
                     </button>
                 </div>
             </div>

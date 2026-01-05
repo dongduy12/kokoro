@@ -17,12 +17,12 @@
 
     <main class="max-w-[1000px] mx-auto px-5 mt-10">
         <div class="flex justify-between items-center text-sm border-b pb-4 mb-8">
-            <span class="font-bold text-accent">1. Chọn Gói & Số lượng</span>
-            <span class="text-gray-400">2. Ngày & Giờ</span>
-            <span class="text-gray-400">3. Thông tin</span>
+            <span class="font-bold text-accent"><%= __('booking.nav.step1') %></span>
+            <span class="text-gray-400"><%= __('booking.nav.step2') %></span>
+            <span class="text-gray-400"><%= __('booking.nav.step3') %></span>
         </div>
 
-        <h1 class="text-2xl font-bold text-center mb-8">Vui lòng chọn số lượng cho từng gói</h1>
+        <h1 class="text-2xl font-bold text-center mb-8"><%= __('booking.step1.title') %></h1>
 
         <form action="/booking-step2" method="POST" id="bookingForm">
             
@@ -41,23 +41,23 @@
                                 <h3 class="text-xl font-bold text-main"><%= plan.title %></h3>
                                 <div class="text-right">
                                     <span class="text-accent text-2xl font-bold">¥<%= plan.price.toLocaleString() %></span>
-                                    <span class="text-xs text-main block">/ người</span>
+                                    <span class="text-xs text-main block"><%= __('booking.common.per_person') %></span>
                                 </div>
                             </div>
                             
                             <p class="text-sm text-sub1 line-clamp-2 mt-2 mb-4"><%= plan.desc %></p>
 
                             <div class="mt-auto bg-gray-50 p-3 rounded-lg flex items-center justify-between">
-                                <span class="font-bold text-sm">Số lượng khách:</span>
+                                <span class="font-bold text-sm"><%= __('booking.step1.quantity_label') %></span>
                                 <div class="relative w-32">
                                     <select name="plan_<%= plan.id %>" class="quantity-select w-full border border-gray-300 p-2 rounded-lg font-bold text-center focus:border-accent outline-none">
                                         <option value="0">0</option>
-                                        <option value="1">1 người</option>
-                                        <option value="2">2 người</option>
-                                        <option value="3">3 người</option>
-                                        <option value="4">4 người</option>
-                                        <option value="5">5 người</option>
-                                        <option value="10">10+ người</option>
+                                        <option value="1"><%= __n('booking.common.guest_count', 1) %></option>
+                                        <option value="2"><%= __n('booking.common.guest_count', 2) %></option>
+                                        <option value="3"><%= __n('booking.common.guest_count', 3) %></option>
+                                        <option value="4"><%= __n('booking.common.guest_count', 4) %></option>
+                                        <option value="5"><%= __n('booking.common.guest_count', 5) %></option>
+                                        <option value="10"><%= __('booking.common.guest_count_10_plus') %></option>
                                     </select>
                                 </div>
                             </div>
@@ -69,11 +69,11 @@
             <div class="fixed bottom-0 left-0 w-full bg-white border-t p-4 shadow-[0_-4px_10px_rgba(0,0,0,0.1)] z-50">
                 <div class="max-w-[1000px] mx-auto flex justify-between items-center">
                     <div>
-                        <div class="text-sm text-gray-500">Đã chọn: <span id="totalQty" class="font-bold text-black">0</span> người</div>
+                        <div class="text-sm text-gray-500"><%= __('booking.step1.selected_label') %> <span id="totalQty" class="font-bold text-black">0</span></div>
                         <div class="text-2xl font-bold text-accent">¥<span id="totalPrice">0</span></div>
                     </div>
                     <button type="submit" id="submitBtn" disabled class="bg-gray-400 text-white font-bold py-3 px-8 rounded-full shadow-lg transition transform hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed">
-                        Tiếp tục: Chọn ngày giờ →
+                        <%= __('booking.step1.submit') %>
                     </button>
                 </div>
             </div>

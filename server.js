@@ -139,7 +139,7 @@ app.get('/', async (req, res) => {
         shops: shops,
         galleryImages: galleryImages,
         heroImages: heroImages, // 👈 Truyền biến số nhiều (Array) sang View
-        pageTitle: "Cho thuê Kimono Kokoro"
+        pageTitle: res.__('titles.home')
     });
 });
 
@@ -172,7 +172,7 @@ app.get('/booking-step1', async (req, res) => {
     const dbPlans = await Plan.find({ isVisible: true });
     res.render('booking_step1', { 
         plans: dbPlans, 
-        pageTitle: "Chọn Gói Kimono"
+        pageTitle: res.__('titles.booking_step1')
     });
 });
 
@@ -211,7 +211,7 @@ app.post('/booking-step2', async (req, res) => {
     }
 
     if (selectedPlans.length === 0) {
-        return res.send("<script>alert('Vui lòng chọn ít nhất 1 gói!'); window.history.back();</script>");
+        return res.send(`<script>alert('${res.__('booking.step1.validation_no_plan')}'); window.history.back();</script>`);
     }
 
     res.render('booking_step2', { 
@@ -219,7 +219,7 @@ app.post('/booking-step2', async (req, res) => {
         totalQuantity: totalQuantity,
         totalPrice: totalPrice,
         shop: shops[0],
-        pageTitle: "Chọn Ngày & Giờ" 
+        pageTitle: res.__('titles.booking_step2') 
     });
 });
 
@@ -238,7 +238,7 @@ app.post('/booking-step3', (req, res) => {
         bookingInfo: { date, time, totalQuantity },
         options: options,
         baseTotal: baseTotal,
-        pageTitle: "Nhập thông tin khách hàng"
+        pageTitle: res.__('titles.booking_step3')
     });
 });
 
