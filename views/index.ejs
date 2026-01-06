@@ -76,9 +76,9 @@
         </div>
 
         <div class="bg-[#EFE5E3] shadow-sm transition-colors duration-300">
-            <div class="max-w-7xl mx-auto px-5 h-[46px] md:h-[54px] flex items-center justify-between">
+            <div class="max-w-7xl mx-auto px-5 h-[64px] md:h-[80px] flex items-center justify-between">
                 
-                <a href="/" class="h-9 md:h-12 flex items-center hover:opacity-80 transition">
+                <a href="/" class="h-14 md:h-20 flex items-center hover:opacity-80 transition">
                     <img src="/img/common/logo.svg" alt="Logo" class="h-full w-auto object-contain">
                 </a>
 
@@ -223,7 +223,11 @@
                                     <span class="text-accent text-2xl font-bold font-serif">¥<%= plan.price.toLocaleString() %></span>
                                     <span class="text-sm line-through text-gray-400">¥<%= plan.originalPrice.toLocaleString() %></span>
                                 </div>
-                                <p class="text-sm text-gray-500 leading-relaxed mb-6 flex-1"><%= plan.desc %></p>
+                                <div class="plan-desc-wrapper relative mb-6 flex-1">
+                                    <p class="collapsible-desc text-sm text-gray-500 leading-relaxed"><%= plan.desc %></p>
+                                    <div class="desc-fade absolute bottom-0 left-0 right-0 h-10 pointer-events-none bg-gradient-to-t from-white via-white/80 to-transparent hidden"></div>
+                                    <button type="button" class="desc-toggle mt-2 text-accent font-bold text-sm hidden">Xem thêm</button>
+                                </div>
                                 
                                 <a href="/plan/<%= plan.id %>" class="block w-full text-center py-3 border border-main text-main rounded-full font-bold hover:bg-main hover:text-white transition duration-300">
                                     <%= __('home.plans.view_detail') %>
@@ -534,7 +538,7 @@
     </section>
     <footer class="bg-[#2c2725] text-white/80 py-16 text-center border-t-4 border-accent">
         <div class="max-w-4xl mx-auto px-5">
-            <img src="/img/common/logo.svg" alt="Logo" class="h-10 mx-auto mb-8 brightness-0 invert opacity-50">
+            <img src="/img/common/logo.svg" alt="Logo" class="h-14 mx-auto mb-8 brightness-0 invert opacity-50">
             <div class="flex justify-center gap-6 mb-8 text-sm">
                 <a href="#" class="hover:text-white"><%= __('home.footer.about') %></a>
                 <a href="#" class="hover:text-white"><%= __('home.footer.privacy') %></a>
@@ -581,6 +585,52 @@
             // Tắt chức năng vuốt của Slide cha khi vuốt Slide con (Tránh lỗi trên điện thoại)
             nested: true, 
         });
+
+        const setupCollapsibleDescriptions = () => {
+            const maxLines = 3;
+
+            document.querySelectorAll('.collapsible-desc').forEach(desc => {
+                const wrapper = desc.closest('.plan-desc-wrapper');
+                if (!wrapper || wrapper.dataset.processed === 'true') return;
+
+                const fade = wrapper.querySelector('.desc-fade');
+                const toggle = wrapper.querySelector('.desc-toggle');
+                const lineHeight = parseFloat(getComputedStyle(desc).lineHeight) || 20;
+                const maxHeight = lineHeight * maxLines;
+
+                if (desc.scrollHeight <= maxHeight + 1) {
+                    desc.style.maxHeight = 'none';
+                    fade?.classList.add('hidden');
+                    toggle?.classList.add('hidden');
+                    wrapper.dataset.processed = 'true';
+                    return;
+                }
+
+                desc.style.maxHeight = `${maxHeight}px`;
+                desc.style.overflow = 'hidden';
+                fade?.classList.remove('hidden');
+                toggle?.classList.remove('hidden');
+                toggle.textContent = 'Xem thêm';
+
+                toggle.addEventListener('click', () => {
+                    const isExpanded = desc.classList.toggle('expanded');
+                    if (isExpanded) {
+                        desc.style.maxHeight = 'none';
+                        fade?.classList.add('hidden');
+                        toggle.textContent = 'Thu gọn';
+                    } else {
+                        desc.style.maxHeight = `${maxHeight}px`;
+                        fade?.classList.remove('hidden');
+                        toggle.textContent = 'Xem thêm';
+                        desc.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    }
+                });
+
+                wrapper.dataset.processed = 'true';
+            });
+        };
+
+        setupCollapsibleDescriptions();
     </script>
     <div class="fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 p-3 shadow-[0_-4px_20px_rgba(0,0,0,0.1)] z-50 md:hidden flex justify-between items-center gap-3">
         
