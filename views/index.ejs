@@ -39,11 +39,11 @@
                         </svg>
                         <span><%= __('header_opening_hours') %></span>
                     </div>
-                    <a href="tel:0901234567" class="flex items-center gap-2 hover:text-gold transition group">
+                    <a href="tel:08096310559" class="flex items-center gap-2 hover:text-gold transition group">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 md:h-4 md:w-4 text-gold group-hover:animate-bounce" viewBox="0 0 20 20" fill="currentColor">
                             <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
                         </svg>
-                        <span class="underline decoration-gold decoration-1 underline-offset-2">090-1234-5678</span>
+                        <span class="underline decoration-gold decoration-1 underline-offset-2">080-9631-0559</span>
                     </a>
                 </div>
 
@@ -145,35 +145,34 @@
 
     <div id="quick-nav-placeholder" class="h-0"></div>
 
-<div id="quick-nav" class="py-4 bg-white border-b border-gray-100 shadow-sm z-40 transition-all duration-300 w-full">
+    <div id="quick-nav" class="py-4 bg-white border-b border-gray-100 shadow-sm z-40 transition-all duration-300 w-full">
     <div class="max-w-7xl mx-auto px-5">
-        <div class="flex flex-nowrap gap-2 overflow-x-auto md:overflow-visible md:justify-center md:gap-6">
-            <a href="#plans" class="nav-item group flex-shrink-0 flex flex-col md:flex-row items-center justify-center gap-1 md:gap-2 p-2 rounded-lg hover:bg-red-50 transition cursor-pointer">
-                <span class="text-xl">👘</span>
-                        <span class="text-xs md:text-sm font-bold text-gray-600 group-hover:text-accent"><%= __('quick_nav.plan') %></span>
-                    </a>
+        <div class="flex flex-nowrap w-full gap-2 overflow-x-auto md:overflow-visible">
             
-            <a href="#gallery" class="nav-item group flex-shrink-0 flex flex-col md:flex-row items-center justify-center gap-1 md:gap-2 p-2 rounded-lg hover:bg-red-50 transition cursor-pointer">
-                <span class="text-xl">📸</span> <span class="text-xs md:text-sm font-bold text-gray-600 group-hover:text-accent"><%= __('quick_nav.gallery') %></span>
+            <a href="#plans" class="nav-item group flex-1 min-w-[80px] flex flex-col md:flex-row items-center justify-center gap-1 md:gap-2 p-2 rounded-lg hover:bg-red-50 transition cursor-pointer text-center">
+                <span class="text-xl">👘</span>
+                <span class="text-xs md:text-sm font-bold text-gray-600 group-hover:text-accent"><%= __('quick_nav.plan') %></span>
+            </a>
+            
+            <a href="#gallery" class="nav-item group flex-1 min-w-[80px] flex flex-col md:flex-row items-center justify-center gap-1 md:gap-2 p-2 rounded-lg hover:bg-red-50 transition cursor-pointer text-center">
+                <span class="text-xl">📸</span>
+                <span class="text-xs md:text-sm font-bold text-gray-600 group-hover:text-accent"><%= __('quick_nav.gallery') %></span>
             </a>
 
-            <!-- <a href="#set-contents" class="nav-item group flex-shrink-0 flex flex-col md:flex-row items-center justify-center gap-1 md:gap-2 p-2 rounded-lg hover:bg-red-50 transition cursor-pointer">
-                <span class="text-xl">🎒</span>
-                <span class="text-xs md:text-sm font-bold text-gray-600 group-hover:text-accent"><%= __('quick_nav.set_contents') %></span>
-            </a> -->
-
-            <a href="#flow" class="nav-item group flex-shrink-0 flex flex-col md:flex-row items-center justify-center gap-1 md:gap-2 p-2 rounded-lg hover:bg-red-50 transition cursor-pointer">
+            <a href="#flow" class="nav-item group flex-1 min-w-[80px] flex flex-col md:flex-row items-center justify-center gap-1 md:gap-2 p-2 rounded-lg hover:bg-red-50 transition cursor-pointer text-center">
                 <span class="text-xl">🔄</span>
                 <span class="text-xs md:text-sm font-bold text-gray-600 group-hover:text-accent"><%= __('quick_nav.flow') %></span>
             </a>
 
-            <a href="#faq" class="nav-item group flex-shrink-0 flex flex-col md:flex-row items-center justify-center gap-1 md:gap-2 p-2 rounded-lg hover:bg-red-50 transition cursor-pointer">
+            <a href="#faq" class="nav-item group flex-1 min-w-[80px] flex flex-col md:flex-row items-center justify-center gap-1 md:gap-2 p-2 rounded-lg hover:bg-red-50 transition cursor-pointer text-center">
                 <span class="text-xl">❓</span>
                 <span class="text-xs md:text-sm font-bold text-gray-600 group-hover:text-accent"><%= __('quick_nav.faq') %></span>
             </a>
         </div>
     </div>
 </div>
+
+
         <section id="plans" class="py-20 px-5">
             <div class="max-w-6xl mx-auto">
                 <div class="text-center mb-16">
