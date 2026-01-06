@@ -15,20 +15,20 @@
         <a href="/"><img src="/img/common/logo.svg" alt="logo" class="h-12"></a>
     </header>
 
-    <main class="max-w-[1000px] mx-auto px-5 mt-10">
-        <div class="flex justify-between items-center text-sm border-b pb-4 mb-8">
+    <main class="max-w-[1000px] mx-auto px-5">
+        <div class="flex justify-between items-center text-sm border-b mb-4">
             <span class="font-bold text-accent"><%= __('booking.nav.step1') %></span>
             <span class="text-gray-400"><%= __('booking.nav.step2') %></span>
             <span class="text-gray-400"><%= __('booking.nav.step3') %></span>
         </div>
 
-        <h1 class="text-2xl font-bold text-center mb-8"><%= __('booking.step1.title') %></h1>
+        <h1 class="text-2xl font-bold text-center mb-4"><%= __('booking.step1.title') %></h1>
 
         <form action="/booking-step2" method="POST" id="bookingForm">
             
             <div class="grid gap-6">
                 <% plans.forEach(plan => { %>
-                    <div class="bg-white shadow-sm rounded-2xl overflow-hidden md:flex p-4 border border-transparent transition hover:shadow-lg group plan-card" 
+                    <div class="bg-white shadow-sm rounded-2xl overflow-hidden md:flex border border-transparent transition hover:shadow-lg group plan-card" 
                          data-price="<%= plan.price %>">
                         
                         <div class="md:w-[200px] h-[200px] md:h-auto flex-shrink-0 rounded-lg overflow-hidden relative">

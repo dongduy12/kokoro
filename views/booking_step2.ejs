@@ -19,9 +19,9 @@
         <a href="/"><img src="/img/common/logo.svg" alt="logo" class="h-12"></a>
     </header>
 
-    <main class="max-w-[1260px] mx-auto px-5 md:px-8 mt-8">
+    <main class="max-w-[1260px] mx-auto px-5 md:px-8 mt-4">
         
-        <div class="hidden lg:block mb-10">
+        <div class="hidden lg:block mb-6">
             <ol class="flex gap-4">
                 <li class="text-sub1"><%= __('booking.nav.step1') %></li>
                 <li class="font-bold text-accent relative pl-4">
@@ -51,7 +51,7 @@
                     </div>
 
                     <div class="bg-white p-6 rounded-3xl shadow-sm">
-                        <h3 class="font-bold mb-4"><%= __('booking.step2.timeslot_label') %></h3>
+                        <h3 class="font-bold"><%= __('booking.step2.timeslot_label') %></h3>
                         <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
                             <% const timeSlots = ["09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00"]; %>
                             <% timeSlots.forEach((time, index) => { %>
@@ -69,9 +69,9 @@
 
                 <div class="hidden lg:block">
                     <div class="bg-white rounded-xl p-6 shadow-lg sticky top-24 border border-gray-100">
-                        <h3 class="font-bold text-xl mb-4 border-b pb-2"><%= __('booking.step2.selected_plans') %></h3>
+                        <h3 class="font-bold text-xl border-b pb-2"><%= __('booking.step2.selected_plans') %></h3>
                         
-                        <div class="space-y-4 mb-4">
+                        <div class="space-y-4">
                             <% selectedPlans.forEach(p => { %>
                                 <div class="flex gap-3">
                                     <img src="<%= p.image %>" class="w-12 h-12 rounded object-cover">
@@ -95,7 +95,7 @@
 
             </div>
 
-            <div class="fixed bottom-0 left-0 w-full bg-white border-t p-4 shadow-[0_-4px_10px_rgba(0,0,0,0.1)] z-50">
+            <div class="fixed bottom-0 left-0 w-full bg-white border-t p-3 shadow-[0_-4px_10px_rgba(0,0,0,0.1)] z-50">
                 <div class="max-w-[1000px] mx-auto grid grid-cols-2 gap-4 md:flex md:justify-between md:items-center">
                     <div class="hidden md:block">
                         <span class="text-gray-500"><%= __('booking.common.total') %></span>
