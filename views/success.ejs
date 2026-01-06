@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="<%= getLocale() %>">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đặt chỗ thành công</title>
+    <title><%= __('success.title') %></title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 h-screen flex items-center justify-center">
@@ -12,15 +12,15 @@
         <div class="w-20 h-20 bg-green-100 text-green-500 rounded-full flex items-center justify-center mx-auto mb-6 text-4xl">
             ✓
         </div>
-        <h1 class="text-3xl font-bold text-gray-800 mb-2">Cảm ơn bạn!</h1>
+        <h1 class="text-3xl font-bold text-gray-800 mb-2"><%= __('success.thanks') %></h1>
         <p class="text-gray-600 mb-6">
-            Chúng tôi đã nhận được yêu cầu đặt chỗ của <strong><%= info.fullname %></strong>.<br>
-            Gói: <strong><%= info.planName %></strong><br>
-            Ngày: <strong><%= info.date %></strong>
+            <%= __('success.received', { name: info.fullname }) %><br>
+            <%= __('success.plan', { plan: info.planName }) %><br>
+            <%= __('success.date', { date: info.date }) %>
         </p>
         
         <a href="/" class="inline-block bg-[#BA2636] text-white px-8 py-3 rounded-full font-bold hover:opacity-90">
-            Trở về trang chủ
+            <%= __('success.back_home') %>
         </a>
     </div>
 

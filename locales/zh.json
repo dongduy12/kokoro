@@ -83,5 +83,128 @@
             "addon_title": "附加服务（做发型、保险等）",
             "payment_details": "付款明细"
         }
+    },
+    "home": {
+        "plans": {
+            "view_detail": "查看详情"
+        },
+        "set_contents": {
+            "subtitle": "套餐内容",
+            "title": "租赁包含什么",
+            "description": "完美出行所需的一切都已包含在价格内。",
+            "kimono_title": "和服套装内容",
+            "kimono_alt": "和服套装详情",
+            "kimono_item1": "和服（按所选方案）",
+            "kimono_item2": "腰带（Obi）",
+            "kimono_item3": "草履鞋 & 脚趾袜（Tabi）",
+            "kimono_item4": "日式手袋",
+            "kimono_item5": "和服内衬（Nagajuban、Hadajuban）",
+            "kimono_item6": "专业穿着服务",
+            "yukata_title": "浴衣套装内容",
+            "yukata_alt": "浴衣套装详情",
+            "yukata_item1": "浴衣（夏季）",
+            "yukata_item2": "腰带（Obi）",
+            "yukata_item3": "木屐（Geta）",
+            "yukata_item4": "束口袋",
+            "yukata_item5": "轻薄内衣（Hadagi）",
+            "yukata_item6": "专业穿着服务",
+            "note": "提示：基础做发已包含（适用于女性）。复杂发型或高端配饰可能需额外收费。"
+        },
+        "flow": {
+            "subtitle": "便捷流程",
+            "title": "和服租赁流程",
+            "step1_title": "预约 & 到店",
+            "step1_desc": "在线预约以保留名额。空手到店即可，无需自带物品！",
+            "step2_title": "选择 & 穿着",
+            "step2_desc": "从多种款式中挑选心仪的和服。店员将为您专业着装（约20分钟）。",
+            "step3_title": "做发 & 配饰",
+            "step3_desc": "专业发型（免费/付费）。选择搭配的手袋和木屐。",
+            "step4_title": "街拍 & 逛街",
+            "step4_desc": "漫步古街拍美照。行李可放心寄存于店内。",
+            "step5_title": "归还服装",
+            "step5_desc": "请于闭店前归还，或选择次日/酒店归还服务。",
+            "cta_title": "准备好了吗？",
+            "cta_desc": "立即预约，享受线上优惠！",
+            "cta_button": "立即预约"
+        },
+        "gallery": {
+            "subtitle": "图库",
+            "title": "我们的顾客",
+            "profile": "@kokoro_kimono",
+            "overlay": "查看照片",
+            "more_button": "查看更多作品 →",
+            "alt": "穿着和服的顾客"
+        },
+        "shop": {
+            "heading": "门店位置",
+            "description": "欢迎光临，体验最佳服务",
+            "address": "地址：",
+            "hours": "营业时间：",
+            "hotline": "联系电话：",
+            "cta": "立即预约"
+        },
+        "faq": {
+            "subtitle": "帮助",
+            "title": "常见问题",
+            "q1": {
+                "question": "取消预约需要费用吗？",
+                "answer": "提前2天取消：免费。提前1天或当天取消：收取100%费用。如计划有变，请尽快联系。"
+            },
+            "q2": {
+                "question": "到店需要带什么？",
+                "answer": "无需携带任何物品！租赁套餐已包含和服、腰带、手袋、木屐以及基础做发。"
+            },
+            "q3": {
+                "question": "穿着和服需要多久？",
+                "answer": "挑选与穿着通常约30-45分钟。旺季可能稍长，建议提前10分钟抵达。"
+            },
+            "q4": {
+                "question": "有适合高个或外国人的尺码吗？",
+                "answer": "有的！我们提供 S 至 3XL 尺码，适合最高 190cm 的身高。请放心选择。"
+            }
+        },
+        "footer": {
+            "about": "关于我们",
+            "privacy": "隐私政策",
+            "contact": "联系我们"
+        },
+        "sticky": {
+            "call_now": "立即致电",
+            "book_now": "立即预约"
+        }
+    },
+    "detail": {
+        "back": "返回",
+        "price_label": "套餐价格",
+        "includes_title": "本方案包含：",
+        "include0": "和服/浴衣",
+        "include1": "腰带（Obi）",
+        "include2": "草履鞋 & 脚趾袜（Tabi）",
+        "include3": "日式手袋",
+        "include4": "穿着服务",
+        "include5": "基础做发",
+        "booking_title": "预约信息",
+        "fullname": "姓名",
+        "fullname_placeholder": "张三",
+        "date": "到店日期",
+        "guests": "人数",
+        "phone": "手机号",
+        "submit": "确认预约"
+    },
+    "success": {
+        "title": "预约成功",
+        "thanks": "感谢您！",
+        "received": "我们已收到 %{name} 的预约请求。",
+        "plan": "方案：%{plan}",
+        "date": "日期：%{date}",
+        "back_home": "返回首页"
+    },
+    "login": {
+        "title": "管理员登录",
+        "heading": "管理后台登录",
+        "username": "账号",
+        "password": "密码",
+        "submit": "登录",
+        "back_home": "← 返回首页"
     }
 }

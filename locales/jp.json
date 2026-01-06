@@ -83,5 +83,128 @@
             "addon_title": "追加サービス（ヘアセット、保険など）",
             "payment_details": "お支払い内訳"
         }
+    },
+    "home": {
+        "plans": {
+            "view_detail": "詳細を見る"
+        },
+        "set_contents": {
+            "subtitle": "セット内容",
+            "title": "レンタルに含まれるもの",
+            "description": "完璧なコーデに必要なものはすべて料金に含まれています。",
+            "kimono_title": "着物セット内容",
+            "kimono_alt": "着物セットの詳細",
+            "kimono_item1": "着物（選択プラン）",
+            "kimono_item2": "帯（帯留め）",
+            "kimono_item3": "草履＆足袋（Tabi）",
+            "kimono_item4": "和装バッグ",
+            "kimono_item5": "肌着・長襦袢",
+            "kimono_item6": "プロの着付けサービス",
+            "yukata_title": "浴衣セット内容",
+            "yukata_alt": "浴衣セットの詳細",
+            "yukata_item1": "浴衣（夏用）",
+            "yukata_item2": "帯（Obi）",
+            "yukata_item3": "下駄（Geta）",
+            "yukata_item4": "巾着袋",
+            "yukata_item5": "薄手の肌着（Hadagi）",
+            "yukata_item6": "プロの着付けサービス",
+            "note": "注意：基本的なヘアセットは含まれています（女性向け）。複雑なヘアスタイルや高級アクセサリーは追加料金になる場合があります。"
+        },
+        "flow": {
+            "subtitle": "かんたん・便利",
+            "title": "着物レンタルの流れ",
+            "step1_title": "予約 & 来店",
+            "step1_desc": "オンライン予約で枠を確保。手ぶらでご来店いただけます。",
+            "step2_title": "選んで着付け",
+            "step2_desc": "豊富な着物からお気に入りを選択。スタッフが約20分で着付けします。",
+            "step3_title": "ヘアセット & 小物",
+            "step3_desc": "プロのヘアセット（無料／有料）。バッグや下駄もコーディネート。",
+            "step4_title": "街歩き & 撮影",
+            "step4_desc": "街並みを散策しながら写真撮影を楽しめます。荷物は店内にお預けください。",
+            "step5_title": "返却",
+            "step5_desc": "閉店時間までに返却、または翌日・ホテル返却オプションを選択できます。",
+            "cta_title": "準備はできましたか？",
+            "cta_desc": "今すぐ予約してオンライン割引をゲット！",
+            "cta_button": "今すぐ予約"
+        },
+        "gallery": {
+            "subtitle": "ギャラリー",
+            "title": "お客様スナップ",
+            "profile": "@kokoro_kimono",
+            "overlay": "写真を見る",
+            "more_button": "もっと見る →",
+            "alt": "着物を着たお客様"
+        },
+        "shop": {
+            "heading": "店舗情報",
+            "description": "最高のサービスを体験しにお越しください",
+            "address": "住所：",
+            "hours": "営業時間：",
+            "hotline": "電話：",
+            "cta": "ここで予約"
+        },
+        "faq": {
+            "subtitle": "ヘルプ",
+            "title": "よくある質問",
+            "q1": {
+                "question": "キャンセル料はかかりますか？",
+                "answer": "2日前までのキャンセル：無料。前日または当日キャンセル：料金の100％。予定が変わる場合はお早めにご連絡ください。"
+            },
+            "q2": {
+                "question": "来店時に何を持っていく必要がありますか？",
+                "answer": "手ぶらで大丈夫です！プランには着物、帯、バッグ、下駄、基本ヘアセットが含まれています。"
+            },
+            "q3": {
+                "question": "着付けにはどれくらい時間がかかりますか？",
+                "answer": "選ぶ時間も含めて約30〜45分です。繁忙期は少し長くなる場合があるため、10分ほど早めのご来店をおすすめします。"
+            },
+            "q4": {
+                "question": "大柄の方や外国の方向けのサイズはありますか？",
+                "answer": "はい、S〜3XLまでご用意しており、身長190cmまで対応可能です。ご安心ください。"
+            }
+        },
+        "footer": {
+            "about": "私たちについて",
+            "privacy": "プライバシーポリシー",
+            "contact": "お問い合わせ"
+        },
+        "sticky": {
+            "call_now": "今すぐ電話",
+            "book_now": "今すぐ予約"
+        }
+    },
+    "detail": {
+        "back": "戻る",
+        "price_label": "プラン料金",
+        "includes_title": "このプランに含まれるもの：",
+        "include0": "着物／浴衣",
+        "include1": "帯（Obi）",
+        "include2": "草履＆足袋（Tabi）",
+        "include3": "和装バッグ",
+        "include4": "着付けサービス",
+        "include5": "基本ヘアセット",
+        "booking_title": "予約情報",
+        "fullname": "お名前",
+        "fullname_placeholder": "山田太郎",
+        "date": "来店日",
+        "guests": "人数",
+        "phone": "電話番号",
+        "submit": "予約を確定する"
+    },
+    "success": {
+        "title": "予約が完了しました",
+        "thanks": "ありがとうございます！",
+        "received": "%{name}様の予約を受け付けました。",
+        "plan": "プラン：%{plan}",
+        "date": "日付：%{date}",
+        "back_home": "トップへ戻る"
+    },
+    "login": {
+        "title": "管理者ログイン",
+        "heading": "管理画面ログイン",
+        "username": "ユーザー名",
+        "password": "パスワード",
+        "submit": "ログイン",
+        "back_home": "← トップへ戻る"
     }
 }
