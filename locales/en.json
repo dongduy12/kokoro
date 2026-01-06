@@ -83,5 +83,128 @@
             "addon_title": "Add services (Hair, Insurance...)",
             "payment_details": "Payment details"
         }
+    },
+    "home": {
+        "plans": {
+            "view_detail": "View details"
+        },
+        "set_contents": {
+            "subtitle": "Details",
+            "title": "What's Included",
+            "description": "Everything you need for the perfect look is included in the price.",
+            "kimono_title": "Kimono set contents",
+            "kimono_alt": "Kimono set details",
+            "kimono_item1": "Kimono (selected plan)",
+            "kimono_item2": "Obi belt",
+            "kimono_item3": "Zori sandals & Tabi socks",
+            "kimono_item4": "Japanese handbag",
+            "kimono_item5": "Kimono undergarments (Nagajuban, Hadajuban)",
+            "kimono_item6": "Professional dressing service",
+            "yukata_title": "Yukata set contents",
+            "yukata_alt": "Yukata set details",
+            "yukata_item1": "Yukata (summer wear)",
+            "yukata_item2": "Obi belt",
+            "yukata_item3": "Geta wooden sandals",
+            "yukata_item4": "Drawstring pouch",
+            "yukata_item5": "Light undergarment (Hadagi)",
+            "yukata_item6": "Professional dressing service",
+            "note": "Note: Basic hairstyling is included (for women). Complex styles or premium accessories may incur extra fees."
+        },
+        "flow": {
+            "subtitle": "Easy & Convenient",
+            "title": "How to Rent a Kimono",
+            "step1_title": "Book & Visit",
+            "step1_desc": "Reserve online to secure your slot. Just come to the shop—no need to bring anything!",
+            "step2_title": "Choose & Dress",
+            "step2_desc": "Pick your favorite kimono from many styles. Our experts will dress you (about 20 mins).",
+            "step3_title": "Hair & Accessories",
+            "step3_desc": "Professional hairstyling (free/paid). Choose a matching bag and Geta sandals.",
+            "step4_title": "Explore & Shoot",
+            "step4_desc": "Stroll the old town and take memorable photos. Leave your luggage safely with us.",
+            "step5_title": "Return Items",
+            "step5_desc": "Return before closing time, or choose next-day/hotel drop-off options.",
+            "cta_title": "Ready to go?",
+            "cta_desc": "Book now to get online discounts!",
+            "cta_button": "BOOK NOW"
+        },
+        "gallery": {
+            "subtitle": "Gallery",
+            "title": "Our Guests",
+            "profile": "@kokoro_kimono",
+            "overlay": "View photo",
+            "more_button": "See more collections →",
+            "alt": "Guest wearing Kimono"
+        },
+        "shop": {
+            "heading": "Shop location",
+            "description": "Visit us to enjoy the best service",
+            "address": "Address:",
+            "hours": "Opening hours:",
+            "hotline": "Hotline:",
+            "cta": "BOOK HERE"
+        },
+        "faq": {
+            "subtitle": "Support",
+            "title": "Frequently Asked Questions",
+            "q1": {
+                "question": "Is there a cancellation fee?",
+                "answer": "Cancel 2 days in advance: Free. Cancel 1 day before or same day: 100% fee. Please contact us as soon as possible if your plans change."
+            },
+            "q2": {
+                "question": "What should I bring to the shop?",
+                "answer": "You don't need to bring anything! Our rental package includes kimono, obi belt, handbag, Geta sandals, and basic hairstyling."
+            },
+            "q3": {
+                "question": "How long does dressing take?",
+                "answer": "Choosing and dressing usually takes about 30–45 minutes. During peak seasons it may take a bit longer, so please arrive 10 minutes early."
+            },
+            "q4": {
+                "question": "Do you have sizes for tall or international guests?",
+                "answer": "Yes! We have sizes from S to 3XL, suitable for heights up to 190 cm. Rest assured!"
+            }
+        },
+        "footer": {
+            "about": "About us",
+            "privacy": "Privacy policy",
+            "contact": "Contact"
+        },
+        "sticky": {
+            "call_now": "Call now",
+            "book_now": "BOOK NOW"
+        }
+    },
+    "detail": {
+        "back": "Back",
+        "price_label": "Package price",
+        "includes_title": "This plan includes:",
+        "include0": "Kimono/Yukata",
+        "include1": "Obi belt",
+        "include2": "Zori sandals & Tabi socks",
+        "include3": "Japanese handbag",
+        "include4": "Dressing service",
+        "include5": "Basic hairstyling",
+        "booking_title": "Booking details",
+        "fullname": "Full name",
+        "fullname_placeholder": "John Doe",
+        "date": "Visit date",
+        "guests": "Number of guests",
+        "phone": "Phone number",
+        "submit": "Confirm booking"
+    },
+    "success": {
+        "title": "Booking successful",
+        "thanks": "Thank you!",
+        "received": "We have received the booking request from %{name}.",
+        "plan": "Plan: %{plan}",
+        "date": "Date: %{date}",
+        "back_home": "Back to homepage"
+    },
+    "login": {
+        "title": "Admin Login",
+        "heading": "Admin Sign In",
+        "username": "Username",
+        "password": "Password",
+        "submit": "Log in",
+        "back_home": "← Back to homepage"
     }
 }
