@@ -204,7 +204,7 @@
                                         </li>
                                     <% }) %>
                                 </ul>
-                                <a href="/detail/<%= plan.id %>" class="block w-full text-center bg-gray-800 text-white py-3 rounded-lg hover:bg-accent transition duration-300 font-bold">
+                                <a href="/plan/<%= plan.id || plan._id %>" class="block w-full text-center bg-gray-800 text-white py-3 rounded-lg hover:bg-accent transition duration-300 font-bold">
                                     <%= __('view_detail') %> </a>
                             </div>
                         </div>
