@@ -185,7 +185,7 @@
                     <% plans.forEach(plan => { %>
                         <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition duration-300 transform hover:-translate-y-1">
                             <div class="h-64 overflow-hidden relative group">
-                                <img src="<%= plan.img %>" alt="<%= __(plan.title) %>" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
+                                <img src="<%= plan.image || plan.img %>" alt="<%= __(plan.title) %>" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
                                 <div class="absolute top-0 right-0 bg-accent text-white px-3 py-1 rounded-bl-lg font-bold">
                                     <%= plan.price %>
                                 </div>
@@ -198,14 +198,14 @@
                                 </p>
                                 
                                 <ul class="mb-6 space-y-2">
-                                    <% plan.features.slice(0, 3).forEach(feature => { %>
+                                    <% (plan.features || []).slice(0, 3).forEach(feature => { %>
                                         <li class="flex items-center text-sm text-gray-500">
                                             <span class="text-accent mr-2">✓</span> <%= feature %>
                                         </li>
                                     <% }) %>
                                 </ul>
-                                <a href="/detail/<%= plan.id %>" class="block w-full text-center bg-gray-800 text-white py-3 rounded-lg hover:bg-accent transition duration-300 font-bold">
-                                    <%= __('view_detail') %> </a>
+                                <a href="/plan/<%= plan.id || plan._id %>" class="block w-full text-center bg-gray-800 text-white py-3 rounded-lg hover:bg-accent transition duration-300 font-bold">
+                                    <%= __('home.plans.view_detail') %> </a>
                             </div>
                         </div>
                     <% }) %>

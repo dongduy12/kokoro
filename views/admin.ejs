@@ -148,6 +148,7 @@
 
             <div class="grid md:grid-cols-3 gap-6">
                 <% plans.forEach(plan => { %>
+                    <% const planDesc = plan.desc && typeof plan.desc === 'object' ? (plan.desc.vi || plan.desc.en || plan.desc.jp || plan.desc.zh || '') : (plan.desc || ''); %>
                     <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden flex flex-col">
                         <div class="h-40 w-full relative">
                             <img src="<%= plan.image %>" class="w-full h-full object-cover">
@@ -159,10 +160,10 @@
                                 <span class="text-red-600 font-bold text-xl">¥<%= plan.price.toLocaleString() %></span>
                                 <span class="text-gray-400 line-through text-sm">¥<%= plan.originalPrice %></span>
                             </div>
-                            <p class="text-gray-500 text-xs line-clamp-2"><%= plan.desc %></p>
+                            <p class="text-gray-500 text-xs line-clamp-2"><%= planDesc %></p>
                         </div>
                         <div class="p-4 bg-gray-50 border-t flex justify-between">
-                            <button onclick="openEditModal('<%= plan._id %>', '<%= plan.title %>', '<%= plan.price %>', '<%= plan.originalPrice %>', `<%= plan.images ? plan.images.join(', ') : '' %>`, `<%= plan.desc %>`, '<%= plan.tag %>')" 
+                            <button onclick="openEditModal('<%= plan._id %>', '<%= plan.title %>', '<%= plan.price %>', '<%= plan.originalPrice %>', `<%= plan.images ? plan.images.join(', ') : '' %>`, `<%= planDesc %>`, '<%= plan.tag %>')" 
                                 class="text-blue-600 font-bold text-sm hover:underline">Chỉnh sửa</button>
                             
                             <form action="/admin/plan/delete/<%= plan._id %>" method="POST" onsubmit="return confirm('Xóa gói này?')">
