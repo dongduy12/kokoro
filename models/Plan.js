@@ -6,7 +6,12 @@ const planSchema = new mongoose.Schema({
     originalPrice: Number,
     image: String, // Link ảnh avatar
     images: [String], // 👇 MỚI: Mảng chứa danh sách nhiều link ảnh
-    desc: String,
+    desc: {
+        vi: { type: String, default: '' }, // Tiếng Việt (Gốc)
+        en: { type: String, default: '' }, // Tiếng Anh
+        jp: { type: String, default: '' }, // Tiếng Nhật
+        zh: { type: String, default: '' }  // Tiếng Trung
+    },
     fullDesc: String,
     tag: String,
     isVisible: { type: Boolean, default: true } // Ẩn/Hiện sản phẩm

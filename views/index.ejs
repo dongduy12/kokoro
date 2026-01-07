@@ -194,9 +194,9 @@
                                 <h3 class="text-xl font-bold mb-2 text-gray-800"><%= __(plan.title) %></h3>
                                 
                                 <p class="text-gray-600 mb-4 line-clamp-2 min-h-[3rem]">
-                                    <%= __(plan.desc) %>
+                                    <%= plan.desc && plan.desc[locale] ? plan.desc[locale] : (plan.desc.vi || plan.desc) %>
                                 </p>
-
+                                
                                 <ul class="mb-6 space-y-2">
                                     <% plan.features.slice(0, 3).forEach(feature => { %>
                                         <li class="flex items-center text-sm text-gray-500">

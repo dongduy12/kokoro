@@ -1,4 +1,5 @@
 require('dotenv').config();
+const translate = require('google-translate-api-x');
 const express = require('express');
 const mongoose = require('mongoose');
 const session = require('express-session');
@@ -360,13 +361,43 @@ app.post('/admin/plan/save', requireLogin, upload.array('photos', 10), async (re
 
         const mainImage = images.length > 0 ? images[0] : (oldImage || '');
 
+        // 2. [MỚI] LOGIC TỰ ĐỘNG DỊCH THUẬT
+        // desc nhận từ form là Tiếng Việt
+        let multiLangDesc = {
+            vi: desc,
+            en: '',
+            jp: '',
+            zh: ''
+        };
+        if (desc) {
+            try {
+                // Chạy song song 3 tác vụ dịch để tiết kiệm thời gian
+                const [resEn, resJp, resZh] = await Promise.all([
+                    translate(desc, { from: 'vi', to: 'en' }),
+                    translate(desc, { from: 'vi', to: 'ja' }), // Mã Nhật là 'ja'
+                    translate(desc, { from: 'vi', to: 'zh-CN' }) // Mã Trung là 'zh-CN'
+                ]);
+
+                multiLangDesc.en = resEn.text;
+                multiLangDesc.jp = resJp.text;
+                multiLangDesc.zh = resZh.text;
+                
+                console.log('✅ Đã dịch xong mô tả sang 3 ngôn ngữ');
+            } catch (err) {
+                console.error('⚠️ Lỗi dịch thuật:', err.message);
+                // Nếu lỗi dịch, fallback về tiếng Việt cho các ngôn ngữ khác để không bị trống
+                multiLangDesc.en = desc;
+                multiLangDesc.jp = desc;
+                multiLangDesc.zh = desc;
+            }
+        }
         const planData = { 
             title, 
             price: parseInt(price), 
             originalPrice: parseInt(originalPrice), 
             image: mainImage, 
             images: images, 
-            desc, 
+            desc: multiLangDesc, 
             tag 
         };
 
