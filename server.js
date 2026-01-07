@@ -60,6 +60,77 @@ const storage = new CloudinaryStorage({
 
 const upload = multer({ storage: storage });
 
+const LANGUAGE_CODES = {
+    vi: 'vi',
+    en: 'en',
+    jp: 'ja',
+    zh: 'zh-CN'
+};
+
+const resolveLanguageKey = (isoCode) => {
+    const normalized = (isoCode || '').toLowerCase();
+    if (normalized.startsWith('en')) return 'en';
+    if (normalized.startsWith('ja') || normalized.startsWith('jp')) return 'jp';
+    if (normalized.startsWith('zh')) return 'zh';
+    if (normalized.startsWith('vi')) return 'vi';
+    return 'vi';
+};
+
+const translateDescToAllLanguages = async (desc) => {
+    const multiLangDesc = { vi: '', en: '', jp: '', zh: '' };
+    if (!desc) {
+        return multiLangDesc;
+    }
+
+    let detectedKey = 'vi';
+    let detectedEnglishText = '';
+
+    try {
+        const detectResult = await translate(desc, { to: 'en' });
+        detectedKey = resolveLanguageKey(detectResult?.from?.language?.iso);
+        detectedEnglishText = detectResult?.text || '';
+    } catch (err) {
+        console.error('⚠️ Lỗi nhận diện ngôn ngữ:', err.message);
+    }
+
+    multiLangDesc[detectedKey] = desc;
+    if (detectedKey === 'en') {
+        multiLangDesc.en = desc;
+    } else if (detectedEnglishText) {
+        multiLangDesc.en = detectedEnglishText;
+    }
+
+    const sourceLang = LANGUAGE_CODES[detectedKey];
+    const translationTargets = Object.keys(LANGUAGE_CODES).filter((key) => key !== detectedKey && key !== 'en');
+
+    try {
+        const translations = await Promise.all(
+            translationTargets.map((targetKey) =>
+                translate(desc, { from: sourceLang, to: LANGUAGE_CODES[targetKey] })
+                    .then((result) => ({ key: targetKey, text: result.text }))
+            )
+        );
+
+        translations.forEach(({ key, text }) => {
+            multiLangDesc[key] = text;
+        });
+
+        if (!multiLangDesc.en) {
+            multiLangDesc.en = desc;
+        }
+    } catch (err) {
+        console.error('⚠️ Lỗi dịch thuật:', err.message);
+        return {
+            vi: desc,
+            en: desc,
+            jp: desc,
+            zh: desc
+        };
+    }
+
+    return multiLangDesc;
+};
+
 // --- CẤU HÌNH APP ---
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
@@ -362,35 +433,8 @@ app.post('/admin/plan/save', requireLogin, upload.array('photos', 10), async (re
         const mainImage = images.length > 0 ? images[0] : (oldImage || '');
 
         // 2. [MỚI] LOGIC TỰ ĐỘNG DỊCH THUẬT
-        // desc nhận từ form là Tiếng Việt
-        let multiLangDesc = {
-            vi: desc,
-            en: '',
-            jp: '',
-            zh: ''
-        };
-        if (desc) {
-            try {
-                // Chạy song song 3 tác vụ dịch để tiết kiệm thời gian
-                const [resEn, resJp, resZh] = await Promise.all([
-                    translate(desc, { from: 'vi', to: 'en' }),
-                    translate(desc, { from: 'vi', to: 'ja' }), // Mã Nhật là 'ja'
-                    translate(desc, { from: 'vi', to: 'zh-CN' }) // Mã Trung là 'zh-CN'
-                ]);
-
-                multiLangDesc.en = resEn.text;
-                multiLangDesc.jp = resJp.text;
-                multiLangDesc.zh = resZh.text;
-                
-                console.log('✅ Đã dịch xong mô tả sang 3 ngôn ngữ');
-            } catch (err) {
-                console.error('⚠️ Lỗi dịch thuật:', err.message);
-                // Nếu lỗi dịch, fallback về tiếng Việt cho các ngôn ngữ khác để không bị trống
-                multiLangDesc.en = desc;
-                multiLangDesc.jp = desc;
-                multiLangDesc.zh = desc;
-            }
-        }
+        // desc nhận từ form có thể là bất kỳ ngôn ngữ nào trong 4 ngôn ngữ hỗ trợ
+        const multiLangDesc = await translateDescToAllLanguages(desc);
         const planData = { 
             title, 
             price: parseInt(price), 

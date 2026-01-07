@@ -12,6 +12,7 @@ const planSchema = new mongoose.Schema({
         jp: { type: String, default: '' }, // Tiếng Nhật
         zh: { type: String, default: '' }  // Tiếng Trung
     },
+    features: { type: [String], default: [] },
     fullDesc: String,
     tag: String,
     isVisible: { type: Boolean, default: true } // Ẩn/Hiện sản phẩm
