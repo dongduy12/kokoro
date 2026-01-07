@@ -183,53 +183,32 @@
 
                 <div class="grid md:grid-cols-3 gap-10">
                     <% plans.forEach(plan => { %>
-                        <div class="group bg-white rounded-[20px] overflow-hidden shadow-[0_10px_40px_-15px_rgba(0,0,0,0.1)] hover:shadow-[0_20px_50px_-10px_rgba(0,0,0,0.2)] transition duration-500 border border-gray-100 flex flex-col">
-                            
-                            <div class="relative h-[320px] overflow-hidden group/slider">
-                                <div class="swiper planSwiper w-full h-full">
-                                    <div class="swiper-wrapper">
-                                        
-                                        <% if (plan.images && plan.images.length > 0) { %>
-                                            <% plan.images.forEach(imgLink => { %>
-                                                <div class="swiper-slide">
-                                                    <img src="<%= imgLink %>" class="w-full h-full object-cover object-top transition duration-700 ease-out group-hover:scale-110" alt="<%= plan.title %>">
-                                                </div>
-                                            <% }) %>
-                                        <% } else { %>
-                                            <div class="swiper-slide">
-                                                <img src="<%= plan.image %>" class="w-full h-full object-cover object-top transition duration-700 ease-out group-hover:scale-110" alt="<%= plan.title %>">
-                                            </div>
-                                        <% } %>
-
-                                    </div>
-                                    
-                                    <div class="swiper-button-next !w-8 !h-8 !bg-white/80 !rounded-full !text-main !text-xs after:!text-xs opacity-0 group-hover/slider:opacity-100 transition shadow-md"></div>
-                                    <div class="swiper-button-prev !w-8 !h-8 !bg-white/80 !rounded-full !text-main !text-xs after:!text-xs opacity-0 group-hover/slider:opacity-100 transition shadow-md"></div>
-                                    
-                                    <div class="swiper-pagination !bottom-2"></div>
+                        <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition duration-300 transform hover:-translate-y-1">
+                            <div class="h-64 overflow-hidden relative group">
+                                <img src="<%= plan.img %>" alt="<%= __(plan.title) %>" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
+                                <div class="absolute top-0 right-0 bg-accent text-white px-3 py-1 rounded-bl-lg font-bold">
+                                    <%= plan.price %>
                                 </div>
-
-                                <% if(plan.tag) { %>
-                                    <div class="absolute top-4 right-4 z-10 bg-white/90 backdrop-blur text-accent px-4 py-1 rounded-full text-xs font-bold shadow-sm uppercase tracking-wider">
-                                        <%= plan.tag %>
-                                    </div>
-                                <% } %>
                             </div>
-                                                        
-                            <div class="p-4 flex-1 flex flex-col">
-                                <h3 class="text-xl font-bold mb-2 font-serif text-gray-800"><%= plan.title %></h3>
-                                <div class="flex items-baseline gap-3 mb-4">
-                                    <span class="text-accent text-2xl font-bold font-serif">¥<%= plan.price.toLocaleString() %></span>
-                                    <span class="text-sm line-through text-gray-400">¥<%= plan.originalPrice.toLocaleString() %></span>
-                                </div>
-                                <p class="text-sm text-gray-500 leading-relaxed mb-6 flex-1"><%= plan.desc %></p>
+                            <div class="p-6">
+                                <h3 class="text-xl font-bold mb-2 text-gray-800"><%= __(plan.title) %></h3>
                                 
-                                <a href="/plan/<%= plan.id %>" class="block w-full text-center py-3 border border-main text-main rounded-full font-bold hover:bg-main hover:text-white transition duration-300">
-                                    <%= __('home.plans.view_detail') %>
-                                </a>
+                                <p class="text-gray-600 mb-4 line-clamp-2 min-h-[3rem]">
+                                    <%= __(plan.desc) %>
+                                </p>
+
+                                <ul class="mb-6 space-y-2">
+                                    <% plan.features.slice(0, 3).forEach(feature => { %>
+                                        <li class="flex items-center text-sm text-gray-500">
+                                            <span class="text-accent mr-2">✓</span> <%= feature %>
+                                        </li>
+                                    <% }) %>
+                                </ul>
+                                <a href="/detail/<%= plan.id %>" class="block w-full text-center bg-gray-800 text-white py-3 rounded-lg hover:bg-accent transition duration-300 font-bold">
+                                    <%= __('view_detail') %> </a>
                             </div>
                         </div>
-                    <% }); %>
+                    <% }) %>
                 </div>
             </div>
         </section>

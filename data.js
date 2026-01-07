@@ -1,39 +1,26 @@
 // data.js
+// data.js
 const plans = [
     {
         id: 1,
-        title: "Gói kimono tiêu chuẩn",
-        price: 3300,
-        originalPrice: 4400,
-        image: "https://static.kyotokimonorental.com/app/img/plan/standard_01.webp",
-        desc: "Gói phổ biến nhất! Phù hợp cho người mới bắt đầu.",
-        fullDesc: "Đây là lựa chọn hoàn hảo cho những ai lần đầu trải nghiệm Kimono. Chúng tôi có hơn 500 mẫu hoa văn nhẹ nhàng, dễ thương để bạn lựa chọn.",
-        includes: ["Kimono", "Obi (Đai lưng)", "Túi xách", "Dép Zori", "Làm tóc cơ bản"],
-        tag: "Ưu đãi hấp dẫn"
+        img: '/img/gallery/1.jpg',
+        title: 'plans.basic.title', // Sửa thành key
+        price: '3,000 JPY',
+        desc: 'plans.basic.desc',   // Sửa thành key
+        features: ['Simple design', 'Quick dressing', 'Hair set included']
     },
     {
         id: 2,
-        title: "Gói homongi Retro Modern",
-        price: 5500,
-        originalPrice: 6600,
-        image: "https://static.kyotokimonorental.com/app/img/plan/retro_01.webp",
-        desc: "Phong cách trưởng thành quyến rũ với màu pastel.",
-        fullDesc: "Phong cách Retro kết hợp hiện đại đang là xu hướng hot nhất tại Nhật Bản. Những gam màu pastel và hoa văn cổ điển tạo nên vẻ đẹp sang trọng.",
-        includes: ["Kimono cao cấp", "Obi thêu", "Túi Retro", "Phụ kiện tóc", "Làm tóc cầu kỳ"],
-        tag: "Wargo Số 1"
+        img: '/img/gallery/2.jpg',
+        title: 'plans.couple.title', // Sửa thành key
+        price: '5,500 JPY',
+        desc: 'plans.couple.desc',   // Sửa thành key
+        features: ['For couples', 'Men & Women sets', 'Photo service']
     },
-    {
-        id: 3,
-        title: "Gói kimono ưu đãi học sinh",
-        price: 4400,
-        originalPrice: 5500,
-        image: "https://static.kyotokimonorental.com/app/img/plan/gakuwari03.webp",
-        desc: "Gói đặc biệt dành riêng cho học sinh/sinh viên.",
-        fullDesc: "Chương trình khuyến mãi đặc biệt dành cho các bạn học sinh, sinh viên muốn lưu giữ kỷ niệm thanh xuân. Vui lòng mang theo thẻ học sinh.",
-        includes: ["Tùy chọn Kimono bất kỳ", "Phụ kiện đầy đủ", "Giảm giá nhóm"],
-        tag: ""
-    }
+    // Làm tương tự cho các plan khác...
 ];
+
+module.exports = { plans };
 
 const shops = [
 {

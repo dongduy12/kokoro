@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= pageTitle %></title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title><%= __(plan.title) %> - Kokoro Rental</title> <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-[rgba(248,244,230,1)] text-[#544A47]">
 
@@ -19,85 +18,81 @@
         <div class="bg-white rounded-2xl shadow-xl overflow-hidden md:flex">
             
             <div class="md:w-1/2 h-[400px] md:h-auto relative">
-                <img src="<%= plan.image %>" class="w-full h-full object-cover" alt="<%= plan.title %>">
+                <img src="<%= plan.image || plan.img %>" class="w-full h-full object-cover" alt="<%= __(plan.title) %>">
+                
                 <% if(plan.tag) { %>
                     <span class="absolute top-4 left-4 bg-red-600 text-white px-3 py-1 rounded-full text-sm font-bold shadow">
-                        <%= plan.tag %>
-                    </span>
+                        <%= __(plan.tag) %> </span>
                 <% } %>
             </div>
 
             <div class="md:w-1/2 p-8 flex flex-col justify-center">
-                <h1 class="text-3xl md:text-4xl font-bold mb-4"><%= plan.title %></h1>
+                <h1 class="text-3xl md:text-4xl font-bold mb-4"><%= __(plan.title) %></h1>
                 
                 <div class="mb-6">
                     <p class="text-sm text-gray-500"><%= __('detail.price_label') %></p>
                     <div class="flex items-end gap-3">
-                        <span class="text-[#BA2636] text-4xl font-bold">¥<%= plan.price.toLocaleString() %></span>
-                        <span class="text-gray-400 line-through text-lg">¥<%= plan.originalPrice.toLocaleString() %></span>
+                        <span class="text-[#BA2636] text-4xl font-bold">¥<%= plan.price %></span>
+                        <% if(plan.originalPrice) { %>
+                             <span class="text-gray-400 line-through text-lg">¥<%= plan.originalPrice %></span>
+                        <% } %>
                     </div>
                 </div>
 
-                <p class="text-lg leading-relaxed mb-6"><%= plan.fullDesc %></p>
+                <p class="text-lg leading-relaxed mb-6"><%= __(plan.desc) %></p>
 
                 <div class="bg-gray-50 p-4 rounded-lg mb-8">
                     <h3 class="font-bold mb-2"><%= __('detail.includes_title') %></h3>
                     
                     <ul class="grid grid-cols-2 gap-2">
-                        <% if (plan.includes && plan.includes.length > 0) { %>
-                            <% plan.includes.forEach(item => { %>
+                        <% if (plan.features && plan.features.length > 0) { %>
+                            <% plan.features.forEach(item => { %>
                                 <li class="flex items-center gap-2 text-sm">
-                                    ✅ <%= item %>
-                                </li>
+                                    ✅ <%= __(item) %> </li>
                             <% }) %>
                         <% } else { %>
-                            <li class="flex items-center gap-2 text-sm">✅ <%= __('detail.include0') %></li>
-                            <li class="flex items-center gap-2 text-sm">✅ <%= __('detail.include1') %></li>
-                            <li class="flex items-center gap-2 text-sm">✅ <%= __('detail.include2') %></li>
-                            <li class="flex items-center gap-2 text-sm">✅ <%= __('detail.include3') %></li>
-                            <li class="flex items-center gap-2 text-sm">✅ <%= __('detail.include4') %></li>
-                            <li class="flex items-center gap-2 text-sm">✅ <%= __('detail.include5') %></li>
+                            <li class="text-sm text-gray-500 italic">Updating features...</li>
                         <% } %>
                     </ul>
                 </div>
 
                 <div class="mt-8 border-t pt-8">
-    <h3 class="text-2xl font-bold mb-4 text-[#BA2636]"><%= __('detail.booking_title') %></h3>
-    
-    <form action="/booking" method="POST" class="space-y-4">
-        <input type="hidden" name="planId" value="<%= plan.id %>">
-        <input type="hidden" name="planName" value="<%= plan.title %>">
-<input type="hidden" name="shopId" value="<%= typeof selectedShopId !== 'undefined' ? selectedShopId : '' %>">
-        <div>
-            <label class="block font-bold mb-1"><%= __('detail.fullname') %></label>
-            <input type="text" name="fullname" required placeholder="<%= __('detail.fullname_placeholder') %>" 
-                   class="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:border-[#BA2636]">
-        </div>
+                    <h3 class="text-2xl font-bold mb-4 text-[#BA2636]"><%= __('detail.booking_title') %></h3>
+                    
+                    <form action="/booking" method="POST" class="space-y-4">
+                        <input type="hidden" name="planId" value="<%= plan.id %>">
+                        <input type="hidden" name="planName" value="<%= __(plan.title) %>"> <input type="hidden" name="shopId" value="<%= typeof selectedShopId !== 'undefined' ? selectedShopId : '' %>">
+                        
+                        <div>
+                            <label class="block font-bold mb-1"><%= __('detail.fullname') %></label>
+                            <input type="text" name="fullname" required placeholder="<%= __('detail.fullname_placeholder') %>" 
+                                   class="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:border-[#BA2636]">
+                        </div>
 
-        <div class="flex gap-4">
-            <div class="w-1/2">
-                <label class="block font-bold mb-1"><%= __('detail.date') %></label>
-                <input type="date" name="date" required 
-                       class="w-full border border-gray-300 p-3 rounded-lg">
-            </div>
-            <div class="w-1/2">
-                <label class="block font-bold mb-1"><%= __('detail.guests') %></label>
-                <input type="number" name="quantity" value="1" min="1" required 
-                       class="w-full border border-gray-300 p-3 rounded-lg">
-            </div>
-        </div>
+                        <div class="flex gap-4">
+                            <div class="w-1/2">
+                                <label class="block font-bold mb-1"><%= __('detail.date') %></label>
+                                <input type="date" name="date" required 
+                                       class="w-full border border-gray-300 p-3 rounded-lg">
+                            </div>
+                            <div class="w-1/2">
+                                <label class="block font-bold mb-1"><%= __('detail.guests') %></label>
+                                <input type="number" name="quantity" value="1" min="1" required 
+                                       class="w-full border border-gray-300 p-3 rounded-lg">
+                            </div>
+                        </div>
 
-        <div>
-            <label class="block font-bold mb-1"><%= __('detail.phone') %></label>
-            <input type="tel" name="phone" required placeholder="0909xxxxxx" 
-                   class="w-full border border-gray-300 p-3 rounded-lg">
-        </div>
+                        <div>
+                            <label class="block font-bold mb-1"><%= __('detail.phone') %></label>
+                            <input type="tel" name="phone" required placeholder="0909xxxxxx" 
+                                   class="w-full border border-gray-300 p-3 rounded-lg">
+                        </div>
 
-        <button type="submit" class="w-full bg-gradient-to-r from-pink-500 to-[#BA2636] text-white py-4 rounded-full font-bold text-lg hover:shadow-lg transition transform hover:-translate-y-1 mt-4">
-            <%= __('detail.submit') %>
-        </button>
-    </form>
-</div>
+                        <button type="submit" class="w-full bg-gradient-to-r from-pink-500 to-[#BA2636] text-white py-4 rounded-full font-bold text-lg hover:shadow-lg transition transform hover:-translate-y-1 mt-4">
+                            <%= __('detail.submit') %>
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
     </main>
