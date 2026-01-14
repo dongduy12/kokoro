@@ -295,6 +295,39 @@ app.post('/booking-step2', async (req, res) => {
     });
 });
 
+// server.js
+const { timeSlots } = require('./data'); // Đảm bảo data.js có mảng timeSlots như bài trước
+
+app.get('/api/available-slots', async (req, res) => {
+    try {
+        const { date, shopId, totalQuantity } = req.query;
+        const targetQty = parseInt(totalQuantity) || 1;
+
+        // Tìm tất cả đơn hàng trong ngày tại shop đó
+        const bookings = await Booking.find({ date: date, shopId: shopId });
+
+        const results = timeSlots.map(slot => {
+            // Tính tổng số khách đã đặt vào khung giờ này
+            const bookedCount = bookings
+                .filter(b => b.time === slot.time)
+                .reduce((sum, b) => sum + (b.guests ? b.guests.length : 0), 0);
+            
+            const remaining = slot.maxGuests - bookedCount;
+            return {
+                time: slot.time,
+                remaining: remaining,
+                // Nếu số chỗ còn lại ít hơn số khách đang định đặt -> Full
+                isFull: remaining < targetQty 
+            };
+        });
+
+        res.json(results);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+
 // 5. Booking Step 3
 app.post('/booking-step3', (req, res) => {
     const { selectedPlans, shopId, date, time, totalQuantity } = req.body;
