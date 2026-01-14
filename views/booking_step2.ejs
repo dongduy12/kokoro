@@ -53,7 +53,7 @@
                     <div class="bg-white p-6 rounded-3xl shadow-sm">
                         <h3 class="font-bold"><%= __('booking.step2.timeslot_label') %></h3>
                             <div id="slots-container" class="grid grid-cols-2 md:grid-cols-4 gap-3">
-                                <div class="col-span-full text-center py-4 text-sub1">Đang tải khung giờ...</div>
+                                <div class="col-span-full text-center py-4 text-sub1"><%= __('booking.step2.loading_slots') %></div>
                             </div>
                     </div>
                 </div>
@@ -111,6 +111,13 @@
     const slotsContainer = document.getElementById('slots-container');
     const shopId = document.querySelector('input[name="shopId"]').value;
     const totalQty = document.querySelector('input[name="totalQuantity"]').value;
+    const slotMessages = {
+        loading: "<%= __('booking.step2.loading_slots') %>",
+        checking: "<%= __('booking.step2.checking_availability') %>",
+        full: "<%= __('booking.step2.time_full') %>",
+        remainingTemplate: "<%= __('booking.step2.remaining_slots', { count: '__COUNT__' }) %>",
+        loadError: "<%= __('booking.step2.load_error') %>"
+    };
 
     // 1. Cấu hình ngày mặc định (như cũ)
     const tomorrow = new Date();
@@ -121,7 +128,7 @@
     // 2. Hàm gọi API và vẽ lại danh sách giờ
     async function updateSlots() {
         const selectedDate = dateInput.value;
-        slotsContainer.innerHTML = '<div class="col-span-full text-center py-4">Đang kiểm tra chỗ trống...</div>';
+        slotsContainer.innerHTML = `<div class="col-span-full text-center py-4">${slotMessages.checking}</div>`;
 
         try {
             const response = await fetch(`/api/available-slots?date=${selectedDate}&shopId=${shopId}&totalQuantity=${totalQty}`);
@@ -138,14 +145,14 @@
                     <div class="border border-sub1 rounded-lg py-3 text-center transition hover:border-accent hover:text-accent">
                         <div class="text-lg font-bold">${slot.time}</div>
                         <div class="text-[10px] mt-1 ${slot.isFull ? 'text-red-500' : 'text-green-600'}">
-                            ${slot.isFull ? 'Hết chỗ' : `Còn ${slot.remaining} chỗ`}
+                            ${slot.isFull ? slotMessages.full : slotMessages.remainingTemplate.replace('__COUNT__', slot.remaining)}
                         </div>
                     </div>
                 `;
                 slotsContainer.appendChild(label);
             });
         } catch (error) {
-            slotsContainer.innerHTML = '<div class="col-span-full text-red-500">Lỗi tải dữ liệu. Vui lòng thử lại.</div>';
+            slotsContainer.innerHTML = `<div class="col-span-full text-red-500">${slotMessages.loadError}</div>`;
         }
     }
 
