@@ -161,7 +161,12 @@ app.use(cookieParser());
 app.use(i18n.init);
 
 app.use((req, res, next) => {
-    if (req.cookies.lang) {
+    const supportedLocales = ['vi', 'en', 'jp', 'zh'];
+    const queryLang = req.query.lang;
+    if (queryLang && supportedLocales.includes(queryLang)) {
+        req.setLocale(queryLang);
+        res.cookie('lang', queryLang, { maxAge: 90000000, httpOnly: true });
+    } else if (req.cookies.lang && supportedLocales.includes(req.cookies.lang)) {
         req.setLocale(req.cookies.lang);
     }
     res.locals.locale = req.getLocale();
