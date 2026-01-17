@@ -60,7 +60,7 @@
                     <h3 class="text-2xl font-bold mb-4 text-[#BA2636]"><%= __('detail.booking_title') %></h3>
                     
                     <form action="/booking" method="POST" class="space-y-4">
-                        <input type="hidden" name="planId" value="<%= plan.id %>">
+                        <input type="hidden" name="planId" value="<%= plan.id || plan._id %>">
                         <input type="hidden" name="planName" value="<%= __(plan.title) %>"> <input type="hidden" name="shopId" value="<%= typeof selectedShopId !== 'undefined' ? selectedShopId : '' %>">
                         
                         <div>
