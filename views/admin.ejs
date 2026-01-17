@@ -82,7 +82,7 @@
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         
         <div class="border-b border-gray-200 mb-8">
-            <nav class="-mb-px flex space-x-8">
+            <nav class="-mb-px flex flex-wrap gap-4">
                 <button onclick="openTab('tab-orders')" id="btn-tab-orders" class="tab-btn border-blue-600 text-blue-600 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
                     📦 Quản lý Đơn hàng
                 </button>
@@ -97,7 +97,30 @@
 
         <div id="tab-orders" class="tab-content">
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                <div class="overflow-x-auto">
+                <div class="md:hidden p-4 space-y-4">
+                    <% bookings.forEach(item => { %>
+                        <div class="border border-gray-200 rounded-lg p-4 space-y-3">
+                            <div class="flex items-start justify-between gap-3">
+                                <div>
+                                    <div class="font-bold text-gray-900"><%= item.fullname %></div>
+                                    <div class="text-xs text-gray-500"><%= item.phone %></div>
+                                </div>
+                                <span class="px-2 py-1 text-xs font-bold rounded bg-yellow-100 text-yellow-800"><%= item.status %></span>
+                            </div>
+                            <div class="text-sm">
+                                <div class="font-medium"><%= item.planName || 'Gói tùy chọn' %></div>
+                                <div class="text-xs text-green-600 font-bold">¥<%= item.totalPrice ? item.totalPrice.toLocaleString() : 0 %></div>
+                            </div>
+                            <div class="text-xs text-gray-500">
+                                <span>Ngày đến:</span> <%= item.date %> | <%= item.time %>
+                            </div>
+                            <form action="/admin/delete/<%= item._id %>" method="POST" onsubmit="return confirm('Xóa đơn này?')">
+                                <button class="w-full text-red-500 hover:text-red-700 text-xs font-bold border border-red-200 px-3 py-2 rounded">Xóa</button>
+                            </form>
+                        </div>
+                    <% }) %>
+                </div>
+                <div class="hidden md:block overflow-x-auto">
                     <table class="w-full text-left border-collapse">
                         <thead class="bg-gray-50 border-b border-gray-200">
                             <tr>
