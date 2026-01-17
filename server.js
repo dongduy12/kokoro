@@ -321,6 +321,59 @@ app.get('/plan/:id', async (req, res) => {
     res.render('detail', { plan: foundPlan, pageTitle: foundPlan.title });
 });
 
+// 2.1 Booking nhanh từ trang chi tiết
+app.post('/booking', async (req, res) => {
+    try {
+        const { planId, planName, fullname, date, quantity, phone, shopId } = req.body;
+        const qty = Math.max(parseInt(quantity, 10) || 1, 1);
+
+        let foundPlan = null;
+        if (planId) {
+            foundPlan = await Plan.findById(planId).catch(() => null);
+        }
+
+        if (!foundPlan && planId) {
+            foundPlan = await Plan.findOne({ id: parseInt(planId, 10) });
+        }
+
+        if (!foundPlan) {
+            return res.status(404).send('Không tìm thấy gói!');
+        }
+
+        const shop = shops.find(s => s.id == shopId) || shops[0];
+        const planPrice = Number(foundPlan.price) || 0;
+        const totalPrice = planPrice * qty;
+        const resolvedPlanName = planName || foundPlan.title;
+
+        const guests = Array.from({ length: qty }, (_, index) => ({
+            planName: resolvedPlanName,
+            price: planPrice,
+            guestIndex: index + 1,
+            selectedOptions: []
+        }));
+
+        const newBooking = new Booking({
+            fullname,
+            email: '',
+            phone,
+            planName: resolvedPlanName,
+            shopId: shop.id,
+            shopName: shop.name,
+            date,
+            time: '',
+            totalPrice,
+            guests,
+            status: 'Đã đặt (Chờ đến)'
+        });
+
+        await newBooking.save();
+        res.render('success', { info: { fullname, planName: resolvedPlanName, date } });
+    } catch (err) {
+        console.error(err);
+        res.send("Lỗi xử lý đơn hàng: " + err.message);
+    }
+});
+
 // 3. Booking Step 1
 app.get('/booking-step1', async (req, res) => {
     const dbPlans = await Plan.find({ isVisible: true });

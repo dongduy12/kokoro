@@ -5,6 +5,7 @@ const bookingSchema = new mongoose.Schema({
     fullname: String,
     email: String,
     phone: String,
+    planName: String,
     
     // Thông tin chung
     shopId: String,

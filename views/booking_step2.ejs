@@ -115,7 +115,7 @@
         loading: "<%= __('booking.step2.loading_slots') %>",
         checking: "<%= __('booking.step2.checking_availability') %>",
         full: "<%= __('booking.step2.time_full') %>",
-        remainingTemplate: "<%= __('booking.step2.remaining_slots', { count: '__COUNT__' }) %>",
+        remainingTemplate: "<%= __('booking.step2.remaining_slots') %>",
         loadError: "<%= __('booking.step2.load_error') %>"
     };
 
@@ -139,13 +139,14 @@
             slots.forEach((slot, index) => {
                 const label = document.createElement('label');
                 label.className = 'cursor-pointer relative';
+                const remainingLabel = slotMessages.remainingTemplate.replace(/%\{count\}|%\((?:count)\)/g, slot.remaining);
                 
                 label.innerHTML = `
                     <input type="radio" name="time" value="${slot.time}" class="time-radio hidden" required ${slot.isFull ? 'disabled' : ''}>
                     <div class="border border-sub1 rounded-lg py-3 text-center transition hover:border-accent hover:text-accent">
                         <div class="text-lg font-bold">${slot.time}</div>
                         <div class="text-[10px] mt-1 ${slot.isFull ? 'text-red-500' : 'text-green-600'}">
-                            ${slot.isFull ? slotMessages.full : slotMessages.remainingTemplate.replace('__COUNT__', slot.remaining)}
+                            ${slot.isFull ? slotMessages.full : remainingLabel}
                         </div>
                     </div>
                 `;
