@@ -9,6 +9,7 @@ const path = require('path');
 const cloudinary = require('cloudinary').v2;
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const multer = require('multer');
+const nodemailer = require('nodemailer');
 
 // Import Models
 const Booking = require('./models/booking');
@@ -74,6 +75,82 @@ const resolveLanguageKey = (isoCode) => {
     if (normalized.startsWith('zh')) return 'zh';
     if (normalized.startsWith('vi')) return 'vi';
     return 'vi';
+};
+
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'huyennhi1603@gmail.com';
+
+const createMailTransporter = () => {
+    const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, SMTP_SECURE } = process.env;
+    if (!SMTP_HOST || !SMTP_PORT || !SMTP_USER || !SMTP_PASS) {
+        return null;
+    }
+
+    return nodemailer.createTransport({
+        host: SMTP_HOST,
+        port: Number(SMTP_PORT),
+        secure: SMTP_SECURE === 'true',
+        auth: {
+            user: SMTP_USER,
+            pass: SMTP_PASS
+        }
+    });
+};
+
+const buildBookingEmailHtml = ({ booking, shop, plansData }) => {
+    const planLines = plansData
+        .map(plan => `<li>${plan.title} x ${plan.qty}</li>`)
+        .join('');
+
+    return `
+        <div style="font-family: Arial, sans-serif; line-height: 1.6;">
+            <h2>Thông tin đặt lịch</h2>
+            <p><strong>Khách hàng:</strong> ${booking.fullname}</p>
+            <p><strong>Số điện thoại:</strong> ${booking.phone}</p>
+            <p><strong>Email:</strong> ${booking.email}</p>
+            <p><strong>Cửa hàng:</strong> ${shop.name}</p>
+            <p><strong>Ngày/giờ:</strong> ${booking.date} | ${booking.time}</p>
+            <p><strong>Tổng tiền:</strong> ¥${booking.totalPrice.toLocaleString()}</p>
+            <h3>Gói đã chọn</h3>
+            <ul>${planLines}</ul>
+        </div>
+    `;
+};
+
+const sendBookingEmails = async ({ booking, shop, plansData }) => {
+    const transporter = createMailTransporter();
+    if (!transporter) {
+        console.warn('⚠️ Thiếu cấu hình SMTP, bỏ qua gửi mail.');
+        return;
+    }
+
+    const fromEmail = process.env.MAIL_FROM || process.env.SMTP_USER;
+    const htmlContent = buildBookingEmailHtml({ booking, shop, plansData });
+
+    const adminMail = {
+        from: `"Kokoro Booking" <${fromEmail}>`,
+        to: ADMIN_EMAIL,
+        subject: `Đơn đặt lịch mới - ${booking.fullname}`,
+        html: htmlContent
+    };
+
+    const customerMail = {
+        from: `"Kokoro Booking" <${fromEmail}>`,
+        to: booking.email,
+        subject: 'Xác nhận đặt lịch tại Kokoro',
+        html: `
+            <div style="font-family: Arial, sans-serif; line-height: 1.6;">
+                <p>Xin chào ${booking.fullname},</p>
+                <p>Cảm ơn bạn đã đặt lịch tại Kokoro. Dưới đây là thông tin đặt lịch của bạn:</p>
+                ${htmlContent}
+                <p>Chúng tôi sẽ liên hệ nếu cần thêm thông tin. Hẹn gặp bạn tại cửa hàng!</p>
+            </div>
+        `
+    };
+
+    await Promise.allSettled([
+        transporter.sendMail(adminMail),
+        transporter.sendMail(customerMail)
+    ]);
 };
 
 const translateDescToAllLanguages = async (desc) => {
@@ -404,6 +481,12 @@ app.post('/booking-finish', async (req, res) => {
 
         await newBooking.save();
         console.log("📝 Đơn hàng mới:", newBooking._id);
+
+        try {
+            await sendBookingEmails({ booking: newBooking, shop, plansData });
+        } catch (mailError) {
+            console.error('❌ Lỗi gửi email đặt lịch:', mailError);
+        }
 
         res.render('success', { info: newBooking });
 
