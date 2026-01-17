@@ -213,6 +213,6 @@
         "username": "Username",
         "password": "Password",
         "submit": "Log in",
-        "back_home": "← Back to homepage"
+        "back_home": "← Home"
     }
 }

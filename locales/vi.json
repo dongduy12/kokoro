@@ -208,11 +208,11 @@
         "back_home": "Trở về trang chủ"
     },
     "login": {
-        "title": "Đăng nhập Admin",
+        "title": "Login Admin",
         "heading": "Đăng nhập Quản trị",
         "username": "Tài khoản",
         "password": "Mật khẩu",
         "submit": "Đăng nhập",
-        "back_home": "← Về trang chủ"
+        "back_home": "← Trang chủ"
     }
 }
