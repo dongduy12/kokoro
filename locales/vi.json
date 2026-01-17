@@ -52,13 +52,13 @@
             "date_time": "Ngày giờ",
             "guests": "Số khách",
             "tax_included": "(Đã bao gồm thuế)",
-            "mobile_total": "Tổng cộng (gồm tùy chọn)"
+            "mobile_total": "Tổng cộng"
         },
         "step1": {
             "title": "Vui lòng chọn số lượng cho từng gói",
             "quantity_label": "Số lượng khách:",
             "selected_label": "Đã chọn:",
-            "submit": "Tiếp tục: Chọn ngày giờ →",
+            "submit": "Chọn ngày giờ →",
             "validation_no_plan": "Vui lòng chọn ít nhất 1 gói!"
         },
         "step2": {
@@ -75,7 +75,7 @@
             "selected_plans": "Gói đã chọn",
             "total_label": "Tổng cộng (%d khách):",
             "total_label_plural": "Tổng cộng (%d khách):",
-            "next_cta": "Nhập thông tin khách hàng →"
+            "next_cta": "Nhập thông tin →"
         },
         "step3": {
             "info_title": "1. Vui lòng nhập thông tin của bạn.",

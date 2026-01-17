@@ -58,7 +58,7 @@
             "title": "Please choose quantities for each plan",
             "quantity_label": "Guest quantity:",
             "selected_label": "Selected guests:",
-            "submit": "Continue: Pick date & time →",
+            "submit": "Pick date & time →",
             "validation_no_plan": "Please select at least one plan!"
         },
         "step2": {
