@@ -77,7 +77,7 @@ const resolveLanguageKey = (isoCode) => {
     return 'vi';
 };
 
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'dongduy261299@gmail.com';
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
 
 const createMailTransporter = () => {
     const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, SMTP_SECURE } = process.env;
