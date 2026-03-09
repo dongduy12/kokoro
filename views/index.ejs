@@ -200,15 +200,14 @@
                         <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition duration-300 transform hover:-translate-y-1">
                             <div class="h-64 overflow-hidden relative group">
                                 <img src="<%= plan.image || plan.img %>" alt="<%= __(plan.title) %>" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
-                                <div class="absolute top-0 right-0 bg-accent text-white px-3 py-1 rounded-bl-lg font-bold">
-                                    <%= plan.price %>
+                                <div class="absolute top-0 right-0 bg-accent text-white px-3 py-1 rounded-bl-lg font-bold tracking-wider shadow-sm">
+                                    <%= formatPrice(plan.price) %>
                                 </div>
                             </div>
                             <div class="p-6">
-                                <h3 class="text-xl font-bold mb-2 text-gray-800"><%= __(plan.title) %></h3>
-                                
+                                <h3 class="text-xl font-bold mb-2 text-gray-800"><%= getLocalizedText(plan.title) %></h3>
                                 <p class="text-gray-600 mb-4 line-clamp-2 min-h-[3rem]">
-                                    <%= plan.desc && plan.desc[locale] ? plan.desc[locale] : (plan.desc.vi || plan.desc) %>
+                                    <%= getLocalizedText(plan.desc) %>
                                 </p>
                                 
                                 <ul class="mb-6 space-y-2">

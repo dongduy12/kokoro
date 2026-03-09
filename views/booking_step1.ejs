@@ -38,15 +38,13 @@
 
                         <div class="mt-4 md:mt-0 md:ml-6 flex flex-col justify-center w-full">
                             <div class="flex justify-between items-start">
-                                <h3 class="text-xl font-bold text-main"><%= plan.title %></h3>
-                                <div class="text-right">
-                                    <span class="text-accent text-2xl font-bold">¥<%= plan.price.toLocaleString() %></span>
-                                    <span class="text-xs text-main block"><%= __('booking.common.per_person') %></span>
+                                <h3 class="text-xl font-bold text-main pr-4"><%= getLocalizedText(plan.title) %></h3>
+                                <div class="text-right whitespace-nowrap">
+                                    <span class="text-accent text-2xl font-bold"><%= formatPrice(plan.price) %></span>
+                                    <span class="text-xs text-main block mt-1"><%= __('booking.common.per_person') %></span>
                                 </div>
                             </div>
-                            
-                            <p class="text-sm text-sub1 line-clamp-2 mt-2 mb-4"><%= plan.desc %></p>
-
+                            <p class="text-sm text-sub1 line-clamp-2 mt-2 mb-4"><%= getLocalizedText(plan.desc) %></p>
                             <div class="mt-auto bg-gray-50 p-3 rounded-lg flex items-center justify-between">
                                 <span class="font-bold text-sm"><%= __('booking.step1.quantity_label') %></span>
                                 <div class="relative w-32">
