@@ -196,6 +196,8 @@
         "fullname_placeholder": "山田太郎",
         "date": "来店日",
         "guests": "人数",
+        "email": "メール",
+        "time": "来店時間",
         "phone": "電話番号",
         "submit": "予約を確定する"
     },
@@ -205,6 +207,7 @@
         "received": "%{name}様の予約を受け付けました。",
         "plan": "プラン：%{plan}",
         "date": "日付：%{date}",
+        "time": "来店時間：%{time}",
         "back_home": "トップへ戻る"
     },
     "login": {
