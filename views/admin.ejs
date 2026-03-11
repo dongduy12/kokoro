@@ -6,63 +6,92 @@
     <title><%= pageTitle %></title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        // JS để chuyển Tab
-        function openTab(tabName) {
-            // Ẩn tất cả nội dung tab
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-            // Bỏ active ở tất cả nút
-            document.querySelectorAll('.tab-btn').forEach(el => {
-                el.classList.remove('border-blue-600', 'text-blue-600');
-                el.classList.add('border-transparent', 'text-gray-500');
+    // JS để chuyển Tab (Hàm vừa bị thiếu)
+    function openTab(tabName) {
+        // Ẩn tất cả nội dung tab
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+        // Bỏ active ở tất cả nút
+        document.querySelectorAll('.tab-btn').forEach(el => {
+            el.classList.remove('border-blue-600', 'text-blue-600');
+            el.classList.add('border-transparent', 'text-gray-500');
+        });
+        
+        // Hiện tab được chọn
+        document.getElementById(tabName).classList.remove('hidden');
+        // Active nút được chọn
+        document.getElementById('btn-' + tabName).classList.add('border-blue-600', 'text-blue-600');
+        document.getElementById('btn-' + tabName).classList.remove('border-transparent', 'text-gray-500');
+    }
+
+    // JS để mở Modal sửa sản phẩm (Sử dụng data attributes)
+    document.addEventListener('DOMContentLoaded', function() {
+        // Bắt sự kiện click cho các nút có class 'btn-edit-product'
+        const editButtons = document.querySelectorAll('.btn-edit-product');
+        
+        editButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const id = this.getAttribute('data-id');
+                const title = this.getAttribute('data-title');
+                const price = this.getAttribute('data-price');
+                const original = this.getAttribute('data-original');
+                const imagesArray = this.getAttribute('data-images');
+                const desc = this.getAttribute('data-desc');
+                const tag = this.getAttribute('data-tag');
+                
+                // Lấy ảnh đầu tiên từ mảng (nếu có)
+                const image = imagesArray ? imagesArray.split(',')[0].trim() : '';
+
+                // Đổ dữ liệu vào Modal
+                document.getElementById('planId').value = id || '';
+                document.getElementById('planTitle').value = title || '';
+                document.getElementById('planPrice').value = price || '';
+                document.getElementById('planOriginal').value = original || '';
+                document.getElementById('planImage').value = image || '';
+                document.getElementById('planDesc').value = desc || '';
+                document.getElementById('planTag').value = tag || '';
+                
+                // Xử lý hiển thị ảnh cũ
+                const imgContainer = document.getElementById('currentImages');
+                imgContainer.innerHTML = ''; // Xóa ảnh cũ
+                
+                if (imagesArray) {
+                    const imgs = imagesArray.split(',');
+                    imgs.forEach(src => {
+                        if(src.trim()) {
+                            const img = document.createElement('img');
+                            img.src = src.trim();
+                            img.className = 'w-16 h-16 object-cover rounded border';
+                            imgContainer.appendChild(img);
+                        }
+                    });
+                }
+
+                document.getElementById('modalTitle').innerText = id ? 'Sửa Gói Dịch Vụ' : 'Thêm Gói Mới';
+                document.getElementById('productModal').classList.remove('hidden');
             });
-            
-            // Hiện tab được chọn
-            document.getElementById(tabName).classList.remove('hidden');
-            // Active nút được chọn
-            document.getElementById('btn-' + tabName).classList.add('border-blue-600', 'text-blue-600');
-            document.getElementById('btn-' + tabName).classList.remove('border-transparent', 'text-gray-500');
-        }
+        });
+    });
 
-        // JS để mở Modal sửa sản phẩm
-        // Thay thế hàm openEditModal cũ bằng hàm này
-        function openEditModal(id, title, price, original, image, desc, tag, imagesArray) {
-            document.getElementById('planId').value = id || '';
-            document.getElementById('planTitle').value = title || '';
-            document.getElementById('planPrice').value = price || '';
-            document.getElementById('planOriginal').value = original || '';
-            document.getElementById('planImage').value = image || '';
-            document.getElementById('planDesc').value = desc || '';
-            document.getElementById('planTag').value = tag || '';
-            
-            // Xử lý hiển thị ảnh cũ
-            const imgContainer = document.getElementById('currentImages');
-            imgContainer.innerHTML = ''; // Xóa cũ
-            
-            // Nếu có danh sách ảnh cũ (imagesArray truyền vào là chuỗi ngăn cách phẩy)
-            if (imagesArray) {
-                const imgs = imagesArray.split(',');
-                imgs.forEach(src => {
-                    if(src.trim()) {
-                        const img = document.createElement('img');
-                        img.src = src.trim();
-                        img.className = 'w-16 h-16 object-cover rounded border';
-                        imgContainer.appendChild(img);
-                    }
-                });
-            } else if (image) { // Fallback ảnh lẻ
-                const img = document.createElement('img');
-                img.src = image;
-                img.className = 'w-16 h-16 object-cover rounded border';
-                imgContainer.appendChild(img);
-            }
+    // Hàm mở modal để Thêm gói mới
+    function openAddModal() {
+        document.getElementById('planId').value = '';
+        document.getElementById('planTitle').value = '';
+        document.getElementById('planPrice').value = '';
+        document.getElementById('planOriginal').value = '';
+        document.getElementById('planImage').value = '';
+        document.getElementById('planDesc').value = '';
+        document.getElementById('planTag').value = '';
+        document.getElementById('currentImages').innerHTML = '';
+        
+        document.getElementById('modalTitle').innerText = 'Thêm Gói Mới';
+        document.getElementById('productModal').classList.remove('hidden');
+    }
 
-            document.getElementById('modalTitle').innerText = id ? 'Sửa Gói Dịch Vụ' : 'Thêm Gói Mới';
-            document.getElementById('productModal').classList.remove('hidden');
-        }
-        function closeModal() {
-            document.getElementById('productModal').classList.add('hidden');
-        }
-    </script>
+    // Hàm đóng Modal
+    function closeModal() {
+        document.getElementById('productModal').classList.add('hidden');
+    }
+</script>
 </head>
 <body class="bg-gray-100 text-gray-800 font-sans">
 
@@ -164,37 +193,48 @@
         <div id="tab-products" class="tab-content hidden">
             <div class="flex justify-between items-center mb-6">
                 <h3 class="text-lg font-bold text-gray-800">Danh sách gói dịch vụ</h3>
-                <button onclick="openEditModal()" class="bg-blue-600 text-white px-4 py-2 rounded-lg font-bold text-sm shadow hover:bg-blue-700 transition">
-                    + Thêm gói mới
-                </button>
+                <button onclick="openAddModal()" class="bg-blue-600 text-white px-4 py-2 rounded-lg font-bold text-sm shadow hover:bg-blue-700 transition">
+                + Thêm gói mới
+            </button>
             </div>
 
             <div class="grid md:grid-cols-3 gap-6">
                 <% plans.forEach(plan => { %>
-                    <% const planDesc = plan.desc && typeof plan.desc === 'object' ? (plan.desc.vi || plan.desc.en || plan.desc.jp || plan.desc.zh || '') : (plan.desc || ''); %>
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden flex flex-col">
-                        <div class="h-40 w-full relative">
-                            <img src="<%= plan.image %>" class="w-full h-full object-cover">
-                            <span class="absolute top-2 right-2 bg-black/50 text-white text-xs px-2 py-1 rounded"><%= plan.tag %></span>
-                        </div>
-                        <div class="p-4 flex-1">
-                            <h4 class="font-bold text-lg mb-1"><%= plan.title %></h4>
-                            <div class="flex gap-2 items-end mb-2">
-                                <span class="text-red-600 font-bold text-xl">¥<%= plan.price.toLocaleString() %></span>
-                                <span class="text-gray-400 line-through text-sm">¥<%= plan.originalPrice %></span>
-                            </div>
-                            <p class="text-gray-500 text-xs line-clamp-2"><%= planDesc %></p>
-                        </div>
-                        <div class="p-4 bg-gray-50 border-t flex justify-between">
-                            <button onclick="openEditModal('<%= plan._id %>', '<%= plan.title %>', '<%= plan.price %>', '<%= plan.originalPrice %>', `<%= plan.images ? plan.images.join(', ') : '' %>`, `<%= planDesc %>`, '<%= plan.tag %>')" 
-                                class="text-blue-600 font-bold text-sm hover:underline">Chỉnh sửa</button>
-                            
-                            <form action="/admin/plan/delete/<%= plan._id %>" method="POST" onsubmit="return confirm('Xóa gói này?')">
-                                <button class="text-red-600 font-bold text-sm hover:underline">Xóa</button>
-                            </form>
-                        </div>
-                    </div>
-                <% }) %>
+    <% const planDesc = plan.desc && typeof plan.desc === 'object' ? (plan.desc.vi || plan.desc.en || plan.desc.jp || plan.desc.zh || '') : (plan.desc || ''); %>
+    <% const planTitle = plan.title && typeof plan.title === 'object' ? (plan.title.vi || plan.title.en || plan.title.jp || plan.title.zh || '') : (plan.title || ''); %>
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden flex flex-col">
+        <div class="h-40 w-full relative">
+            <img src="<%= plan.image %>" class="w-full h-full object-cover">
+            <span class="absolute top-2 right-2 bg-black/50 text-white text-xs px-2 py-1 rounded"><%= plan.tag %></span>
+        </div>
+        <div class="p-4 flex-1">
+            <h4 class="font-bold text-lg mb-1"><%= planTitle %></h4>
+            <div class="flex gap-2 items-end mb-2">
+                <span class="text-red-600 font-bold text-xl">¥<%= plan.price.toLocaleString() %></span>
+                <span class="text-gray-400 line-through text-sm">¥<%= plan.originalPrice %></span>
+            </div>
+            <p class="text-gray-500 text-xs line-clamp-2"><%= planDesc %></p>
+        </div>
+        <div class="p-4 bg-gray-50 border-t flex justify-between">
+            <button 
+    class="btn-edit-product text-blue-600 font-bold text-sm hover:underline"
+    data-id="<%= plan._id %>"
+    data-title="<%= planTitle %>"
+    data-price="<%= plan.price %>"
+    data-original="<%= plan.originalPrice %>"
+    data-images="<%= plan.images ? plan.images.join(',') : '' %>"
+    data-desc="<%= planDesc %>"
+    data-tag="<%= plan.tag %>"
+>
+    Chỉnh sửa
+</button>
+            
+            <form action="/admin/plan/delete/<%= plan._id %>" method="POST" onsubmit="return confirm('Xóa gói này?')">
+                <button class="text-red-600 font-bold text-sm hover:underline">Xóa</button>
+            </form>
+        </div>
+    </div>
+<% }) %>
             </div>
         </div>
 

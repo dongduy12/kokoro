@@ -415,7 +415,13 @@ app.post("/booking", async (req, res) => {
     const shop = shops.find((s) => s.id == shopId) || shops[0];
     const planPrice = Number(foundPlan.price) || 0;
     const totalPrice = planPrice * qty;
-    const resolvedPlanName = planName || foundPlan.title;
+
+    const currentLang = req.getLocale();
+    const planTitleStr =
+      foundPlan.title && typeof foundPlan.title === "object"
+        ? foundPlan.title[currentLang] || foundPlan.title.vi || ""
+        : foundPlan.title;
+    const resolvedPlanName = planName || planTitleStr;
 
     const guests = Array.from({ length: qty }, (_, index) => ({
       planName: resolvedPlanName,
@@ -479,9 +485,16 @@ app.post("/booking-step2", async (req, res) => {
       );
 
       if (foundPlan) {
+        // Lấy tên gói theo ngôn ngữ khách đang dùng
+        const currentLang = req.getLocale();
+        const planTitleStr =
+          foundPlan.title && typeof foundPlan.title === "object"
+            ? foundPlan.title[currentLang] || foundPlan.title.vi || ""
+            : foundPlan.title;
+
         selectedPlans.push({
-          id: foundPlan.id || foundPlan._id, // Giữ ID để step sau dùng
-          title: foundPlan.title,
+          id: foundPlan.id || foundPlan._id,
+          title: planTitleStr, // 👈 Đẩy chuỗi ngôn ngữ vào giỏ
           price: foundPlan.price,
           image: foundPlan.image,
           qty: qty,
