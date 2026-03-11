@@ -17,9 +17,13 @@
         <%= __('success.thanks') %>
       </h1>
       <p class="text-gray-600 mb-6">
-        <%= __('success.received', info.fullname) %><br />
-        <%= __('success.plan', info.planName) %><br />
-        <%= __('success.date', info.date) %>
+        <%= __('success.received', { name: info.fullname }) %><br />
+        <%= __('success.plan', { plan: info.planName }) %><br />
+        <%= __('success.date', { date: info.date }) %>
+        <% if (info.time) { %>
+        <br />
+        <%= __('success.time', { time: info.time }) %>
+        <% } %>
       </p>
 
       <a

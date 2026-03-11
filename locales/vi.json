@@ -196,6 +196,8 @@
         "fullname_placeholder": "Nguyễn Văn A",
         "date": "Ngày đến",
         "guests": "Số lượng người",
+        "email": "Email",
+        "time": "Giờ đến",
         "phone": "Số điện thoại",
         "submit": "Xác nhận đặt chỗ"
     },
@@ -205,6 +207,7 @@
         "received": "Chúng tôi đã nhận được yêu cầu đặt chỗ của %{name}.",
         "plan": "Gói: %{plan}",
         "date": "Ngày: %{date}",
+        "time": "Giờ đến: %{time}",
         "back_home": "Trở về trang chủ"
     },
     "login": {

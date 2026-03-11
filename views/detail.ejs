@@ -69,6 +69,12 @@
                                    class="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:border-[#BA2636]">
                         </div>
 
+                        <div>
+                            <label class="block font-bold mb-1"><%= __('detail.email') %></label>
+                            <input type="email" name="email" required placeholder="example@email.com" 
+                                   class="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:border-[#BA2636]">
+                        </div>
+
                         <div class="flex gap-4">
                             <div class="w-1/2">
                                 <label class="block font-bold mb-1"><%= __('detail.date') %></label>
@@ -80,6 +86,12 @@
                                 <input type="number" name="quantity" value="1" min="1" required 
                                        class="w-full border border-gray-300 p-3 rounded-lg">
                             </div>
+                        </div>
+
+                        <div>
+                            <label class="block font-bold mb-1"><%= __('detail.time') %></label>
+                            <input type="time" name="time" required 
+                                   class="w-full border border-gray-300 p-3 rounded-lg">
                         </div>
 
                         <div>

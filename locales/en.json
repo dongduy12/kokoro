@@ -196,6 +196,8 @@
         "fullname_placeholder": "John Doe",
         "date": "Visit date",
         "guests": "Number of guests",
+        "email": "Email",
+        "time": "Arrival time",
         "phone": "Phone number",
         "submit": "Confirm booking"
     },
@@ -205,6 +207,7 @@
         "received": "We have received the booking request from %{name}.",
         "plan": "Plan: %{plan}",
         "date": "Date: %{date}",
+        "time": "Arrival time: %{time}",
         "back_home": "Back to homepage"
     },
     "login": {

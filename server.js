@@ -449,7 +449,7 @@ app.get("/plan/:id", async (req, res) => {
 // 2.1 Booking nhanh từ trang chi tiết
 app.post("/booking", async (req, res) => {
   try {
-    const { planId, planName, fullname, date, quantity, phone, shopId } =
+    const { planId, planName, fullname, email, date, time, quantity, phone, shopId } =
       req.body;
     const qty = Math.max(parseInt(quantity, 10) || 1, 1);
 
@@ -486,13 +486,13 @@ app.post("/booking", async (req, res) => {
 
     const newBooking = new Booking({
       fullname,
-      email: "",
+      email,
       phone,
       planName: resolvedPlanName,
       shopId: shop.id,
       shopName: shop.name,
       date,
-      time: "",
+      time,
       totalPrice,
       guests,
       status: "Đã đặt (Chờ đến)",
@@ -500,7 +500,7 @@ app.post("/booking", async (req, res) => {
 
     await newBooking.save();
     res.render("success", {
-      info: { fullname, planName: resolvedPlanName, date },
+      info: { fullname, planName: resolvedPlanName, date, time },
     });
   } catch (err) {
     console.error(err);

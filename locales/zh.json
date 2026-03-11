@@ -196,6 +196,8 @@
         "fullname_placeholder": "张三",
         "date": "到店日期",
         "guests": "人数",
+        "email": "邮箱",
+        "time": "到店时间",
         "phone": "手机号",
         "submit": "确认预约"
     },
@@ -205,6 +207,7 @@
         "received": "我们已收到 %{name} 的预约请求。",
         "plan": "方案：%{plan}",
         "date": "日期：%{date}",
+        "time": "到店时间：%{time}",
         "back_home": "返回首页"
     },
     "login": {
