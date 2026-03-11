@@ -1,28 +1,33 @@
 <!DOCTYPE html>
 <html lang="<%= getLocale() %>">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><%= __('success.title') %></title>
     <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100 h-screen flex items-center justify-center">
-
+  </head>
+  <body class="bg-gray-100 h-screen flex items-center justify-center">
     <div class="bg-white p-10 rounded-2xl shadow-xl text-center max-w-lg">
-        <div class="w-20 h-20 bg-green-100 text-green-500 rounded-full flex items-center justify-center mx-auto mb-6 text-4xl">
-            ✓
-        </div>
-        <h1 class="text-3xl font-bold text-gray-800 mb-2"><%= __('success.thanks') %></h1>
-        <p class="text-gray-600 mb-6">
-            <%= __('success.received', { name: info.fullname }) %><br>
-            <%= __('success.plan', { plan: info.planName }) %><br>
-            <%= __('success.date', { date: info.date }) %>
-        </p>
-        
-        <a href="/" class="inline-block bg-[#BA2636] text-white px-8 py-3 rounded-full font-bold hover:opacity-90">
-            <%= __('success.back_home') %>
-        </a>
-    </div>
+      <div
+        class="w-20 h-20 bg-green-100 text-green-500 rounded-full flex items-center justify-center mx-auto mb-6 text-4xl"
+      >
+        ✓
+      </div>
+      <h1 class="text-3xl font-bold text-gray-800 mb-2">
+        <%= __('success.thanks') %>
+      </h1>
+      <p class="text-gray-600 mb-6">
+        <%= __('success.received', info.fullname) %><br />
+        <%= __('success.plan', info.planName) %><br />
+        <%= __('success.date', info.date) %>
+      </p>
 
-</body>
+      <a
+        href="/"
+        class="inline-block bg-[#BA2636] text-white px-8 py-3 rounded-full font-bold hover:opacity-90"
+      >
+        <%= __('success.back_home') %>
+      </a>
+    </div>
+  </body>
 </html>

@@ -1,4 +1,5 @@
 require("dotenv").config();
+const cron = require("node-cron");
 const translate = require("google-translate-api-x");
 const express = require("express");
 const mongoose = require("mongoose");
@@ -104,55 +105,108 @@ const createMailTransporter = () => {
   });
 };
 
-const buildBookingEmailHtml = ({ booking, shop, plansData }) => {
+// Tự điển đa ngôn ngữ cho Email
+const emailDict = {
+  vi: {
+    subject: "Xác nhận đặt lịch tại Kokoro",
+    hello: "Xin chào",
+    thanks:
+      "Cảm ơn bạn đã đặt lịch tại Kokoro. Dưới đây là thông tin đặt lịch của bạn:",
+    customer: "Khách hàng",
+    phone: "Số điện thoại",
+    shop: "Cửa hàng",
+    datetime: "Ngày/giờ",
+    total: "Tổng tiền",
+    plan: "Gói đã chọn",
+    footer:
+      "Chúng tôi sẽ liên hệ nếu cần thêm thông tin. Hẹn gặp bạn tại cửa hàng!",
+  },
+  en: {
+    subject: "Booking Confirmation at Kokoro",
+    hello: "Hello",
+    thanks: "Thank you for booking with Kokoro. Here are your booking details:",
+    customer: "Customer",
+    phone: "Phone number",
+    shop: "Shop",
+    datetime: "Date/Time",
+    total: "Total Price",
+    plan: "Selected Plans",
+    footer:
+      "We will contact you if more information is needed. See you at the shop!",
+  },
+  jp: {
+    subject: "Kokoroでのご予約確認",
+    hello: "こんにちは",
+    thanks:
+      "Kokoroでのご予約ありがとうございます。ご予約内容は以下の通りです：",
+    customer: "お客様",
+    phone: "電話番号",
+    shop: "店舗",
+    datetime: "日時",
+    total: "合計金額",
+    plan: "選択したプラン",
+    footer:
+      "必要に応じてご連絡させていただきます。ご来店をお待ちしております！",
+  },
+  zh: {
+    subject: "Kokoro 预约确认",
+    hello: "你好",
+    thanks: "感谢您在 Kokoro 预约。以下是您的预约详情：",
+    customer: "客户",
+    phone: "电话号码",
+    shop: "商店",
+    datetime: "日期/时间",
+    total: "总价",
+    plan: "已选套餐",
+    footer: "如果需要更多信息，我们会与您联系。期待在店里见到您！",
+  },
+};
+
+const buildBookingEmailHtml = ({ booking, shop, plansData, lang }) => {
+  const t = emailDict[lang] || emailDict["en"]; // Fallback về tiếng Việt
   const planLines = plansData
     .map((plan) => `<li>${plan.title} x ${plan.qty}</li>`)
     .join("");
 
   return `
-        <div style="font-family: Arial, sans-serif; line-height: 1.6;">
-            <h2>Thông tin đặt lịch</h2>
-            <p><strong>Khách hàng:</strong> ${booking.fullname}</p>
-            <p><strong>Số điện thoại:</strong> ${booking.phone}</p>
-            <p><strong>Email:</strong> ${booking.email}</p>
-            <p><strong>Cửa hàng:</strong> ${shop.name}</p>
-            <p><strong>Ngày/giờ:</strong> ${booking.date} | ${booking.time}</p>
-            <p><strong>Tổng tiền:</strong> ¥${booking.totalPrice.toLocaleString()}</p>
-            <h3>Gói đã chọn</h3>
-            <ul>${planLines}</ul>
+        <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+            <p>${t.hello} <strong>${booking.fullname}</strong>,</p>
+            <p>${t.thanks}</p>
+            <div style="background-color: #f9f9f9; padding: 15px; border-radius: 8px; margin: 20px 0;">
+                <p><strong>${t.customer}:</strong> ${booking.fullname}</p>
+                <p><strong>${t.phone}:</strong> ${booking.phone}</p>
+                <p><strong>${t.shop}:</strong> ${shop.name}</p>
+                <p><strong>${t.datetime}:</strong> ${booking.date} | ${booking.time}</p>
+                <p><strong>${t.total}:</strong> ¥${booking.totalPrice.toLocaleString()}</p>
+                <h3>${t.plan}</h3>
+                <ul>${planLines}</ul>
+            </div>
+            <p>${t.footer}</p>
         </div>
     `;
 };
 
-const sendBookingEmails = async ({ booking, shop, plansData }) => {
+const sendBookingEmails = async ({ booking, shop, plansData, lang }) => {
   const transporter = createMailTransporter();
-  if (!transporter) {
-    console.warn("⚠️ Thiếu cấu hình SMTP, bỏ qua gửi mail.");
-    return;
-  }
+  if (!transporter) return;
 
-  const fromEmail = process.env.MAIL_FROM || process.env.SMTP_USER;
-  const htmlContent = buildBookingEmailHtml({ booking, shop, plansData });
+  const t = emailDict[lang] || emailDict["en"];
+  const htmlContent = buildBookingEmailHtml({ booking, shop, plansData, lang });
 
-  const adminMail = {
-    from: `"Kokoro Booking" <${fromEmail}>`,
-    to: ADMIN_EMAIL,
-    subject: `Đơn đặt lịch mới - ${booking.fullname}`,
+  // Mail gửi khách hàng (Bằng ngôn ngữ của khách)
+  const customerMail = {
+    from: `"Kokoro Booking" <${process.env.SMTP_USER}>`,
+    to: booking.email,
+    subject: t.subject,
     html: htmlContent,
   };
 
-  const customerMail = {
-    from: `"Kokoro Booking" <${fromEmail}>`,
-    to: booking.email,
-    subject: "Xác nhận đặt lịch tại Kokoro",
-    html: `
-            <div style="font-family: Arial, sans-serif; line-height: 1.6;">
-                <p>Xin chào ${booking.fullname},</p>
-                <p>Cảm ơn bạn đã đặt lịch tại Kokoro. Dưới đây là thông tin đặt lịch của bạn:</p>
-                ${htmlContent}
-                <p>Chúng tôi sẽ liên hệ nếu cần thêm thông tin. Hẹn gặp bạn tại cửa hàng!</p>
-            </div>
-        `,
+  // Mail gửi Admin (Luôn giữ tiếng Việt cho Admin dễ đọc)
+  const adminMail = {
+    from: `"Kokoro Booking" <${process.env.SMTP_USER}>`,
+    to: process.env.ADMIN_EMAIL,
+    subject: `[Lịch mới] ${booking.fullname} - ${shop.name}`,
+    html: buildBookingEmailHtml({ booking, shop, plansData, lang: "vi" }),
   };
 
   await Promise.allSettled([
@@ -634,18 +688,33 @@ app.post("/booking-finish", async (req, res) => {
       totalPrice: finalTotal,
       guests: guests,
       status: "Đã đặt (Chờ đến)",
+      language: req.getLocale(), // 👈 THÊM DÒNG NÀY ĐỂ LƯU NGÔN NGỮ
     });
 
     await newBooking.save();
     console.log("📝 Đơn hàng mới:", newBooking._id);
 
     try {
-      await sendBookingEmails({ booking: newBooking, shop, plansData });
+      await sendBookingEmails({
+        booking: newBooking,
+        shop,
+        plansData,
+        lang: req.getLocale(),
+      });
     } catch (mailError) {
       console.error("❌ Lỗi gửi email đặt lịch:", mailError);
     }
 
-    res.render("success", { info: newBooking });
+    // Gộp tên các gói lại thành 1 chuỗi để hiển thị
+    const planNames = plansData.map((p) => p.title).join(", ");
+
+    res.render("success", {
+      info: {
+        fullname: newBooking.fullname,
+        planName: planNames,
+        date: newBooking.date,
+      },
+    });
   } catch (err) {
     console.error(err);
     res.send("Lỗi xử lý đơn hàng: " + err.message);
@@ -812,6 +881,121 @@ app.post("/admin/delete/:id", requireLogin, async (req, res) => {
   await Booking.findByIdAndDelete(req.params.id);
   res.redirect("/admin");
 });
+
+// ==========================================
+// CRON JOB: GỬI MAIL NHẮC NHỞ MỖI NGÀY
+// ==========================================
+// Cấu hình chạy vào 07:00 sáng mỗi ngày. Múi giờ đặt là Asia/Tokyo (nếu shop ở Nhật) hoặc Asia/Ho_Chi_Minh (nếu ở VN)
+cron.schedule(
+  "0 7 * * *",
+  async () => {
+    console.log("⏳ Đang chạy Cronjob kiểm tra lịch hẹn hôm nay...");
+    try {
+      // Lấy ngày hôm nay theo chuẩn YYYY-MM-DD
+      const todayString = new Date().toLocaleDateString("en-CA", {
+        timeZone: "Asia/Tokyo",
+      });
+
+      // Tìm tất cả đơn hàng có ngày hẹn là hôm nay và trạng thái không phải là đã hủy
+      const bookingsToday = await Booking.find({ date: todayString });
+
+      if (bookingsToday.length === 0) {
+        console.log(`✅ [${todayString}] Hôm nay không có lịch hẹn nào.`);
+        return;
+      }
+
+      const transporter = createMailTransporter();
+      if (!transporter) {
+        console.log("⚠️ Không thể gửi mail nhắc nhở vì thiếu cấu hình SMTP.");
+        return;
+      }
+
+      for (const booking of bookingsToday) {
+        // 1. Mail nhắc khách hàng
+        // Xác định ngôn ngữ của khách (Mặc định là 'en' nếu không có dữ liệu)
+        const lang = booking.language || "en";
+
+        // Tự điển đa ngôn ngữ cho Mail nhắc nhở
+        const remindDict = {
+          vi: {
+            sub: "⏰ Nhắc nhở: Bạn có lịch hẹn hôm nay tại Kokoro",
+            txt1: "Kokoro xin nhắc nhở bạn có lịch hẹn <b>hôm nay</b>.",
+            txt2: "Giờ đến",
+            txt3: "Rất mong được phục vụ bạn!",
+          },
+          en: {
+            sub: "⏰ Reminder: You have an appointment today at Kokoro",
+            txt1: "Kokoro reminds you that you have an appointment <b>today</b>.",
+            txt2: "Arrival time",
+            txt3: "We look forward to serving you!",
+          },
+          jp: {
+            sub: "⏰ リマインダー：本日のご予約について",
+            txt1: "本日のご予約についてお知らせいたします。",
+            txt2: "来店時間",
+            txt3: "ご来店を心よりお待ちしております！",
+          },
+          zh: {
+            sub: "⏰ 提醒：您今天在 Kokoro 有预约",
+            txt1: "Kokoro 提醒您<b>今天</b>有预约。",
+            txt2: "到达时间",
+            txt3: "期待为您服务！",
+          },
+        };
+
+        // Nếu không tìm thấy ngôn ngữ trong từ điển, mặc định lấy tiếng Anh
+        const r = remindDict[lang] || remindDict["en"];
+
+        const customerMail = {
+          from: `"Kokoro Shop" <${process.env.SMTP_USER}>`,
+          to: booking.email,
+          subject: r.sub,
+          html: `
+                    <div style="font-family: Arial, sans-serif; color: #333;">
+                        <h3>${emailDict[lang] && emailDict[lang].hello ? emailDict[lang].hello : "Hello"} ${booking.fullname},</h3>
+                        <p>${r.txt1} (${booking.date})</p>
+                        <p>📍 <b>${emailDict[lang] && emailDict[lang].shop ? emailDict[lang].shop : "Shop"}:</b> ${booking.shopName}</p>
+                        <p>⏰ <b>${r.txt2}:</b> ${booking.time || "Please arrive on time"}</p>
+                        <p>${r.txt3}</p>
+                    </div>
+                `,
+        };
+
+        // 2. Mail báo Admin chuẩn bị
+        const adminMail = {
+          from: `"Kokoro System" <${process.env.SMTP_USER}>`,
+          to: process.env.ADMIN_EMAIL,
+          subject: `🔔 Lịch khách đến hôm nay: ${booking.fullname} - ${booking.time}`,
+          html: `
+                    <div style="font-family: Arial, sans-serif;">
+                        <p>Admin chú ý, hôm nay có khách hàng đã đặt lịch:</p>
+                        <ul>
+                            <li><b>Tên khách:</b> ${booking.fullname}</li>
+                            <li><b>SĐT:</b> ${booking.phone}</li>
+                            <li><b>Giờ đến:</b> ${booking.time}</li>
+                            <li><b>Tổng tiền:</b> ¥${booking.totalPrice.toLocaleString()}</li>
+                        </ul>
+                        <p>Vui lòng chuẩn bị sẵn sàng để đón khách nhé.</p>
+                    </div>
+                `,
+        };
+
+        await transporter.sendMail(customerMail);
+        await transporter.sendMail(adminMail);
+      }
+
+      console.log(
+        `✅ Đã gửi email nhắc nhở cho ${bookingsToday.length} khách hàng trong hôm nay.`,
+      );
+    } catch (error) {
+      console.error("❌ Lỗi khi chạy Cronjob nhắc lịch:", error);
+    }
+  },
+  {
+    scheduled: true,
+    timezone: "Asia/Tokyo", // Đổi thành "Asia/Ho_Chi_Minh" nếu shop của bạn phục vụ giờ Việt Nam
+  },
+);
 
 const PORT = 3000;
 app.listen(PORT, () => {
