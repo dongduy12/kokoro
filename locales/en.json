@@ -70,7 +70,7 @@
             "time_available": "Available",
             "loading_slots": "Loading time slots...",
             "checking_availability": "Checking availability...",
-            "remaining_slots": "%{count} slots left",
+            "remaining_slots": "{{count}} slots left",
             "load_error": "Failed to load slots. Please try again.",
             "selected_plans": "Selected plans",
             "total_label": "Total (%d guest):",
@@ -86,7 +86,7 @@
             "phone": "Phone number",
             "phone_placeholder": "0901234567",
             "option_title": "2. Choose your desired options.",
-            "guest_label": "Guest %{number} (%{plan})",
+            "guest_label": "Guest {{number}} ({{plan}})",
             "base_price": "Base price:",
             "addon_title": "Add services (Hair, Insurance...)",
             "payment_details": "Payment details"
@@ -204,10 +204,10 @@
     "success": {
         "title": "Booking successful",
         "thanks": "Thank you!",
-        "received": "We have received the booking request from %{name}.",
-        "plan": "Plan: %{plan}",
-        "date": "Date: %{date}",
-        "time": "Arrival time: %{time}",
+        "received": "We have received the booking request from {{name}}.",
+        "plan": "Plan: {{plan}}",
+        "date": "Date: {{date}}",
+        "time": "Arrival time: {{time}}",
         "back_home": "Back to homepage"
     },
     "login": {
