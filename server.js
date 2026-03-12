@@ -27,9 +27,61 @@ const {
 
 const app = express();
 
+mongoose.set("bufferCommands", false);
+
+const DEFAULT_HERO_IMAGE =
+  "https://static.kyotokimonorental.com/app/img/top/hero/autumn/vi/sp/hero01.webp";
+
+const isDbConnected = () => mongoose.connection.readyState === 1;
+
+const getVisiblePlans = async () => {
+  if (!isDbConnected()) return initialPlans.filter((plan) => plan.isVisible !== false);
+
+  try {
+    return await Plan.find({ isVisible: true });
+  } catch (err) {
+    console.error("⚠️ Không thể tải plans từ DB, dùng dữ liệu tĩnh:", err.message);
+    return initialPlans.filter((plan) => plan.isVisible !== false);
+  }
+};
+
+const getAllPlans = async () => {
+  if (!isDbConnected()) return initialPlans;
+
+  try {
+    return await Plan.find();
+  } catch (err) {
+    console.error("⚠️ Không thể tải toàn bộ plans từ DB, dùng dữ liệu tĩnh:", err.message);
+    return initialPlans;
+  }
+};
+
+const getHeroImages = async () => {
+  if (!isDbConnected()) return [DEFAULT_HERO_IMAGE];
+
+  try {
+    const heroConfig = await Config.findOne({ key: "hero_image" });
+    if (!heroConfig || !heroConfig.value) return [DEFAULT_HERO_IMAGE];
+
+    if (Array.isArray(heroConfig.value)) return heroConfig.value;
+
+    if (
+      typeof heroConfig.value === "string" &&
+      heroConfig.value.startsWith("[")
+    ) {
+      return JSON.parse(heroConfig.value);
+    }
+
+    return [heroConfig.value];
+  } catch (err) {
+    console.error("⚠️ Không thể tải hero image từ DB, dùng ảnh mặc định:", err.message);
+    return [DEFAULT_HERO_IMAGE];
+  }
+};
+
 // --- KẾT NỐI MONGODB ---
 mongoose
-  .connect(process.env.MONGO_URI)
+  .connect(process.env.MONGO_URI, { serverSelectionTimeoutMS: 5000 })
   .then(async () => {
     console.log("✅ Đã kết nối MongoDB!");
 
@@ -44,8 +96,7 @@ mongoose
     if (!heroImg) {
       await Config.create({
         key: "hero_image",
-        value:
-          "https://static.kyotokimonorental.com/app/img/top/hero/autumn/vi/sp/hero01.webp",
+        value: DEFAULT_HERO_IMAGE,
       });
     }
   })
@@ -380,36 +431,8 @@ const requireLogin = (req, res, next) => {
 // 1. Trang chủ
 // Tìm route trang chủ và sửa đoạn lấy heroConfig:
 app.get("/", async (req, res) => {
-  const dbPlans = await Plan.find({ isVisible: true });
-  const heroConfig = await Config.findOne({ key: "hero_image" });
-
-  // 👇 LOGIC MỚI: Xử lý Hero Image (Dù DB lưu là Chuỗi hay Mảng, ta đều ép về Mảng để view dễ dùng)
-  let heroImages = [];
-  if (heroConfig && heroConfig.value) {
-    // Nếu value là mảng (do Mongo lưu) -> dùng luôn
-    if (Array.isArray(heroConfig.value)) {
-      heroImages = heroConfig.value;
-    }
-    // Nếu value là chuỗi JSON (ví dụ: '["link1","link2"]') -> Parse ra
-    else if (
-      typeof heroConfig.value === "string" &&
-      heroConfig.value.startsWith("[")
-    ) {
-      try {
-        heroImages = JSON.parse(heroConfig.value);
-      } catch (e) {}
-    }
-    // Nếu là chuỗi đơn (link ảnh cũ) -> Đẩy vào mảng
-    else {
-      heroImages = [heroConfig.value];
-    }
-  }
-  // Fallback: Nếu không có ảnh nào, dùng ảnh mặc định
-  if (heroImages.length === 0) {
-    heroImages = [
-      "https://static.kyotokimonorental.com/app/img/top/hero/autumn/vi/sp/hero01.webp",
-    ];
-  }
+  const dbPlans = await getVisiblePlans();
+  const heroImages = await getHeroImages();
 
   res.render("index", {
     plans: dbPlans,
@@ -432,6 +455,15 @@ app.get("/change-lang/:lang", (req, res) => {
 
 // 2. Trang chi tiết
 app.get("/plan/:id", async (req, res) => {
+  if (!isDbConnected()) {
+    const staticPlan = initialPlans.find(
+      (plan) => String(plan.id) === String(req.params.id),
+    );
+
+    if (!staticPlan) return res.send("Không tìm thấy gói!");
+    return res.render("detail", { plan: staticPlan, pageTitle: staticPlan.title });
+  }
+
   // Tìm trong DB thay vì mảng tĩnh
   // Lưu ý: Nếu data cũ dùng id số (1,2,3), nếu data mới tạo tự động bởi mongo sẽ dùng _id
   // Code này ưu tiên tìm theo id số trước
@@ -510,7 +542,7 @@ app.post("/booking", async (req, res) => {
 
 // 3. Booking Step 1
 app.get("/booking-step1", async (req, res) => {
-  const dbPlans = await Plan.find({ isVisible: true });
+  const dbPlans = await getVisiblePlans();
   res.render("booking_step1", {
     plans: dbPlans,
     pageTitle: res.__("titles.booking_step1"),
@@ -524,7 +556,7 @@ app.post("/booking-step2", async (req, res) => {
   let totalPrice = 0;
 
   // 👇 FIX: Lấy danh sách gói từ DB để tra cứu giá tiền
-  const dbPlans = await Plan.find();
+  const dbPlans = await getAllPlans();
 
   for (const [key, value] of Object.entries(req.body)) {
     if (key.startsWith("plan_") && parseInt(value) > 0) {
