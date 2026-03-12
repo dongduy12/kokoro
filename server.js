@@ -136,22 +136,37 @@ const resolveLanguageKey = (isoCode) => {
   return "vi";
 };
 
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
+const normalizeEnv = (value) => {
+  if (typeof value !== "string") return "";
+  return value.trim();
+};
+
+const parseSecureFlag = (value) => {
+  const normalized = normalizeEnv(value).toLowerCase();
+  return normalized === "true" || normalized === "1" || normalized === "yes";
+};
+
+const ADMIN_EMAIL = normalizeEnv(process.env.ADMIN_EMAIL);
 
 const createMailTransporter = () => {
   const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, SMTP_SECURE } =
     process.env;
-  if (!SMTP_HOST || !SMTP_PORT || !SMTP_USER || !SMTP_PASS) {
+  const host = normalizeEnv(SMTP_HOST);
+  const port = Number(normalizeEnv(SMTP_PORT));
+  const user = normalizeEnv(SMTP_USER);
+  const pass = normalizeEnv(SMTP_PASS);
+
+  if (!host || !port || !user || !pass) {
     return null;
   }
 
   return nodemailer.createTransport({
-    host: SMTP_HOST,
-    port: Number(SMTP_PORT),
-    secure: SMTP_SECURE === "true",
+    host,
+    port,
+    secure: parseSecureFlag(SMTP_SECURE),
     auth: {
-      user: SMTP_USER,
-      pass: SMTP_PASS,
+      user,
+      pass,
     },
   });
 };
@@ -244,9 +259,14 @@ const sendBookingEmails = async ({ booking, shop, plansData, lang }) => {
   const t = emailDict[lang] || emailDict["en"];
   const htmlContent = buildBookingEmailHtml({ booking, shop, plansData, lang });
 
+  const senderEmail = normalizeEnv(process.env.MAIL_FROM) || normalizeEnv(process.env.SMTP_USER);
+  if (!senderEmail) {
+    throw new Error("Thiếu MAIL_FROM hoặc SMTP_USER để gửi email");
+  }
+
   // Mail gửi khách hàng (Bằng ngôn ngữ của khách)
   const customerMail = {
-    from: `"Kokoro Booking" <${process.env.SMTP_USER}>`,
+    from: `"Kokoro Booking" <${senderEmail}>`,
     to: booking.email,
     subject: t.subject,
     html: htmlContent,
@@ -254,16 +274,22 @@ const sendBookingEmails = async ({ booking, shop, plansData, lang }) => {
 
   // Mail gửi Admin (Luôn giữ tiếng Việt cho Admin dễ đọc)
   const adminMail = {
-    from: `"Kokoro Booking" <${process.env.SMTP_USER}>`,
-    to: process.env.ADMIN_EMAIL,
+    from: `"Kokoro Booking" <${senderEmail}>`,
+    to: ADMIN_EMAIL,
     subject: `[Lịch mới] ${booking.fullname} - ${shop.name}`,
     html: buildBookingEmailHtml({ booking, shop, plansData, lang: "vi" }),
   };
 
-  await Promise.allSettled([
-    transporter.sendMail(adminMail),
-    transporter.sendMail(customerMail),
-  ]);
+  const emailPromises = [transporter.sendMail(customerMail)];
+  if (ADMIN_EMAIL) {
+    emailPromises.push(transporter.sendMail(adminMail));
+  }
+
+  const results = await Promise.allSettled(emailPromises);
+  const rejected = results.find((result) => result.status === "rejected");
+  if (rejected) {
+    throw rejected.reason;
+  }
 };
 
 const translateDescToAllLanguages = async (desc) => {
