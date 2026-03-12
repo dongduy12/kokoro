@@ -252,6 +252,30 @@ const buildBookingEmailHtml = ({ booking, shop, plansData, lang }) => {
     `;
 };
 
+const buildAdminBookingEmailHtml = ({ booking, shop, plansData }) => {
+  const planLines = plansData
+    .map((plan) => `<li>${plan.title} x ${plan.qty}</li>`)
+    .join("");
+
+  return `
+        <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+            <h2 style="margin-bottom: 8px; color: #BA2636;">🔔 Thông báo đơn hàng mới</h2>
+            <p>Hệ thống vừa ghi nhận một đơn hàng mới. Vui lòng kiểm tra thông tin bên dưới:</p>
+            <div style="background-color: #f9f9f9; padding: 15px; border-radius: 8px; margin: 20px 0;">
+                <p><strong>Khách hàng:</strong> ${booking.fullname}</p>
+                <p><strong>Số điện thoại:</strong> ${booking.phone}</p>
+                <p><strong>Email:</strong> ${booking.email || "Không có"}</p>
+                <p><strong>Cửa hàng:</strong> ${shop.name}</p>
+                <p><strong>Ngày/giờ:</strong> ${booking.date} | ${booking.time}</p>
+                <p><strong>Tổng tiền:</strong> ¥${booking.totalPrice.toLocaleString()}</p>
+                <h3>Gói đã chọn</h3>
+                <ul>${planLines}</ul>
+            </div>
+            <p>Vui lòng sắp xếp lịch và xác nhận với khách nếu cần.</p>
+        </div>
+    `;
+};
+
 const sendBookingEmails = async ({ booking, shop, plansData, lang }) => {
   const transporter = createMailTransporter();
   if (!transporter) return;
@@ -276,8 +300,8 @@ const sendBookingEmails = async ({ booking, shop, plansData, lang }) => {
   const adminMail = {
     from: `"Kokoro Booking" <${senderEmail}>`,
     to: ADMIN_EMAIL,
-    subject: `[Lịch mới] ${booking.fullname} - ${shop.name}`,
-    html: buildBookingEmailHtml({ booking, shop, plansData, lang: "vi" }),
+    subject: `[Đơn hàng mới] ${booking.fullname} - ${shop.name}`,
+    html: buildAdminBookingEmailHtml({ booking, shop, plansData }),
   };
 
   const emailPromises = [transporter.sendMail(customerMail)];
