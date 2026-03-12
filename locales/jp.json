@@ -70,7 +70,7 @@
             "time_available": "空きあり",
             "loading_slots": "時間帯を読み込み中...",
             "checking_availability": "空き状況を確認中...",
-            "remaining_slots": "残り %{count} 枠",
+            "remaining_slots": "残り {{count}} 枠",
             "load_error": "読み込みに失敗しました。もう一度お試しください。",
             "selected_plans": "選択したプラン",
             "total_label": "合計（%d 名様）：",
@@ -86,7 +86,7 @@
             "phone": "電話番号",
             "phone_placeholder": "0901234567",
             "option_title": "2. 希望するオプションをお選びください。",
-            "guest_label": "お客様 %{number}（%{plan}）",
+            "guest_label": "お客様 {{number}}（{{plan}}）",
             "base_price": "基本料金：",
             "addon_title": "追加サービス（ヘアセット、保険など）",
             "payment_details": "お支払い内訳"
@@ -204,10 +204,10 @@
     "success": {
         "title": "予約が完了しました",
         "thanks": "ありがとうございます！",
-        "received": "%{name}様の予約を受け付けました。",
-        "plan": "プラン：%{plan}",
-        "date": "日付：%{date}",
-        "time": "来店時間：%{time}",
+        "received": "{{name}}様の予約を受け付けました。",
+        "plan": "プラン：{{plan}}",
+        "date": "日付：{{date}}",
+        "time": "来店時間：{{time}}",
         "back_home": "トップへ戻る"
     },
     "login": {

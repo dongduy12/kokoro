@@ -70,7 +70,7 @@
             "time_available": "有位",
             "loading_slots": "正在加载时间段...",
             "checking_availability": "正在检查空位...",
-            "remaining_slots": "剩余 %{count} 位",
+            "remaining_slots": "剩余 {{count}} 位",
             "load_error": "加载失败，请稍后重试。",
             "selected_plans": "已选方案",
             "total_label": "合计（%d 位）：",
@@ -86,7 +86,7 @@
             "phone": "手机号",
             "phone_placeholder": "0901234567",
             "option_title": "2. 请选择需要的附加服务。",
-            "guest_label": "客人 %{number}（%{plan}）",
+            "guest_label": "客人 {{number}}（{{plan}}）",
             "base_price": "基础价格：",
             "addon_title": "附加服务（做发型、保险等）",
             "payment_details": "付款明细"
@@ -204,10 +204,10 @@
     "success": {
         "title": "预约成功",
         "thanks": "感谢您！",
-        "received": "我们已收到 %{name} 的预约请求。",
-        "plan": "方案：%{plan}",
-        "date": "日期：%{date}",
-        "time": "到店时间：%{time}",
+        "received": "我们已收到 {{name}} 的预约请求。",
+        "plan": "方案：{{plan}}",
+        "date": "日期：{{date}}",
+        "time": "到店时间：{{time}}",
         "back_home": "返回首页"
     },
     "login": {

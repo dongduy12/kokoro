@@ -70,7 +70,7 @@
             "time_available": "Còn chỗ",
             "loading_slots": "Đang tải khung giờ...",
             "checking_availability": "Đang kiểm tra chỗ trống...",
-            "remaining_slots": "Còn %{count} chỗ",
+            "remaining_slots": "Còn {{count}} chỗ",
             "load_error": "Lỗi tải dữ liệu. Vui lòng thử lại.",
             "selected_plans": "Gói đã chọn",
             "total_label": "Tổng cộng (%d khách):",
@@ -86,7 +86,7 @@
             "phone": "Số điện thoại",
             "phone_placeholder": "0901234567",
             "option_title": "2. Vui lòng chọn các tùy chọn bạn muốn.",
-            "guest_label": "Khách %{number} (%{plan})",
+            "guest_label": "Khách {{number}} ({{plan}})",
             "base_price": "Giá gốc:",
             "addon_title": "Thêm dịch vụ (Làm tóc, Bảo hiểm...)",
             "payment_details": "Chi tiết thanh toán"
@@ -204,10 +204,10 @@
     "success": {
         "title": "Đặt chỗ thành công",
         "thanks": "Cảm ơn bạn!",
-        "received": "Chúng tôi đã nhận được yêu cầu đặt chỗ của %{name}.",
-        "plan": "Gói: %{plan}",
-        "date": "Ngày: %{date}",
-        "time": "Giờ đến: %{time}",
+        "received": "Chúng tôi đã nhận được yêu cầu đặt chỗ của {{name}}.",
+        "plan": "Gói: {{plan}}",
+        "date": "Ngày: {{date}}",
+        "time": "Giờ đến: {{time}}",
         "back_home": "Trở về trang chủ"
     },
     "login": {
